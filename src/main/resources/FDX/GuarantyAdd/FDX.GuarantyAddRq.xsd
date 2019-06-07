@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by MTS Bank (MTS Bank) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="..\!Include\FDX.xsd"/>
+	<xs:element name="FDX">
+		<xs:annotation>
+			<xs:documentation>GuarantyAddRq</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="ServerInfo"/>
+				<xs:element name="BankSvcRq">
+					<xs:complexType>
+						<xs:all>
+							<xs:element ref="RequestId"/>
+							<xs:element ref="OrgId" minOccurs="0"/>
+							<xs:element ref="ExtOrgId" minOccurs="0"/>
+							<xs:element name="OrgInfo">
+								<xs:complexType>
+									<xs:all>
+										<xs:element ref="Name"/>
+										<xs:element ref="TaxId"/>
+										<xs:element ref="TaxRegCode" minOccurs="0"/>
+										<xs:element ref="StateRegPrimeNum" minOccurs="0"/>
+										<xs:element ref="RUS.OKTMO"/>
+										<xs:element ref="AuthCapCurAmt"/>
+										<xs:element ref="PhoneNum" minOccurs="0"/>
+										<xs:element ref="PostAddrs" minOccurs="0"/>
+										<xs:element ref="TaxOfficeCode"/>
+										<xs:element name="TaxOfficeName" type="xs:string">
+											<xs:annotation>
+												<xs:documentation>Название налоговой инспекции</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element ref="StateRegDt"/>
+										<xs:element name="RelPersons" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="RelPerson" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:all>
+																<xs:element name="RelType" type="xs:string"/>
+																<xs:element ref="PersonInfo"/>
+															</xs:all>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="ProdInfo">
+								<xs:complexType>
+									<xs:all>
+										<xs:element ref="ProdType"/>
+										<xs:element name="GuarantyType" type="xs:string">
+											<xs:annotation>
+												<xs:documentation>Тип гарантии</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="CurAmt" type="CurrencyAmount"/>
+										<xs:element name="StartDt" type="Date"/>
+										<xs:element name="EndDt" type="Date"/>
+										<xs:element ref="Fee" minOccurs="0"/>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Org2OrgList">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Org2OrgRec" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:all>
+													<xs:element name="LinkType" type="xs:string" minOccurs="0"/>
+													<xs:element ref="OrgId" minOccurs="0"/>
+													<xs:element name="OrgInfo">
+														<xs:complexType>
+															<xs:all>
+																<xs:element ref="TaxId"/>
+																<xs:element ref="TaxRegCode" minOccurs="0"/>
+																<xs:element ref="Name"/>
+																<xs:element ref="StateRegPrimeNum" minOccurs="0"/>
+																<xs:element ref="PostAddrs" minOccurs="0"/>
+															</xs:all>
+														</xs:complexType>
+													</xs:element>
+												</xs:all>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

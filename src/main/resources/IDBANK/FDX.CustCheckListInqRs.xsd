@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 rel. 3 (http://www.altova.com) by DSerbin (MTSB) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="FDX.xsd"/>
+	<xs:element name="FDX">
+		<xs:annotation>
+			<xs:documentation>CustCheckListInqRs</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="ServerInfo"/>
+				<xs:element name="BankSvcRs">
+					<xs:annotation>
+						<xs:documentation>Данные запроса</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="CustList" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="CustRec" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:all>
+													<xs:element ref="PersonInfo" minOccurs="0"/>
+													<xs:element name="StatusList">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="StatusRec" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:all>
+																			<xs:element ref="CheckType"/>
+																			<xs:element ref="StatusCheck"/>
+																		</xs:all>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="DataCache" type="xs:boolean" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Флаг, означающий, что ответ был взят из кэша </xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="DocList" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Список документов</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="DocRec" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Документ</xs:documentation>
+																	</xs:annotation>
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element ref="OrigName" minOccurs="0"/>
+																			<xs:element name="DocTypeName" type="xs:string" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Название документа</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="DocTypeCode" type="xs:string" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Тип документа</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:choice minOccurs="0">
+																				<xs:element name="Data" type="xs:base64Binary">
+																					<xs:annotation>
+																						<xs:documentation>Бинарные данные файла в формате base64</xs:documentation>
+																					</xs:annotation>
+																				</xs:element>
+																				<xs:element name="DataText" type="xs:string">
+																					<xs:annotation>
+																						<xs:documentation>Данные текстового файла в виде строки</xs:documentation>
+																					</xs:annotation>
+																				</xs:element>
+																				<xs:element ref="Link"/>
+																			</xs:choice>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="LimitList" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Лимиты</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="LimitRec" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Лимит</xs:documentation>
+																	</xs:annotation>
+																	<xs:complexType>
+																		<xs:all>
+																			<xs:element name="LimitType" type="xs:string">
+																				<xs:annotation>
+																					<xs:documentation>Тип лимита
+Daily - дневной лимит
+Monthly - ежемесячный лимит
+Total - общий лимит
+DailyBal - остаток по дневному лимиту
+MonthlyBal - остаток по ежемесячному лимиту
+TotalBal - остаток по общему лимиту</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="CurAmt" type="CurrencyAmount">
+																				<xs:annotation>
+																					<xs:documentation>Сумма лимита</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																		</xs:all>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:all>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element ref="Status"/>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="StatusCheck">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="CheckCode" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Код статуса</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="CheckDesc" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Описание статуса</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ErrorList" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ErrorRec" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="ErrorCode" type="xs:string">
+											<xs:annotation>
+												<xs:documentation>Код ошибки</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="ErrorDesc" type="xs:string" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Описание</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element ref="RefId" minOccurs="0"/>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="SvcStatus" minOccurs="0">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="SvcStatusCode" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>Код статуса</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element ref="StatusDesc" minOccurs="0"/>
+							<xs:element name="EffDt" type="Date">
+								<xs:annotation>
+									<xs:documentation>Дата ввода в действие</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

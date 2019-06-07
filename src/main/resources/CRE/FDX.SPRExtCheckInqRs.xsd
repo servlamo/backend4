@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by MTS Bank (MTS Bank) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<!--Ответ от CRE, Cronos-->
+	<xs:include schemaLocation="Common.xsd"/>
+	<xs:include schemaLocation="SingleFormat.xsd"/>
+	<xs:element name="FDX">
+		<xs:annotation>
+			<xs:documentation>SPRExtCheckInqRs</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="ServerInfo"/>
+				<xs:element name="BankSvcRs">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="SPInfo" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Специфичные поля ПУ</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:choice>
+											<xs:element ref="SINGLE_FORMAT"/>
+											<xs:sequence>
+												<xs:element ref="RequestId"/>
+												<xs:element ref="EmplInfo"/>
+												<xs:element name="Comment" type="xs:string">
+													<xs:annotation>
+														<xs:documentation>Комментарий</xs:documentation>
+													</xs:annotation>
+												</xs:element>
+												<xs:element name="RequestStatus">
+													<xs:complexType>
+														<xs:all>
+															<xs:element ref="StatusCode"/>
+														</xs:all>
+													</xs:complexType>
+												</xs:element>
+											</xs:sequence>
+										</xs:choice>
+										<xs:element name="DocInfo" type="DocInfo_Type" minOccurs="0"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element ref="Status"/>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="CRE_CustInfo_Type">
+		<xs:all>
+			<xs:element name="PersonInfo">
+				<xs:complexType>
+					<xs:all>
+						<xs:element ref="PersonName"/>
+						<xs:element ref="Gender"/>
+						<xs:element ref="Birthday"/>
+						<xs:element ref="BirthPlace"/>
+						<xs:element ref="Citizenship"/>
+						<xs:element ref="MaritalStatus"/>
+						<xs:element ref="EducationStatus"/>
+						<xs:element ref="TaxId"/>
+						<xs:element ref="Dependents"/>
+						<xs:element ref="PersonNamePrev"/>
+						<xs:element name="IdentityCards" minOccurs="0">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element ref="IdentityCard" minOccurs="0"/>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+						<xs:element ref="ContactInfo"/>
+						<xs:element ref="EmploymentHistoryList" minOccurs="0"/>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Flags" type="Flags_Type"/>
+			<xs:element name="IncomeList" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Доходы / расходы клиента</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="IncomeRec" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Среднемесячный доход / расход</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:all>
+									<xs:element ref="Type"/>
+									<xs:element name="Category" type="xs:string"/>
+									<xs:element name="CurAmt" type="CurrencyAmount"/>
+									<xs:element ref="BankInfo" minOccurs="0"/>
+									<xs:element name="ConfirmDoc" type="xs:boolean" minOccurs="0">
+										<xs:annotation>
+											<xs:documentation>Признак наличия подтверждающих документов</xs:documentation>
+										</xs:annotation>
+									</xs:element>
+								</xs:all>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element ref="Cust2CustList" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

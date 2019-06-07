@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 rel. 3 (http://www.altova.com) by DSerbin (MTSB) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="FDX.xsd"/>
+	<xs:element name="FDX">
+		<xs:annotation>
+			<xs:documentation>CustCheckListInqRq</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="ServerInfo"/>
+				<xs:element name="BankSvcRq">
+					<xs:annotation>
+						<xs:documentation>Данные запроса</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="CheckList">
+								<xs:annotation>
+									<xs:documentation>Список требуемых проверок</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element ref="CheckType" maxOccurs="unbounded"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="ExtCheckType" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Тип запроса: 
+FORCED
+CACHE»
+OFFLINE</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element ref="CustList"/>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

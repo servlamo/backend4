@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by MTS Bank (MTS Bank) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="..\!Include\FDX.xsd"/>
+	<xs:element name="FDX">
+		<xs:annotation>
+			<xs:documentation>OrgLimitCheckInqRs</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="ServerInfo"/>
+				<xs:element name="BankSvcRs">
+					<xs:complexType>
+						<xs:all>
+							<xs:element ref="RequestId" minOccurs="0"/>
+							<xs:element ref="OrgId" minOccurs="0"/>
+							<xs:element name="LimitInfo" minOccurs="0">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="LimitCode" type="xs:string"/>
+										<xs:element name="LimitAmt" type="CurrencyAmount"/>
+										<xs:element name="LimitDesc" type="xs:string"/>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element ref="Status"/>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

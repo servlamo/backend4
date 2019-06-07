@@ -1,0 +1,168 @@
+package com.farzoom.lime.adapter.cbs.service.integration;
+
+import com.farzoom.lime.adapter.cbs.model.RestRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.addguarantee.request.AddGuaranteeRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.addguarantee.response.AddGuaranteeResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.afs.request.SPRCustCheckRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.afs.response.SPRCustCheckResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.agency_fee_add.request.AgencyFeeAddRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.agency_fee_add.response.AgencyFeeAddResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.checklimit.request.CheckLimitRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.checklimit.response.CheckLimitResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.closelimit.request.CloseLimitRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.closelimit.response.CloseLimitResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.comission.request.CommissionRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.comission.response.CommissionResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.cre.request.BkiRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.cre.response.BkiResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.idbank.request.CustCheckListRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.idbank.response.CustCheckListResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.status.request.StatusRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.status.response.StatusResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.stopfactor.request.StopFactorRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.stopfactor.response.StopFactorResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+@AllArgsConstructor
+@Service
+@Slf4j
+public class CbsIntegrationService {
+
+    private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer().withDefaultPrettyPrinter();
+    private final CbsRequestFactoryImpl cbsRequestFactory;
+    private final CbsMarshallerImpl cbsMarshaller;
+
+    public String createAddGuaranteeRequest(RestRequest restRequest) {
+        AddGuaranteeRequest request = cbsRequestFactory.addGuaranteeRequest(restRequest.getOrderId());
+        tryToLog("createAddGuaranteeRequest", request);
+        return cbsMarshaller.marshallRequest(request, AddGuaranteeRequest.class);
+    }
+
+    public String createStopFactorRequest(RestRequest restRequest) {
+        StopFactorRequest request = cbsRequestFactory.stopRequest(restRequest.getOrderId());
+        tryToLog("createStopFactorRequest", request);
+        return cbsMarshaller.marshallRequest(request, StopFactorRequest.class);
+    }
+
+    public String createCloseLimitRequest(RestRequest restRequest) {
+        CloseLimitRequest request = cbsRequestFactory.closeRequest(restRequest.getOrderId());
+        tryToLog("createCloseLimitRequest", request);
+        return cbsMarshaller.marshallRequest(request, CloseLimitRequest.class);
+    }
+
+    public String createCheckLimitRequest(RestRequest restRequest) {
+        CheckLimitRequest request = cbsRequestFactory.checkLimitRequest(restRequest.getOrderId());
+        tryToLog("createCheckLimitRequest", request);
+        return cbsMarshaller.marshallRequest(request, CheckLimitRequest.class);
+    }
+
+    public String createStatusRequest(RestRequest restRequest) {
+        StatusRequest request = cbsRequestFactory.statusRequest(restRequest.getOrderId());
+        tryToLog("createStatusRequest", request);
+        return cbsMarshaller.marshallRequest(request, StatusRequest.class);
+    }
+
+    public String createBkiRequest(RestRequest restRequest) {
+        BkiRequest request = cbsRequestFactory.createBkiRequest(restRequest.getOrderId());
+        tryToLog("createBkiRequest", request);
+        return cbsMarshaller.marshallRequest(request, BkiRequest.class);
+    }
+
+    public String createBkiHeadPersonRequest(RestRequest restRequest) {
+        BkiRequest request = cbsRequestFactory.createBkiHeadPersonRequest(restRequest.getOrderId());
+        tryToLog("createBkiHeadPersonRequest", request);
+        return cbsMarshaller.marshallRequest(request, BkiRequest.class);
+    }
+
+    public String createCommissionRequest(RestRequest restRequest) {
+        CommissionRequest request = cbsRequestFactory.createCommissionRequest(restRequest.getOrderId());
+        tryToLog("createCommissionRequest", request);
+        return cbsMarshaller.marshallRequest(request, CommissionRequest.class);
+    }
+
+    public String createCustCheckListRequest(RestRequest restRequest) {
+        CustCheckListRequest request = cbsRequestFactory.createCustCheckListRequest(restRequest.getOrderId());
+        tryToLog("createCustCheckListRequest", request);
+        return cbsMarshaller.marshallRequest(request, CustCheckListRequest.class);
+    }
+
+    public String createSPRCustCheckRequest(RestRequest restRequest) {
+        SPRCustCheckRequest request = cbsRequestFactory.createSPRCustCheckRequest(restRequest.getOrderId());
+        tryToLog("createCustCheckListRequest", request);
+        return cbsMarshaller.marshallRequest(request, SPRCustCheckRequest.class);
+    }
+
+    public String createAgencyFeeAddRequest(RestRequest restRequest) {
+        AgencyFeeAddRequest request = cbsRequestFactory.createAgencyFeeAddRequest(restRequest.getOrderId());
+        tryToLog("createAgencyFeeAddRequest", request);
+        return cbsMarshaller.marshallRequest(request, AgencyFeeAddRequest.class);
+    }
+
+    public StatusResponse createStatusResponse(String body) {
+        tryToLog("createStatusResponse", body);
+        return (StatusResponse) cbsMarshaller.unmarshallResponse(body, StatusResponse.class);
+    }
+
+    public CheckLimitResponse createCheckLimitResponse(String body) {
+        tryToLog("createCheckLimitResponse", body);
+        return (CheckLimitResponse) cbsMarshaller.unmarshallResponse(body, CheckLimitResponse.class);
+    }
+
+    public CloseLimitResponse createCloseLimitResponse(String body) {
+        tryToLog("createCloseLimitResponse", body);
+        return (CloseLimitResponse) cbsMarshaller.unmarshallResponse(body, CloseLimitResponse.class);
+    }
+
+    public AddGuaranteeResponse createAddGuaranteeResponse(String body) {
+        tryToLog("createAddGuaranteeResponse", body);
+        return (AddGuaranteeResponse) cbsMarshaller.unmarshallResponse(body, AddGuaranteeResponse.class);
+    }
+
+    public StopFactorResponse createStopFactorResponse(String body) {
+        tryToLog("createStopFactorResponse", body);
+        return (StopFactorResponse) cbsMarshaller.unmarshallResponse(body, StopFactorResponse.class);
+    }
+
+    public BkiResponse createBkiResponse(String body) {
+        tryToLog("createBkiResponse", body);
+        return (BkiResponse) cbsMarshaller.unmarshallResponse(body,BkiResponse.class);
+    }
+
+    public BkiResponse createBkiHeadPersonResponse(String body) {
+        tryToLog("createBkiHeadPersonResponse", body);
+        return (BkiResponse) cbsMarshaller.unmarshallResponse(body,BkiResponse.class);
+    }
+
+    public CommissionResponse createCommissionResponse(String body) {
+        tryToLog("createCommissionResponse", body);
+        return (CommissionResponse) cbsMarshaller.unmarshallResponse(body, CommissionResponse.class);
+    }
+
+    public CustCheckListResponse createCustCheckListResponse(String body) {
+        tryToLog("createCustCheckListResponse", body);
+        return (CustCheckListResponse) cbsMarshaller.unmarshallResponse(body, CustCheckListResponse.class);
+    }
+
+    public SPRCustCheckResponse createSPRCustCheckResponse(String body) {
+        tryToLog("createSPRCustCheckResponse", body);
+        return (SPRCustCheckResponse) cbsMarshaller.unmarshallResponse(body, SPRCustCheckResponse.class);
+    }
+
+    public AgencyFeeAddResponse createAgencyFeeAddResponse(String body) {
+        tryToLog("createAgencyFeeAddResponse", body);
+        return (AgencyFeeAddResponse) cbsMarshaller.unmarshallResponse(body, AgencyFeeAddResponse.class);
+    }
+
+    private void tryToLog(String method, Object request) {
+        try {
+            log.info("{}: {}", method, OBJECT_WRITER.writeValueAsString(request));
+        } catch (JsonProcessingException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+}

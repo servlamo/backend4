@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FDX>
+    <ServerInfo>
+        <MsgUID>e8103654-b1df-11e8-a6e7-005056012326</MsgUID>
+        <RqUID>c298761f-6c76-485a-a47c-8cccef716fdf</RqUID>
+        <MsgType>OrgStopInqRs</MsgType>
+        <ServerDt>2018-09-06T17:20:29</ServerDt>
+        <SPName>IBSO</SPName>
+        <MsgReceiver>FARZOOM</MsgReceiver>
+        <BpId>MTS_STOP_FACTOR</BpId>
+    </ServerInfo>
+    <BankSvcRs>
+        <RequestId>AWWvP-mOecCj-IFwotpO</RequestId>
+        <OrgId>29057912319</OrgId>
+        <ExtOrgId>AWWtzvFMecCj-IFwotgv</ExtOrgId>
+        <StopList>
+            <StopRec>
+                <StopId>VED_LIST</StopId>
+                <StopDesc>Клиент найден в перечне неблагонадежных участников ВЭД!</StopDesc>
+            </StopRec>
+        </StopList>
+        <Status>
+            <StatusCode>100</StatusCode>
+            <StatusDesc>Клиент не прошёл проверку по СТОП факторам!</StatusDesc>
+            <Severity>Info</Severity>
+        </Status>
+    </BankSvcRs>
+</FDX>

@@ -1,0 +1,32 @@
+<FDX>
+  <ServerInfo>
+    <MsgUID>string</MsgUID>
+    <RqUID>string</RqUID>
+    <SPName>string</SPName>
+    <!--Optional:-->
+    <MsgReceiver>string</MsgReceiver>
+    <ServerDt>2008-09-29T05:49:45</ServerDt>
+    <MsgType>string</MsgType>
+    <!--Optional:-->
+    <ExtMsgType>string</ExtMsgType>
+    <!--Optional:-->
+    <BpId>string</BpId>
+  </ServerInfo>
+  <BankSvcRs>
+    <Status>
+      <StatusCode>string</StatusCode>
+      <!--Optional:-->
+      <Severity>Info</Severity>
+      <!--Optional:-->
+      <StatusDesc>string</StatusDesc>
+      <!--Zero or more repetitions:-->
+      <AdditionalStatus>
+        <StatusCode>string</StatusCode>
+        <!--Optional:-->
+        <Severity>Error</Severity>
+        <!--Optional:-->
+        <StatusDesc>string</StatusDesc>
+      </AdditionalStatus>
+    </Status>
+  </BankSvcRs>
+</FDX>

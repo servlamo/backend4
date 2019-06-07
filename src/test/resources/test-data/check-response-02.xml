@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FDX>
+    <ServerInfo>
+        <MsgUID>fa6c4edd-b280-11e8-a6e7-005056012326</MsgUID>
+        <RqUID>0d070491-d0ef-4ab4-811b-224e0d39ef69</RqUID>
+        <MsgType>OrgLimitCheckInqRs</MsgType>
+        <ServerDt>2018-09-07T12:32:59</ServerDt>
+        <SPName>IBSO</SPName>
+        <MsgReceiver>FARZOOM</MsgReceiver>
+        <BpId>MTS_CHECK_LIMIT</BpId>
+    </ServerInfo>
+    <BankSvcRs>
+        <RequestId>AWWzX2XTecCj-IFwotsC</RequestId>
+        <OrgId></OrgId>
+        <ExtOrgId>AWWkb-gqecCj-IFwotbw</ExtOrgId>
+        <LimitInfo>
+            <LimitCode>LOCK_LIMIT</LimitCode>
+            <LimitAmt>
+                <Amt></Amt>
+                <CurCode>RUB</CurCode>
+            </LimitAmt>
+            <LimitDesc></LimitDesc>
+        </LimitInfo>
+        <Status>
+            <StatusCode>100</StatusCode>
+            <StatusDesc>Не указана валюта договора!</StatusDesc>
+            <Severity>Warn</Severity>
+        </Status>
+    </BankSvcRs>
+</FDX>

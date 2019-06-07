@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 rel. 3 (http://www.altova.com) by m-zayakin (mbrd) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="FDX.xsd"/>
+	<xs:element name="FDX">
+		<xs:annotation>
+			<xs:documentation>CustCheckListInqNf</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="ServerInfo"/>
+				<xs:element name="BankSvcRq">
+					<xs:annotation>
+						<xs:documentation>Данные запроса</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="CustList" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="CustRec" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:all>
+													<xs:element ref="PersonInfo" minOccurs="0"/>
+													<xs:element name="StatusList">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="StatusRec" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:all>
+																			<xs:element ref="CheckType"/>
+																			<xs:element ref="StatusCheck"/>
+																		</xs:all>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:all>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="StatusCheck">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="CheckCode" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Код статуса</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="CheckDesc" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Описание статуса</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ErrorList" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ErrorRec" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="ErrorCode" type="xs:string">
+											<xs:annotation>
+												<xs:documentation>Код ошибки</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="ErrorDesc" type="xs:string" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Описание</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element ref="RefId" minOccurs="0"/>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="SvcStatus" minOccurs="0">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="SvcStatusCode" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>Код статуса</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element ref="StatusDesc" minOccurs="0"/>
+							<xs:element name="EffDt" type="Date">
+								<xs:annotation>
+									<xs:documentation>Дата ввода в действие</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

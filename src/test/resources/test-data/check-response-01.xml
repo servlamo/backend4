@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FDX>
+    <ServerInfo>
+        <MsgUID>f3c61876-b1db-11e8-a6e7-005056012326</MsgUID>
+        <RqUID>84525c2d-1d67-475d-9b5a-65de91990588</RqUID>
+        <MsgType>OrgLimitCheckInqRs</MsgType>
+        <ServerDt>2018-09-06T16:51:39</ServerDt>
+        <SPName>IBSO</SPName>
+        <MsgReceiver>FARZOOM</MsgReceiver>
+        <BpId>MTS_CHECK_LIMIT</BpId>
+    </ServerInfo>
+    <BankSvcRs>
+        <Status>
+            <StatusCode>-1</StatusCode>
+            <StatusDesc>ORA-01407: невозможно заменить(&quot;IBS&quot;.&quot;Z#MTS_GARANT&quot;.&quot;C_CLIENT_FIND_ARR&quot;)
+                на NULL
+            </StatusDesc>
+            <Severity>Error</Severity>
+        </Status>
+    </BankSvcRs>
+</FDX>
