@@ -15,11 +15,11 @@ public class MoneyUtils {
 
     public static BigDecimal toMoney(Long amount) {
         if (amount == null || amount == 0) return BigDecimal.ZERO;
-        return new BigDecimal(amount).divide(COINS, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP);
+        return new BigDecimal(amount).divide(COINS, 2, RoundingMode.HALF_UP);
     }
 
     public static BigDecimal toThousands(Long amount) {
         if (amount == null || amount == 0) return BigDecimal.ZERO;
-        return new BigDecimal(amount).divide(ONE_HUNDRED_THOUSAND, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP);
+        return new BigDecimal(amount).divide(ONE_HUNDRED_THOUSAND, 2, RoundingMode.HALF_UP);
     }
 }
