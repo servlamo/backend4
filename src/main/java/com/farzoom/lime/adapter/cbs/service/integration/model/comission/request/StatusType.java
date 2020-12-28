@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип статус
+ * РўРёРї СЃС‚Р°С‚СѓСЃ
  * 
  * <p>Java class for Status_Type complex type.
  * 

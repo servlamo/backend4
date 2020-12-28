@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип начисленные проценты
+ * РўРёРї РЅР°С‡РёСЃР»РµРЅРЅС‹Рµ РїСЂРѕС†РµРЅС‚С‹
  * 
  * <p>Java class for AccruedInt_Type complex type.
  * 

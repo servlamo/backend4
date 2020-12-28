@@ -10,13 +10,19 @@ import com.farzoom.lime.adapter.cbs.config.AppConfig;
 import com.farzoom.lime.adapter.cbs.service.integration.model.addguarantee.request.AddGuaranteeRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.afs.request.SPRCustCheckRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.agency_fee_add.request.AgencyFeeAddRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.rq.BankAcctAddRq;
+import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctmod.request.BankAcctModRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.checklimit.request.CheckLimitRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.closelimit.request.CloseLimitRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.comission.request.CommissionRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.cre.request.BkiRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.idbank.request.CustCheckListRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.orgacctadd.response.OrgAcctAddResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.orgquestadd.request.OrgQuestionnaireAddRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.smsinfomod.request.SmsBankInfoModRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.status.request.StatusRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.stopfactor.request.StopFactorRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.svcpackmod.request.SvcPackModRq;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +45,13 @@ public class CbsRequestFactoryImpl implements CbsRequestFactory {
     private final CustCheckListServiceImpl custCheckListService;
     private final AfsServiceImpl afsService;
     private final AgencyFeeAddServiceImpl agencyFeeAddService;
+    private final SvcPackModService svcPackModService;
+    private final BankAcctAddService bankAcctAddService;
+    private final BankAcctModService bankAcctModService;
+    private final OrgQuestionnaireAddService orgQuestionnaireAddService;
+    private final SmsBankInfoModService smsBankInfoModService;
+    private final AmlOrgQuestionnaireAddService amlOrgQuestionnaireAddService;
+    private final OrgAcctAddResponseService orgAcctAddResponseService;
 
     public CbsRequestFactoryImpl(AppConfig config) {
         orderRepository = new OrderRepository(config.getElasticsearchBaseUrl());
@@ -55,6 +68,13 @@ public class CbsRequestFactoryImpl implements CbsRequestFactory {
         custCheckListService = new CustCheckListServiceImpl(config);
         afsService = new AfsServiceImpl(config);
         agencyFeeAddService = new AgencyFeeAddServiceImpl(config);
+        bankAcctAddService = new BankAcctAddService(config);
+        bankAcctModService = new BankAcctModService(config);
+        orgQuestionnaireAddService = new OrgQuestionnaireAddService(config);
+        svcPackModService = new SvcPackModService(config);
+        smsBankInfoModService = new SmsBankInfoModService(config);
+        amlOrgQuestionnaireAddService = new AmlOrgQuestionnaireAddService(config);
+        orgAcctAddResponseService = new OrgAcctAddResponseService(config);
     }
 
     @Override
@@ -156,5 +176,60 @@ public class CbsRequestFactoryImpl implements CbsRequestFactory {
         Order order = orderRepository.load(orderId);
         Company principal = companyRepository.load(order.getPrincipalCompanyId());
         return agencyFeeAddService.createRequest(order, principal, null);
+    }
+
+    @Override
+    public BankAcctAddRq createBankAcctAddRequest(String orderId) {
+        Order order = orderRepository.load(orderId);
+        Company principal = companyRepository.load(order.getPrincipalCompanyId());
+        Product product = productRepository.load(order.getProductId());
+        return bankAcctAddService.createRequest(order, principal, product);
+    }
+
+    @Override
+    public BankAcctModRequest createBankAcctModRequest(String orderId) {
+        Order order = orderRepository.load(orderId);
+        Company principal = companyRepository.load(order.getPrincipalCompanyId());
+        Product product = productRepository.load(order.getProductId());
+        return bankAcctModService.createRequest(order, principal, product);
+    }
+
+    @Override
+    public OrgQuestionnaireAddRequest createOrgQuestionnaireAddRequest(String orderId) {
+        Order order = orderRepository.load(orderId);
+        Company principal = companyRepository.load(order.getPrincipalCompanyId());
+        Product product = productRepository.load(order.getProductId());
+        return orgQuestionnaireAddService.createRequest(order, principal, product);
+    }
+
+    public SmsBankInfoModRequest createSmsBankInfoModRequest(String orderId) {
+        Order order = orderRepository.load(orderId);
+        Company principal = companyRepository.load(order.getPrincipalCompanyId());
+        Product product = productRepository.load(order.getProductId());
+        return smsBankInfoModService.createRequest(order, principal, product);
+    }
+
+    @Override
+    public SvcPackModRq createSvcPackModRequest(String orderId) {
+        Order order = orderRepository.load(orderId);
+        Company principal = companyRepository.load(order.getPrincipalCompanyId());
+        Product product = productRepository.load(order.getProductId());
+        return svcPackModService.createRequest(order, principal, product);
+    }
+
+    @Override
+    public OrgQuestionnaireAddRequest createAmlOrgQuestionnaireAddRequest(String orderId) {
+        Order order = orderRepository.load(orderId);
+        Company principal = companyRepository.load(order.getPrincipalCompanyId());
+        Product product = productRepository.load(order.getProductId());
+        return amlOrgQuestionnaireAddService.createRequest(order, principal, product);
+    }
+
+    @Override
+    public OrgAcctAddResponse createOrgAcctAddResponse(String orderId) {
+        Order order = orderRepository.load(orderId);
+        Company principal = companyRepository.load(order.getPrincipalCompanyId());
+        Product product = productRepository.load(order.getProductId());
+        return orgAcctAddResponseService.createRequest(order, principal, product);
     }
 }

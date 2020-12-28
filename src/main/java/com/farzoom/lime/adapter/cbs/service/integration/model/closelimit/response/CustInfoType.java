@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип Данные клиента
+ * РўРёРї Р”Р°РЅРЅС‹Рµ РєР»РёРµРЅС‚Р°
  * 
  * <p>Java class for CustInfo_Type complex type.
  * 

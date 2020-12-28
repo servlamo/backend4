@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип Перевод
+ * РўРёРї РџРµСЂРµРІРѕРґ
  * 
  * <p>Java class for XferInfo_Type complex type.
  * 

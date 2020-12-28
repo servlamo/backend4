@@ -9,6 +9,12 @@ import com.farzoom.lime.adapter.cbs.service.integration.model.afs.request.SPRCus
 import com.farzoom.lime.adapter.cbs.service.integration.model.afs.response.SPRCustCheckResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.agency_fee_add.request.AgencyFeeAddRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.agency_fee_add.response.AgencyFeeAddResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.orgacctstatusmodnf.OrgAcctStatusModNf;
+import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.requeststatusmodnf.RequestStatusModNf;
+import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.rq.BankAcctAddRq;
+import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.rs.BankAcctAddRs;
+import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctmod.request.BankAcctModRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctmod.response.BankAcctModResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.checklimit.request.CheckLimitRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.checklimit.response.CheckLimitResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.closelimit.request.CloseLimitRequest;
@@ -17,14 +23,22 @@ import com.farzoom.lime.adapter.cbs.service.integration.model.cre.request.BkiReq
 import com.farzoom.lime.adapter.cbs.service.integration.model.cre.response.BkiResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.idbank.request.CustCheckListRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.idbank.response.CustCheckListResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.orgquestadd.request.OrgQuestionnaireAddRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.orgquestadd.response.OrgQuestionnaireAddResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.smsinfomod.request.SmsBankInfoModRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.smsinfomod.response.SmsBankInfoModResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.status.request.StatusRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.stopfactor.request.StopFactorRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.stopfactor.response.StopFactorResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.svcpackmod.request.SvcPackModRq;
+import com.farzoom.lime.adapter.cbs.service.integration.model.svcpackmod.response.SvcPackModRs;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.io.Resources;
 import lombok.extern.slf4j.Slf4j;
+import org.camunda.spin.json.SpinJsonNode;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -33,11 +47,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
 
+import static org.camunda.spin.Spin.JSON;
+
 @Slf4j
 public class CbsIntegrationTest {
-    private static final String ES_BASE_URL = "http://localhost:9200";
+    private static final String ES_BASE_URL = "http://localhost:9220";
     private static final String AGENT_BILLING_BASE_URL = "http://proxy/api/bg-agent-billing";
-    private static final String ORDER_ID = "AWh2Oyiz_8lAJG07_z0Q";
+    private static final String ORDER_ID = "AXEWBilaWcibk64Vdyvr";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
@@ -86,7 +102,8 @@ public class CbsIntegrationTest {
     @Ignore
     @Test
     public void createAddGuaranteeRequestXmlTest() {
-        AddGuaranteeRequest request = factory.addGuaranteeRequest(ORDER_ID);
+        String orderId = "AXG9ImBPWcibk64Vdzgm";
+        AddGuaranteeRequest request = factory.addGuaranteeRequest(orderId);
         log.info("request: {}", request);
 
         String requestXml = cbsMarshaller.marshallRequest(request, AddGuaranteeRequest.class);
@@ -190,6 +207,7 @@ public class CbsIntegrationTest {
         log.info("requestXml:\n{}", requestXml);
     }
 
+    @Ignore
     @Test
     public void custCheckListRespTest() throws JsonProcessingException {
         String responseXml = readResource("test-data/cust-check-list-response.xml");
@@ -236,6 +254,164 @@ public class CbsIntegrationTest {
         log.info("responseXml:\n{}", responseXml);
 
         AgencyFeeAddResponse response = (AgencyFeeAddResponse) cbsMarshaller.unmarshallResponse(responseXml, AgencyFeeAddResponse.class);
+        String json = OBJECT_MAPPER.writeValueAsString(response);
+        log.info("json: {}", json);
+    }
+
+    @Ignore
+    @Test
+    public void bankAcctModReqTest() {
+        String orderId = "AXOzZFBMwrlpDa_Bor8N";
+        BankAcctModRequest request = factory.createBankAcctModRequest(orderId);
+        log.info("request: {}", request);
+
+        String requestXml = cbsMarshaller.marshallRequest(request, BankAcctModRequest.class);
+        log.info("requestXml:\n{}", requestXml);
+    }
+
+    @Ignore
+    @Test
+    public void AmlOrgQuestAddReqTest() {
+        String orderId = "AXOzZFBMwrlpDa_Bor8N";
+        OrgQuestionnaireAddRequest request = factory.createAmlOrgQuestionnaireAddRequest(orderId);
+        log.info("request: {}", request);
+
+        String requestXml = cbsMarshaller.marshallRequest(request, OrgQuestionnaireAddRequest.class);
+        log.info("requestXml:\n{}", requestXml);
+    }
+
+    @Ignore
+    @Test
+    public void bankAcctModRespTest() throws JsonProcessingException {
+        String responseXml = readResource("test-data/bank-acct-mod-response.xml");
+        log.info("responseXml:\n{}", responseXml);
+
+        BankAcctModResponse response = (BankAcctModResponse) cbsMarshaller.unmarshallResponse(responseXml, BankAcctModResponse.class);
+        String json = OBJECT_MAPPER.writeValueAsString(response);
+        log.info("json: {}", json);
+    }
+
+    @Ignore
+    @Test
+    public void orgQuestionnaireAddRespTest() throws JsonProcessingException {
+        String responseXml = readResource("test-data/org-quest-add-response.xml");
+        log.info("responseXml:\n{}", responseXml);
+
+        OrgQuestionnaireAddResponse response = (OrgQuestionnaireAddResponse) cbsMarshaller.unmarshallResponse(responseXml, OrgQuestionnaireAddResponse.class);
+        String json = OBJECT_MAPPER.writeValueAsString(response);
+        log.info("json: {}", json);
+    }
+
+    @Ignore
+    @Test
+    public void orgQuestionnaireAddReqTest() throws JsonProcessingException {
+        String orderId = "AXWI9wEuKExYfisxq31_";
+        OrgQuestionnaireAddRequest request = factory.createOrgQuestionnaireAddRequest(orderId);
+        log.info("request: {}", request);
+
+        String requestXml = cbsMarshaller.marshallRequest(request, OrgQuestionnaireAddRequest.class);
+        log.info("requestXml:\n{}", requestXml);
+    }
+
+
+    @Ignore
+    @Test
+    public void bankAcctAddReqTest() {
+        String orderId = "AXQRWM5bKExYfisxqx3U";
+        BankAcctAddRq request = factory.createBankAcctAddRequest(orderId);
+        log.info("request: {}", request);
+
+        String requestXml = cbsMarshaller.marshallRequest(request, BankAcctAddRq.class);
+        log.info("requestXml:\n{}", requestXml);
+    }
+
+    @Ignore
+    @Test
+    public void bankAcctAddRsRespTest() throws JsonProcessingException {
+        String responseXml = readResource("test-data/bank-acct-add-response.xml");
+        log.info("responseXml:\n{}", responseXml);
+
+        BankAcctAddRs response = (BankAcctAddRs) cbsMarshaller.unmarshallResponse(responseXml, BankAcctAddRs.class);
+        String json = OBJECT_MAPPER.writeValueAsString(response);
+        log.info("json: {}", json);
+    }
+
+
+    @Ignore
+    @Test
+    public void svcPackModReqTest() throws JsonProcessingException {
+        String orderId = "AXQkXUY7KExYfisxqyHQ";
+        SvcPackModRq request = factory.createSvcPackModRequest(orderId);
+        log.info("request: {}", request);
+
+        String requestXml = cbsMarshaller.marshallRequest(request, SvcPackModRq.class);
+        log.info("requestXml:\n{}", requestXml);
+    }
+
+    @Ignore
+    @Test
+    public void svcPackModRespTest() throws JsonProcessingException {
+        String responseXml = readResource("test-data/svc-pack-mod-response.xml");
+        log.info("responseXml:\n{}", responseXml);
+
+        SvcPackModRs response = (SvcPackModRs) cbsMarshaller.unmarshallResponse(responseXml, SvcPackModRs.class);
+        String json = OBJECT_MAPPER.writeValueAsString(response);
+        log.info("json: {}", json);
+    }
+
+    @Ignore
+    @Test
+    public void orgAcctsStatusModNfRespTest() throws JsonProcessingException {
+        String responseXml = readResource("test-data/org-acct-status-mod-nf-response.xml");
+        log.info("responseXml:\n{}", responseXml);
+
+        OrgAcctStatusModNf response = (OrgAcctStatusModNf) cbsMarshaller.unmarshallResponse(responseXml, OrgAcctStatusModNf.class);
+        String json = OBJECT_MAPPER.writeValueAsString(response);
+        log.info("json: {}", json);
+    }
+
+    @Ignore
+    @Test
+    public void OrgQuestionnaireAmlRespTest() throws JsonProcessingException {
+        String responseXml = readResource("test-data/org-quest-add-aml-response.xml");
+        log.info("responseXml:\n{}", responseXml);
+
+        OrgQuestionnaireAddResponse response = (OrgQuestionnaireAddResponse) cbsMarshaller.unmarshallResponse(responseXml, OrgQuestionnaireAddResponse.class);
+        String json = OBJECT_MAPPER.writeValueAsString(response);
+        log.info("json: {}", json);
+    }
+
+
+    @Ignore
+    @Test
+    public void requestStatusModNfRespTest() throws JsonProcessingException {
+        String responseXml = readResource("test-data/request-status-mod-nf-response.xml");
+        log.info("responseXml:\n{}", responseXml);
+
+        RequestStatusModNf response = (RequestStatusModNf) cbsMarshaller.unmarshallResponse(responseXml, RequestStatusModNf.class);
+        String json = OBJECT_MAPPER.writeValueAsString(response);
+        log.info("json: {}", json);
+    }
+
+
+    @Ignore
+    @Test
+    public void smsBankInfoModReqTest() throws JsonProcessingException {
+        String orderId = "AXQkXUY7KExYfisxqyHQ";
+        SmsBankInfoModRequest request = factory.createSmsBankInfoModRequest(orderId);
+        log.info("request: {}", request);
+
+        String requestXml = cbsMarshaller.marshallRequest(request, SmsBankInfoModRequest.class);
+        log.info("requestXml:\n{}", requestXml);
+    }
+
+    @Ignore
+    @Test
+    public void smsBankInfoModRespTest() throws JsonProcessingException {
+        String responseXml = readResource("test-data/sms-bank-info-mod-response.xml");
+        log.info("responseXml:\n{}", responseXml);
+
+        SmsBankInfoModResponse response = (SmsBankInfoModResponse) cbsMarshaller.unmarshallResponse(responseXml, SmsBankInfoModResponse.class);
         String json = OBJECT_MAPPER.writeValueAsString(response);
         log.info("json: {}", json);
     }

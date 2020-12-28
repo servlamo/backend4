@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by MTS Bank (MTS Bank) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="FDX.xsd"/>
+	<xs:element name="FDX">
+		<xs:annotation>
+			<xs:documentation>OrgAcctAddRq</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="ServerInfo"/>
+				<xs:element name="BankSvcRq">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="SPInfo" minOccurs="0">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="CashCode" type="xs:string" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Касса</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="CashCount" type="xs:positiveInteger" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Количество on-line касс</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="CertNum" type="xs:string" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Номер сертификата</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element ref="ProdName" minOccurs="0"/>
+										<xs:element name="DBO" type="xs:boolean" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Необходима услуга ДБО</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="TenderAFK" type="xs:boolean" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Являетесь ли Вы участником тендера ГК АФК Система</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element ref="ProdCode" minOccurs="0"/>
+										<xs:element ref="RequestId" minOccurs="0"/>
+										<xs:element ref="Login" minOccurs="0"/>
+										<xs:element name="PartnerId" type="xs:string" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>ID партнера</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="PartnerName" type="xs:string" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>ФИО партнера</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="UtmInfo" minOccurs="0">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="UtmSource" type="xs:string" minOccurs="0"/>
+										<xs:element name="UtmMedium" type="xs:string" minOccurs="0"/>
+										<xs:element name="UtmCampaign" type="xs:string" minOccurs="0"/>
+										<xs:element name="UtmLeads" type="xs:string" minOccurs="0"/>
+										<xs:element name="UtmTerm" type="xs:string" minOccurs="0"/>
+										<xs:element name="UtmContent" type="xs:string" minOccurs="0"/>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="CustInfo">
+								<xs:complexType>
+									<xs:all>
+										<xs:element ref="FullName"/>
+										<xs:element name="PersonInfo">
+											<xs:complexType>
+												<xs:all>
+													<xs:element ref="PersonName"/>
+													<xs:element ref="ContactInfo"/>
+													<xs:element ref="Resident"/>
+													<xs:element ref="InsAcctId" minOccurs="0"/>
+												</xs:all>
+											</xs:complexType>
+										</xs:element>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="OrgInfo">
+								<xs:complexType>
+									<xs:all>
+										<xs:element ref="LegalName"/>
+										<xs:element ref="ClassifierId"/>
+										<xs:element ref="TaxId"/>
+										<xs:element ref="RUS.OKOPF" minOccurs="0"/>
+										<xs:element ref="StateRegPrimeNum" minOccurs="0"/>
+										<xs:element name="BankInfo">
+											<xs:complexType>
+												<xs:all>
+													<xs:element ref="AgencyId"/>
+													<xs:element ref="AgencyName"/>
+												</xs:all>
+											</xs:complexType>
+										</xs:element>
+										<xs:element ref="OrgId" minOccurs="0"/>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element ref="Desc" minOccurs="0"/>
+							<xs:element ref="Channel"/>
+							<xs:element ref="SubChannel" minOccurs="0"/>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

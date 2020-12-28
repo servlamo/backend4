@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип Информация по транзакции
+ * РўРёРї РРЅС„РѕСЂРјР°С†РёСЏ РїРѕ С‚СЂР°РЅР·Р°РєС†РёРё
  * 
  * <p>Java class for TrnInfo_Type complex type.
  * 

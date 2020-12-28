@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FDX>
+    <ServerInfo>
+        <MsgUID>E76EEF1A-1C06-11ea-8A14-005056011EEC</MsgUID>
+        <RqUID>E76EEF1A-1C06-11ea-8A14-005056011EEC</RqUID>
+        <MsgType>SvcPackModRs</MsgType>
+        <ServerDt>12/11/2019 14:44:11</ServerDt>
+        <SPName>IBSO</SPName>
+        <MsgReceiver>SBL_SME</MsgReceiver>
+        <BpId>MTS_PACKAGE_MOD</BpId>
+    </ServerInfo>
+    <BankSvcRs>
+        <RequestInfo>
+            <RequestId>2-1D16QG</RequestId>
+        </RequestInfo>
+        <BankAcctInfo>
+            <Id>37307947917</Id>
+        </BankAcctInfo>
+        <SvcPackInfo>
+            <PackId>33270870496</PackId>
+        </SvcPackInfo>
+        <Status>
+            <StatusCode>0</StatusCode>
+            <Severity>Info</Severity>
+        </Status>
+    </BankSvcRs>
+</FDX>

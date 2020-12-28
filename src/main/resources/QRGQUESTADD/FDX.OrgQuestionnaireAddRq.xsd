@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by MTS Bank (MTS Bank) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="FDX.xsd"/>
+	<xs:element name="FDX">
+		<xs:annotation>
+			<xs:documentation>OrgQuestionnaireAddRq</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="ServerInfo"/>
+				<xs:element name="BankSvcRq">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="SPInfo">
+								<xs:complexType>
+									<xs:all>
+										<xs:element ref="OrgId"/>
+										<xs:element ref="ExtOrgId" minOccurs="0"/>
+										<xs:element ref="RequestId"/>
+										<xs:element ref="Method" minOccurs="0"/>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="ProductList">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="ProductRec" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:all>
+													<xs:element name="Id" type="xs:string"/>
+													<xs:element name="Code" type="xs:string"/>
+													<xs:element name="Name" type="xs:string"/>
+													<xs:element name="PropertyList">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="PropertyRec" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:all>
+																			<xs:element name="Id" type="xs:string" minOccurs="0"/>
+																			<xs:element name="Code" type="xs:string"/>
+																			<xs:element name="HiddenFlag" type="xs:boolean" minOccurs="0"/>
+																			<xs:element name="Name" type="xs:string" minOccurs="0"/>
+																			<xs:element name="OrderBy" type="xs:positiveInteger" minOccurs="0"/>
+																			<xs:element name="ParentId" type="xs:string" minOccurs="0"/>
+																			<xs:element name="Updated" type="xs:boolean" minOccurs="0"/>
+																			<xs:element name="RequiredFlag" type="xs:boolean" minOccurs="0"/>
+																			<xs:element name="Type" type="xs:string" minOccurs="0"/>
+																			<xs:element name="Value" type="xs:string" minOccurs="0"/>
+																			<xs:element name="ValueCode" type="xs:string" minOccurs="0"/>
+																			<xs:element name="ReadOnlyFlag" type="xs:boolean" minOccurs="0"/>
+																		</xs:all>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="DocList">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="DocRec" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:all>
+																			<xs:element ref="Name"/>
+																			<xs:element ref="Link"/>
+																			<xs:element ref="Id"/>
+																		</xs:all>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="IntegrationId" type="xs:string"/>
+												</xs:all>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

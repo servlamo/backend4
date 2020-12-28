@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип структурное подразделение
+ * РўРёРї СЃС‚СЂСѓРєС‚СѓСЂРЅРѕРµ РїРѕРґСЂР°Р·РґРµР»РµРЅРёРµ
  * 
  * <p>Java class for RCInfo_Type complex type.
  * 

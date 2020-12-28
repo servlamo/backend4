@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FDX>
+	<ServerInfo>
+		<MsgUID>bc9b2cee48d511ea85acac1010bf0000</MsgUID>
+		<RqUID>2-2PIF9T</RqUID>
+		<SPName>AML</SPName>
+		<MsgReceiver>SBL_SME</MsgReceiver>
+		<ServerDt>02/06/2020 14:03:38</ServerDt>
+		<MsgType>OrgQuestionnaireAddRs</MsgType>
+	</ServerInfo>
+	<BankSvcRs>
+		<OrgInfo>
+			<ExtOrgId>2-2PI90W</ExtOrgId>
+			<OrgId>027809864419</OrgId>
+			<AddInfo>
+				<RequestId>2-2PIF9T</RequestId>
+				<DecisionCode>0</DecisionCode>
+				<AddCheck>0</AddCheck>
+				<CheckList>
+					<CheckRec>
+						<CheckName>SCR40</CheckName>
+						<Score>300</Score>
+					</CheckRec>
+					<CheckRec>
+						<CheckName>SCR42</CheckName>
+						<Score>5</Score>
+					</CheckRec>
+				</CheckList>
+			</AddInfo>
+		</OrgInfo>
+		<Status>
+			<StatusCode>0</StatusCode>
+		</Status>
+	</BankSvcRs>
+</FDX>

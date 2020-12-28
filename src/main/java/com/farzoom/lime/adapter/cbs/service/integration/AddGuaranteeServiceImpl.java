@@ -36,6 +36,7 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
     private static final String FOUNDER_REL_TYPE = "Учредитель";
     private static final String MAIN_REL_TYPE = "Руководитель";
     private static final String BEN_REL_TYPE = "Бенефициарный владелец";
+    private static final String UL_PRINCIPAL_TYPE = "legalentity";
 
     private final AddressRepository addressRepository;
     private final RelationRepository relationRepository;
@@ -118,9 +119,14 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
             orgInfo.setAuthCapCurAmt(statedCapCurrAmount);
         }
 
-        GenParam pscaParam = genParamService.loadOne("company", principal.getId(), "company.paidStatedCapitalAmount");
-        if (GenParamUtils.hasMoneyValue(pscaParam)) {
-            CurrencyAmount statedPayedCapCurrAmount = fillCurrencyAmount(pscaParam.getValue().getMoneyValue().longValue(), RUB_CODE);
+        if (principal.getCompanyTypeRefId().equalsIgnoreCase(UL_PRINCIPAL_TYPE)) {
+            GenParam pscaParam = genParamService.loadOne("company", principal.getId(), "company.paidStatedCapitalAmount");
+            if (GenParamUtils.hasMoneyValue(pscaParam)) {
+                CurrencyAmount statedPayedCapCurrAmount = fillCurrencyAmount(pscaParam.getValue().getMoneyValue().longValue(), RUB_CODE);
+                orgInfo.setAuthCapPayCurAmt(statedPayedCapCurrAmount);
+            }
+        } else {
+            CurrencyAmount statedPayedCapCurrAmount = fillCurrencyAmount(0L, RUB_CODE);
             orgInfo.setAuthCapPayCurAmt(statedPayedCapCurrAmount);
         }
 
@@ -340,8 +346,9 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
             relPersons.getRelPerson().addAll(esRelations2RelPersons(founders, FOUNDER_REL_TYPE));
         if (!CollectionUtils.isEmpty(employees))
             relPersons.getRelPerson().addAll(esRelations2RelPersons(employees, MAIN_REL_TYPE));
-        if (!CollectionUtils.isEmpty(beneficiaries))
+        if (!CollectionUtils.isEmpty(beneficiaries) && principal.getCompanyTypeRefId().equalsIgnoreCase(UL_PRINCIPAL_TYPE))
             relPersons.getRelPerson().addAll(esRelations2RelPersons(beneficiaries, BEN_REL_TYPE));
+        else relPersons.getRelPerson().addAll(esRelationsEmptyPersons(BEN_REL_TYPE));
 
         return relPersons;
     }
@@ -432,6 +439,42 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
             return relPerson;
         }).collect(Collectors.toList());
     }
+
+    private List<RelPersonCType> esRelationsEmptyPersons(String personRelType) {
+        List<RelPersonCType> retList = new ArrayList<>();
+        RelPersonCType relPerson = of.createRelPersonCType();
+
+        relPerson.setRelType(personRelType);
+        relPerson.setStartDt(null);
+        relPerson.setEndDt(null);
+
+        PersonInfo personInfo = of.createPersonInfo();
+        PersonNameType personName = new PersonNameType();
+        personName.setFirstName(null);
+        personName.setMiddleName(null);
+        personName.setLastName(null);
+        personInfo.setPersonName(personName);
+        personInfo.setFullName("");
+
+        personInfo.setBirthday(null);
+        personInfo.setBirthPlace(null);
+        personInfo.setTaxId(null);
+
+        IdentityCard identityCard = of.createIdentityCard();
+        personInfo.setIdentityCard(identityCard);
+        relPerson.setPersonInfo(personInfo);
+        relPerson.setIPDLStatus(null);
+
+        ContactInfo contactInfo = of.createContactInfo();
+        PostAddrs addrs = of.createPostAddrs();
+        contactInfo.setPostAddrs(addrs);
+        personInfo.setContactInfo(contactInfo);
+        relPerson.setPersonInfo(personInfo);
+
+        retList.add(relPerson);
+        return retList;
+    }
+
 
     private FIASAddrType fillAddress(Address address, String type) {
         FIASAddrType fiasAddr = of.createFIASAddrType();

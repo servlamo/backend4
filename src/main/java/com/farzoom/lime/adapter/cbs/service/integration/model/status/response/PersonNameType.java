@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * “ËÔ ‘»Œ
+ * –¢–∏–ø –§–ò–û
  * 
  * <p>Java class for PersonName_Type complex type.
  * 

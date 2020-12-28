@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Адрес разложенный по КЛАДР
+ * РђРґСЂРµСЃ СЂР°Р·Р»РѕР¶РµРЅРЅС‹Р№ РїРѕ РљР›РђР”Р 
  * 
  * <p>Java class for Addr_Type complex type.
  * 

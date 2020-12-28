@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип процентная ставка
+ * РўРёРї РїСЂРѕС†РµРЅС‚РЅР°СЏ СЃС‚Р°РІРєР°
  * 
  * <p>Java class for IntRate_Type complex type.
  * 

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by MTS Bank (MTS Bank) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="FDX.xsd"/>
+	<xs:element name="FDX">
+		<xs:annotation>
+			<xs:documentation>LeadListAddNf</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="ServerInfo"/>
+				<xs:element name="BankSvcRq">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="LeadList">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="LeadRec" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:all>
+													<xs:element name="PersonInfo" minOccurs="0">
+														<xs:complexType>
+															<xs:all>
+																<xs:element ref="PersonName" minOccurs="0"/>
+																<xs:element ref="ContactInfo" minOccurs="0"/>
+															</xs:all>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="ProdInfo">
+														<xs:complexType>
+															<xs:all>
+																<xs:element ref="ProdCode"/>
+																<xs:element ref="ProdName" minOccurs="0"/>
+															</xs:all>
+														</xs:complexType>
+													</xs:element>
+												</xs:all>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

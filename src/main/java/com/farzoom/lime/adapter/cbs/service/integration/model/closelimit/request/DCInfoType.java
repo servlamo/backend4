@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Информация об аккредитиве
+ * РРЅС„РѕСЂРјР°С†РёСЏ РѕР± Р°РєРєСЂРµРґРёС‚РёРІРµ
  * 
  * <p>Java class for DCInfo_Type complex type.
  * 

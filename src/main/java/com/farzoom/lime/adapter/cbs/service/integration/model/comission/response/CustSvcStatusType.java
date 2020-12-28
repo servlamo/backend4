@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип Статус услуги
+ * РўРёРї РЎС‚Р°С‚СѓСЃ СѓСЃР»СѓРіРё
  * 
  * <p>Java class for CustSvcStatus_Type complex type.
  * 

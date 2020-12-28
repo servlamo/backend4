@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-5"?>
+<FDX>
+<ServerInfo>
+    <MsgUID Value="4CB2B870-147D-11ea-A3B2-00505693D314"/>
+    <RqUID Value="AD81693"/>
+    <MsgType Value="SMSBankInfoModRs"/>
+    <ServerDt Value="2019-12-02T00:28:42"/>
+    <SPName Value="IBSO"/>
+    <MsgReceiver Value="SBL_SME"/>
+</ServerInfo>
+<BankSvcRs>
+    <Status>
+        <StatusCode Value="0"/>
+        <Severity Value="Info"/>
+        <StatusDesc Value="OK"/>
+    </Status>
+</BankSvcRs>
+</FDX>

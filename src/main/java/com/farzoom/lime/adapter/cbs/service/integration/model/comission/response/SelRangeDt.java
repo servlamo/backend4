@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Диапазон дат
+ * Р”РёР°РїР°Р·РѕРЅ РґР°С‚
  * 
  * <p>Java class for SelRangeDt complex type.
  * 

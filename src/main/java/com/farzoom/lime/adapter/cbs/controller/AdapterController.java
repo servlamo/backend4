@@ -6,13 +6,23 @@ import com.farzoom.lime.adapter.cbs.service.integration.CbsIntegrationService;
 import com.farzoom.lime.adapter.cbs.service.integration.model.addguarantee.response.AddGuaranteeResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.afs.response.SPRCustCheckResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.agency_fee_add.response.AgencyFeeAddResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.orgacctstatusmodnf.OrgAcctStatusModNf;
+import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.orgmodrq.OrgModRq;
+import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.requeststatusmodnf.RequestStatusModNf;
+import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.rs.BankAcctAddRs;
+import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctmod.response.BankAcctModResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.checklimit.response.CheckLimitResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.closelimit.response.CloseLimitResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.comission.response.CommissionResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.cre.response.BkiResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.idbank.response.CustCheckListResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.leadlistadd.notify.LeadListAddNotification;
+import com.farzoom.lime.adapter.cbs.service.integration.model.orgacctadd.request.OrgAcctAddRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.orgquestadd.response.OrgQuestionnaireAddResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.smsinfomod.response.SmsBankInfoModResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.status.response.StatusResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.stopfactor.response.StopFactorResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.svcpackmod.response.SvcPackModRs;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +56,6 @@ public class AdapterController {
     }
 
 
-
     @ApiOperation(
             value = "Marshall stop factor",
             notes = "Получение стоп-факторов (сборка данных для запроса)"
@@ -64,7 +73,6 @@ public class AdapterController {
     public StopFactorResponse stopFactorResponse(@RequestBody String body) {
         return cbsIntegrationService.createStopFactorResponse(body);
     }
-
 
 
     @ApiOperation(
@@ -86,7 +94,6 @@ public class AdapterController {
     }
 
 
-
     @ApiOperation(
             value = "Marshall check limit",
             notes = "Проверка и установка лимита (сборка данных для запроса)"
@@ -106,7 +113,6 @@ public class AdapterController {
     }
 
 
-
     @ApiOperation(
             value = "Marshall status request",
             notes = "Изменение статуса договора (сборка данных для запроса)"
@@ -124,7 +130,6 @@ public class AdapterController {
     public StatusResponse actionAgreementResponse(@RequestBody String body) {
         return cbsIntegrationService.createStatusResponse(body);
     }
-
 
 
     @ApiOperation(
@@ -165,7 +170,6 @@ public class AdapterController {
     }
 
 
-
     @ApiOperation(
             value = "Marshall commission request",
             notes = "Запрос комиссии (сборка данных для запроса)"
@@ -185,7 +189,6 @@ public class AdapterController {
     }
 
 
-
     @ApiOperation(
             value = "Marshall IDBANK CustCheckListInqRq",
             notes = "Запрос IDBANK (идентификация и валидация клиентов банка через сервисы госорганов в СМЭВ)"
@@ -203,7 +206,6 @@ public class AdapterController {
     public CustCheckListResponse custCheckListResponse(@RequestBody String body) {
         return cbsIntegrationService.createCustCheckListResponse(body);
     }
-
 
 
     @ApiOperation(
@@ -241,5 +243,204 @@ public class AdapterController {
     @PostMapping(value = "/unmarshall-agency-fee-add")
     private AgencyFeeAddResponse agencyFeeAddResponse(@RequestBody String body) {
         return cbsIntegrationService.createAgencyFeeAddResponse(body);
+    }
+
+    @ApiOperation(
+            value = "Marshall BankAcctAdd Request",
+            notes = "Запрос на резервирование счета"
+    )
+    @PostMapping(value = "/marshall-bank-acct-add")
+    public RestResponse bankAcctAddRequest(@RequestBody RestRequest restRequest) {
+        return new RestResponse(cbsIntegrationService.createBankAcctAddRequest(restRequest));
+    }
+
+    @ApiOperation(
+            value = "Unmarshall BankAcctAdd Response",
+            notes = "Получение подтверждения, что запрос на резервирование счета обработан"
+    )
+    @PostMapping(value = "/unmarshall-bank-acct-add")
+    public BankAcctAddRs bankAcctAddResponse(@RequestBody String body) {
+        return cbsIntegrationService.createBankAcctAddResponse(body);
+    }
+
+    @ApiOperation(
+            value = "Marshall BankAcctMod Request",
+            notes = "Запрос на активацию счета"
+    )
+    @PostMapping(value = "/marshall-bank-acct-mod")
+    public RestResponse bankAcctModRequest(@RequestBody RestRequest restRequest) {
+        return new RestResponse(cbsIntegrationService.createBankAcctModRequest(restRequest));
+    }
+
+    @ApiOperation(
+            value = "Unmarshall BankAcctMod Response",
+            notes = "Получение подтверждения активации счета"
+    )
+    @PostMapping(value = "/unmarshall-bank-acct-mod")
+    public BankAcctModResponse bankAcctModResponse(@RequestBody String body) {
+        return cbsIntegrationService.createBankAcctModResponse(body);
+    }
+
+    @ApiOperation(
+            value = "Marshall OrgQuestAdd Request",
+            notes = "Запрос на передачу анкеты клиента"
+    )
+    @PostMapping(value = "/marshall-org-quest-add")
+    public RestResponse orgQuestionnaireAddRequest(@RequestBody RestRequest restRequest) {
+        return new RestResponse(cbsIntegrationService.createOrgQuestionnaireAddRequest(restRequest));
+    }
+
+    @ApiOperation(
+            value = "Unmarshall OrgQuestAdd Response",
+            notes = "Получение подтверждения передачи анкеты клиента"
+    )
+    @PostMapping(value = "/unmarshall-org-quest-add")
+    public OrgQuestionnaireAddResponse orgQuestionnaireAddResponse(@RequestBody String body) {
+        return cbsIntegrationService.createOrgQuestionnaireAddResponse(body);
+    }
+
+    @ApiOperation(
+            value = "Marshall SvcPackMod Request",
+            notes = "Запрос на передачу тарифа"
+    )
+    @PostMapping(value = "/marshall-svc-pack-mod")
+    public RestResponse svcPackModRequest(@RequestBody RestRequest restRequest) {
+        return new RestResponse(cbsIntegrationService.createSvcPackModRequest(restRequest));
+    }
+
+    @ApiOperation(
+            value = "Unmarshall SvcPackMod Response",
+            notes = "Получение подтверждения передачи тарифа"
+    )
+    @PostMapping(value = "/unmarshall-svc-pack-mod")
+    public SvcPackModRs svcPackModResponse(@RequestBody String body) {
+        return cbsIntegrationService.createSvcPackModResponse(body);
+    }
+
+    @ApiOperation(
+            value = "Marshall SmsBankInfoMod Request",
+            notes = "Запрос на подключение SMS"
+    )
+    @PostMapping(value = "/marshall-sms-bank-info-mod")
+    public RestResponse smsBankInfoModRequest(@RequestBody RestRequest restRequest) {
+        return new RestResponse(cbsIntegrationService.createSmsBankInfoModRequest(restRequest));
+    }
+
+
+    @ApiOperation(
+            value = "Unmarshall SmsBankInfoMod Response",
+            notes = "Получение подтверждения запроса на подключение SMS"
+    )
+    @PostMapping(value = "/unmarshall-sms-bank-info-mod")
+    public SmsBankInfoModResponse smsBankInfoModResponse(@RequestBody String body) {
+        return cbsIntegrationService.createSmsBankInfoModResponse(body);
+    }
+
+    @ApiOperation(
+            value = "Unmarshall RequestStatusModNf Response",
+            notes = "Получение ответа со статусом по резервированию счета"
+    )
+    @PostMapping(value = "/unmarshall-request-status-mod-nf")
+    public RequestStatusModNf requestStatusModNfResponse(@RequestBody String body) {
+        return cbsIntegrationService.createRequestStatusModNfResponse(body);
+    }
+
+    @ApiOperation(
+            value = "Unmarshall OrgModRq Response",
+            notes = "Получение ответа с анкетой клиента"
+    )
+    @PostMapping(value = "/unmarshall-org-mod-rq")
+    public OrgModRq orgModRqResponse(@RequestBody String body) {
+        return cbsIntegrationService.createOrgModRqResponse(body);
+    }
+
+    @ApiOperation(
+            value = "Unmarshall OrgAcctStatusModNf Response",
+            notes = "Получение ответа с номером зарезервированного счета клиента"
+    )
+    @PostMapping(value = "/unmarshall-org-acct-status-mod-nf")
+    public OrgAcctStatusModNf orgAcctStatusModNfResponse(@RequestBody String body) {
+        return cbsIntegrationService.createOrgAcctStatusModNfResponse(body);
+    }
+
+    @ApiOperation(
+            value = "Unmarshall BankAcctAdd-related responses",
+            notes = "Получение одного из 4 ответов по запросу BankAcctAddRequest"
+    )
+    @PostMapping(value = "/unmarshall-bank-acct-responses")
+    public Object bankAcctGenericResponse(@RequestBody String body) {
+        //generic unmarshall endpoint for multiple bankAcctAdd-related responses, for convenience
+        if (body.contains("BankAcctAdd")) {
+            return bankAcctAddResponse(body);
+        } else if (body.contains("RequestStatusModNf")) {
+            return requestStatusModNfResponse(body);
+        } else if (body.contains("OrgModRq")) {
+            return orgModRqResponse(body);
+        } else if (body.contains("OrgAcctStatusModNf")) {
+            return orgAcctStatusModNfResponse(body);
+        } else {
+            return null;
+        }
+    }
+
+    @ApiOperation(
+            value = "Unmarshall BankAcctMod-related responses",
+            notes = "Получение одного из 2 ответов по запросу BankAcctModRequest"
+    )
+    @PostMapping(value = "/unmarshall-bank-acct-mod-responses")
+    public Object bankAcctModGenericResponse(@RequestBody String body) {
+        //generic unmarshall endpoint for multiple bankAcctMod-related responses, for convenience
+        if (body.contains("BankAcctMod")) {
+            return bankAcctModResponse(body);
+        } else if (body.contains("OrgAcctStatusModNf")) {
+            return orgAcctStatusModNfResponse(body);
+        } else {
+            return null;
+        }
+    }
+
+    @ApiOperation(
+            value = "Unmarshall LeadListAddNf Notification",
+            notes = "Получение уведомления с номером телефона клиента с сайта банка"
+    )
+    @PostMapping(value = "/unmarshall-lead-list-add-nf")
+    public LeadListAddNotification leadListAddNotification(@RequestBody String body) {
+        return cbsIntegrationService.createLeadListAddNotification(body);
+    }
+
+    @ApiOperation(
+            value = "Unmarshall OrgAcctAddRequest request",
+            notes = "Получение данных клиента с сайта банка"
+    )
+    @PostMapping(value = "/unmarshall-org-acct-add-request")
+    public OrgAcctAddRequest orgAcctAddRequest(@RequestBody String body) {
+        return cbsIntegrationService.createOrgAcctAddRequest(body);
+    }
+
+    @ApiOperation(
+            value = "Marshall OrgAcctAddResponse",
+            notes = "Подтверждение получения данных клиента с сайта банка"
+    )
+    @PostMapping(value = "/marshall-org-acct-add-response")
+    public RestResponse orgAcctAddResponse(@RequestBody RestRequest restRequest) {
+        return new RestResponse(cbsIntegrationService.createOrgAcctAddResponse(restRequest));
+    }
+
+    @ApiOperation(
+            value = "Marshall OrgQuestAdd Request to AML",
+            notes = "Запрос на передачу анкеты клиента в AML"
+    )
+    @PostMapping(value = "/marshall-aml-org-quest-add")
+    public RestResponse amlOrgQuestionnaireAddRequest(@RequestBody RestRequest restRequest) {
+        return new RestResponse(cbsIntegrationService.createAmlOrgQuestionnaireAddRequest(restRequest));
+    }
+
+    @ApiOperation(
+            value = "Unmarshall OrgQuestAdd Response from AML",
+            notes = "Получение подтверждения передачи анкеты клиента из AML"
+    )
+    @PostMapping(value = "/unmarshall-aml-org-quest-add")
+    public OrgQuestionnaireAddResponse amlOrgQuestionnaireAddResponse(@RequestBody String body) {
+        return cbsIntegrationService.createAmlOrgQuestionnaireAddResponse(body);
     }
 }

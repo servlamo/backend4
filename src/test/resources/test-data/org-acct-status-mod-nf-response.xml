@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FDX>
+	<ServerInfo>
+		<MsgUID>9DE69D14C15B04EAE053AC10693C495F</MsgUID>
+		<RqUID>2-2PHZJP</RqUID>
+		<SPName>IBSO</SPName>
+		<MsgReceiver>SBL_SME</MsgReceiver>
+		<ServerDt>02/06/2020 13:19:55</ServerDt>
+		<MsgType>OrgAcctStatusModNf</MsgType>
+		<BpId>MTS_ACCOUNT_INFO</BpId>
+	</ServerInfo>
+	<BankSvcRq>
+		<OrgId>32940696472</OrgId>
+		<ProdCode>RKO</ProdCode>
+		<RequestInfo>
+			<RequestId>2-2PHZJP</RequestId>
+		</RequestInfo>
+		<BankAcctInfo>
+			<Id>39108508301</Id>
+			<AcctId>40802810800030007737</AcctId>
+			<AcctType>RKO</AcctType>
+		</BankAcctInfo>
+		<BankAcctStatus>
+			<BankAcctStatusCode>1</BankAcctStatusCode>
+			<EffDt>02/06/2020 13:19:55</EffDt>
+		</BankAcctStatus>
+	</BankSvcRq>
+</FDX>

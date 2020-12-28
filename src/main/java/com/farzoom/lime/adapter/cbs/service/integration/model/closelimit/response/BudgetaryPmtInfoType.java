@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Информация о платеже в бюджет
+ * РРЅС„РѕСЂРјР°С†РёСЏ Рѕ РїР»Р°С‚РµР¶Рµ РІ Р±СЋРґР¶РµС‚
  * 
  * <p>Java class for BudgetaryPmtInfo_Type complex type.
  * 

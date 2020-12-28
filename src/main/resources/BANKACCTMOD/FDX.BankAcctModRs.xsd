@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by MTS Bank (MTS Bank) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="FDX.xsd"/>
+	<xs:element name="FDX">
+		<xs:annotation>
+			<xs:documentation>BankAcctModRs</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="ServerInfo"/>
+				<xs:element name="BankSvcRs">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:choice>
+								<xs:element name="CustInfo">
+									<xs:complexType>
+										<xs:all>
+											<xs:element ref="CustId"/>
+										</xs:all>
+									</xs:complexType>
+								</xs:element>
+								<xs:element name="OrgInfo">
+									<xs:complexType>
+										<xs:all>
+											<xs:element ref="OrgId"/>
+										</xs:all>
+									</xs:complexType>
+								</xs:element>
+							</xs:choice>
+							<xs:element name="BankAcctId" type="BankAcctId_Type"/>
+							<xs:element ref="BankAcctStatus"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

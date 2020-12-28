@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип: карточный продукт
+ * РўРёРї: РєР°СЂС‚РѕС‡РЅС‹Р№ РїСЂРѕРґСѓРєС‚
  * 
  * <p>Java class for CardProd_Type complex type.
  * 

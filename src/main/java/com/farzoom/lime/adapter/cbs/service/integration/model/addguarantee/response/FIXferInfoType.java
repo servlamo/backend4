@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Информация о межбанковском переводе
+ * РРЅС„РѕСЂРјР°С†РёСЏ Рѕ РјРµР¶Р±Р°РЅРєРѕРІСЃРєРѕРј РїРµСЂРµРІРѕРґРµ
  * 
  * <p>Java class for FIXferInfo_Type complex type.
  * 

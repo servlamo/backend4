@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FDX>
+  <ServerInfo>
+    <MsgUID>f3c61876-b1db-11e8-a6e7-005056012326</MsgUID>
+    <RqUID>84525c2d-1d67-475d-9b5a-65de91990588</RqUID>
+    <MsgType>CustCheckListInqRs</MsgType>
+    <ServerDt>2018-12-06T10:51:39</ServerDt>
+    <SPName>IBSO</SPName>
+    <MsgReceiver>FARZOOM</MsgReceiver>
+    <BpId>LONG_RESP</BpId>
+  </ServerInfo>
+  <BankSvcRs>
+    <Status>
+      <StatusCode>string</StatusCode>
+      <Severity>Info</Severity>
+      <StatusDesc>string</StatusDesc>
+      <AdditionalStatus>
+        <StatusCode>string</StatusCode>
+        <Severity>Warn</Severity>
+        <StatusDesc>string</StatusDesc>
+      </AdditionalStatus>
+    </Status>
+  </BankSvcRs>
+</FDX>

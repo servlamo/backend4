@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип Дата
+ * РўРёРї Р”Р°С‚Р°
  * 
  * <p>Java class for Date complex type.
  * 

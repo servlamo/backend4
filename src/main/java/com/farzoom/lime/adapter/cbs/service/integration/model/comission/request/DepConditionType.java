@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Условия по депозиту
+ * РЈСЃР»РѕРІРёСЏ РїРѕ РґРµРїРѕР·РёС‚Сѓ
  * 
  * <p>Java class for DepCondition_Type complex type.
  * 

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Информация о страховой программе
+ * РРЅС„РѕСЂРјР°С†РёСЏ Рѕ СЃС‚СЂР°С…РѕРІРѕР№ РїСЂРѕРіСЂР°РјРјРµ
  * 
  * <p>Java class for InsureInfo_Type complex type.
  * 

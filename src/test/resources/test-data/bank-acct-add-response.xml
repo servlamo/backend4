@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FDX>
+	<ServerInfo>
+		<MsgUID>49293d38-4888-4ae3-9e71-f3948dc8c400</MsgUID>
+		<RqUID>2-2PIF9T</RqUID>
+		<SPName>MTS_LDBO</SPName>
+		<MsgReceiver>SBL_SME</MsgReceiver>
+		<ServerDt>2020-09-12T13:34:11</ServerDt>
+		<MsgType>BankAcctAddRs</MsgType>
+	</ServerInfo>
+	<BankSvcRs>
+		<RequestInfo>
+			<RequestId>2-2PIF9T</RequestId>
+			<RequestStatus>
+				<RequestStatusCode>1</RequestStatusCode>
+				<StatusDesc>Accepted</StatusDesc>
+			</RequestStatus>
+		</RequestInfo>
+		<Status>
+			<StatusCode>0</StatusCode>
+			<Severity>Info</Severity>
+			<StatusDesc>OK</StatusDesc>
+		</Status>
+	</BankSvcRs>
+</FDX>

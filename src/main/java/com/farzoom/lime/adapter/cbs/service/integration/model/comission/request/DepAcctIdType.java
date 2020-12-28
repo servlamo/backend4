@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип Идентификатор депозитного счета 
+ * РўРёРї РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РґРµРїРѕР·РёС‚РЅРѕРіРѕ СЃС‡РµС‚Р° 
  * 
  * <p>Java class for DepAcctId_Type complex type.
  * 

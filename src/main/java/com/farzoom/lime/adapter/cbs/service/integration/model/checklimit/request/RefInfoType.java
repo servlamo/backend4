@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Ссылочная информация
+ * РЎСЃС‹Р»РѕС‡РЅР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ
  * 
  * <p>Java class for RefInfo_Type complex type.
  * 

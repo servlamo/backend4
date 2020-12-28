@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип счет
+ * РўРёРї СЃС‡РµС‚
  * 
  * <p>Java class for BankAcct_Type complex type.
  * 

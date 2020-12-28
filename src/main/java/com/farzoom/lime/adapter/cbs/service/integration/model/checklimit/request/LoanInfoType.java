@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип информация о кредите
+ * РўРёРї РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ РєСЂРµРґРёС‚Рµ
  * 
  * <p>Java class for LoanInfo_Type complex type.
  * 

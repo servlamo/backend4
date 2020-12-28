@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип информация об организации
+ * РўРёРї РёРЅС„РѕСЂРјР°С†РёСЏ РѕР± РѕСЂРіР°РЅРёР·Р°С†РёРё
  * 
  * <p>Java class for OrgInfo_Type complex type.
  * 

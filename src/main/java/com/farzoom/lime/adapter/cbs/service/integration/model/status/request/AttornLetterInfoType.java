@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип информация о доверенности
+ * РўРёРї РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ РґРѕРІРµСЂРµРЅРЅРѕСЃС‚Рё
  * 
  * <p>Java class for AttornLetterInfo_Type complex type.
  * 

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by MTS Bank (MTS Bank) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="FDX.xsd"/>
+	<xs:element name="FDX">
+		<xs:annotation>
+			<xs:documentation>SMSBankInfoModRq</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="ServerInfo"/>
+				<xs:element name="BankSvcRq">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="OrgInfo" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Информация об организации</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:all>
+										<xs:element ref="OrgId"/>
+										<xs:element ref="TaxId"/>
+										<xs:element ref="Name"/>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element ref="Action" minOccurs="0"/>
+							<xs:element name="StartDt" type="Date" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Дата изменения услуги</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="BankAcctList">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="BankAcctRec" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:all>
+													<xs:element ref="AcctId"/>
+													<xs:element name="AcctFee" type="xs:boolean">
+														<xs:annotation>
+															<xs:documentation>Признак начисления комиссии на счет</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element ref="Id"/>
+													<xs:element ref="BankInfo"/>
+													<xs:element name="SvcList" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="SvcRec" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Информация об услуге</xs:documentation>
+																	</xs:annotation>
+																	<xs:complexType>
+																		<xs:all>
+																			<xs:element ref="Action" minOccurs="0"/>
+																			<xs:element ref="PhoneNum"/>
+																			<xs:element ref="SvcName" minOccurs="0"/>
+																			<xs:element name="SvcCode" type="xs:string" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Код услуги</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																		</xs:all>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:all>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

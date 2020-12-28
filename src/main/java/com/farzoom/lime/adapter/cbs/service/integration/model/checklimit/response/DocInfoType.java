@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип Документ
+ * РўРёРї Р”РѕРєСѓРјРµРЅС‚
  * 
  * <p>Java class for DocInfo_Type complex type.
  * 

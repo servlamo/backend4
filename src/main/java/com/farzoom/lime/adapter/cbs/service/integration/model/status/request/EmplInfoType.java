@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип сотрудник
+ * РўРёРї СЃРѕС‚СЂСѓРґРЅРёРє
  * 
  * <p>Java class for EmplInfo_Type complex type.
  * 

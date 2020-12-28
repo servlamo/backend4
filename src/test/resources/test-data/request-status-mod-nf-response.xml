@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FDX>
+	<ServerInfo>
+		<MsgUID>9DE6CFFCC35B0402E053AC10693C45A8</MsgUID>
+		<RqUID>2-2PIF9T</RqUID>
+		<SPName>IBSO</SPName>
+		<MsgReceiver>SBL_SME</MsgReceiver>
+		<ServerDt>02/06/2020 13:35:02</ServerDt>
+		<MsgType>RequestStatusModNf</MsgType>
+		<BpId>MTS_RESERV_INFO</BpId>
+	</ServerInfo>
+	<BankSvcRq>
+		<OrgInfo>
+			<OrgId>39108509971</OrgId>
+		</OrgInfo>
+		<RequestInfo>
+			<RequestId>2-2PIF9T</RequestId>
+			<RequestStatus>
+				<StatusCode>4</StatusCode>
+			</RequestStatus>
+		</RequestInfo>
+	</BankSvcRq>
+</FDX>

@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип налог
+ * РўРёРї РЅР°Р»РѕРі
  * 
  * <p>Java class for TaxInfo_Type complex type.
  * 

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип: информация по карте
+ * РўРёРї: РёРЅС„РѕСЂРјР°С†РёСЏ РїРѕ РєР°СЂС‚Рµ
  * 
  * <p>Java class for CardInfo_Type complex type.
  * 

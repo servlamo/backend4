@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип Идентификатор банковского счета
+ * РўРёРї РРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р±Р°РЅРєРѕРІСЃРєРѕРіРѕ СЃС‡РµС‚Р°
  * 
  * <p>Java class for BankAcctId_Type complex type.
  * 

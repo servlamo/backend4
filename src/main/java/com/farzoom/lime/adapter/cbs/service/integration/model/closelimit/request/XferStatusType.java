@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип Статус перевода
+ * РўРёРї РЎС‚Р°С‚СѓСЃ РїРµСЂРµРІРѕРґР°
  * 
  * <p>Java class for XferStatus_Type complex type.
  * 

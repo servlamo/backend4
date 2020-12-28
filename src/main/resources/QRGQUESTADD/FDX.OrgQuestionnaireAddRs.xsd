@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by MTS Bank (MTS Bank) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="FDX.xsd"/>
+	<xs:element name="FDX">
+		<xs:annotation>
+			<xs:documentation>OrgQuestionnaireAddRs</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="ServerInfo"/>
+				<xs:element name="BankSvcRs">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="OrgInfo" minOccurs="0">
+								<xs:complexType>
+									<xs:all>
+										<xs:element ref="OrgId"/>
+										<xs:element ref="ExtOrgId"/>
+										<xs:element name="AddInfo" minOccurs="0">
+											<xs:complexType>
+												<xs:all>
+													<xs:element ref="RequestId"/>
+													<xs:element ref="Method" minOccurs="0"/>
+													<xs:element name="DecisionCode" type="xs:string" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Код решения</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="AddCheck" type="xs:string" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Тип дополнительного мониторинга</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="LimitList" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Список ограничений</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="LimitRec" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:all>
+																			<xs:element name="LimitCode" type="xs:string">
+																				<xs:annotation>
+																					<xs:documentation>Код ограничения</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="LimitDesc" type="xs:string">
+																				<xs:annotation>
+																					<xs:documentation>Описание ограничения</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="RiskLevel" type="xs:string" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Уровень риска</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="RiskLevelList" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Список причин постановки</xs:documentation>
+																				</xs:annotation>
+																				<xs:complexType>
+																					<xs:sequence>
+																						<xs:element name="RiskLevelRec" maxOccurs="unbounded">
+																							<xs:complexType>
+																								<xs:all>
+																									<xs:element name="RiskLevelCode" type="xs:string">
+																										<xs:annotation>
+																											<xs:documentation>Код оценки рисков</xs:documentation>
+																										</xs:annotation>
+																									</xs:element>
+																									<xs:element name="RiskLevelDesc" type="xs:string" minOccurs="0">
+																										<xs:annotation>
+																											<xs:documentation>Причина постановки</xs:documentation>
+																										</xs:annotation>
+																									</xs:element>
+																									<xs:element name="Score" type="xs:string" minOccurs="0">
+																										<xs:annotation>
+																											<xs:documentation>Скоринговый балл</xs:documentation>
+																										</xs:annotation>
+																									</xs:element>
+																									<xs:element name="Priority" type="xs:string" minOccurs="0">
+																										<xs:annotation>
+																											<xs:documentation>Приоритет</xs:documentation>
+																										</xs:annotation>
+																									</xs:element>
+																								</xs:all>
+																							</xs:complexType>
+																						</xs:element>
+																					</xs:sequence>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:all>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="CheckList" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Список проверок</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="CheckRec" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:all>
+																			<xs:element name="CheckName" type="xs:string">
+																				<xs:annotation>
+																					<xs:documentation>Название проверки</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="Score" type="xs:string">
+																				<xs:annotation>
+																					<xs:documentation>Скор-балл</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="MaxScore" type="xs:string" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Макс значение скор балла</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																			<xs:element name="MinScore" type="xs:string" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Мин значение скор балла</xs:documentation>
+																				</xs:annotation>
+																			</xs:element>
+																		</xs:all>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:all>
+											</xs:complexType>
+										</xs:element>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element ref="Status"/>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -40,7 +40,7 @@ public class CustCheckListServiceImpl implements IntegrationService<CustCheckLis
 
     private CustCheckListRequest.BankSvcRq bankSvcRq(String principalId) {
         CustCheckListRequest.BankSvcRq.CheckList checkList = of.createFDXBankSvcRqCheckList();
-        checkList.getCheckType().add("ID_VALIDITY");
+        checkList.getCheckType().add("ID_VALIDITY_OFFLINE");
 
         CustList custList = of.createCustList();
 

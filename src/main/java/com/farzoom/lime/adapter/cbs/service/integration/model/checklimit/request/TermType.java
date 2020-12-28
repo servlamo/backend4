@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип Срок
+ * РўРёРї РЎСЂРѕРє
  * 
  * <p>Java class for Term_Type complex type.
  * 

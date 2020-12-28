@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * Тип Статус банковского счета
+ * РўРёРї РЎС‚Р°С‚СѓСЃ Р±Р°РЅРєРѕРІСЃРєРѕРіРѕ СЃС‡РµС‚Р°
  * 
  * <p>Java class for BankAcctStatus_Type complex type.
  * 
