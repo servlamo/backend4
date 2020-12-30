@@ -58,7 +58,8 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
                 new ParamRepository(config.getElasticsearchBaseUrl()),
                 new RefServiceImpl(
                         new EsRepository(config.getElasticsearchBaseUrl())
-                )
+                ),
+                new AddressRepository(config.getElasticsearchBaseUrl())
         );
         this.of = new ObjectFactory();
     }
@@ -355,8 +356,13 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
 
     private List<RelPersonCType> esRelations2RelPersons(List<Relation> relations, String personRelType) {
         return relations.stream().map(r -> {
-            String employeeRelType = (r.getEmployee() != null && isBlank(r.getEmployee().getPosition()))
-                    ? r.getEmployee().getPosition() : null;
+            GenParam positionParam = genParamService.loadOne("relation", r.getId(), "relation.position");
+            String employeeRelType = positionParam != null && positionParam.getValue() != null && positionParam.getValue().getKeyValue() != null ? positionParam.getValue().getKeyValue() : null;
+            if (employeeRelType == null) {
+                employeeRelType = (r.getEmployee() != null && isBlank(r.getEmployee().getPosition()))
+                        ? r.getEmployee().getPosition() : null;
+            }
+
             Person person = personRepository.load(r.getLeftId());
 
             IdentityDocument doc = !CollectionUtils.isEmpty(person.getIdentityDocuments()) ?

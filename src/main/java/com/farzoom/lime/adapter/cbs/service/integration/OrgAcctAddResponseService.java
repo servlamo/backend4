@@ -7,11 +7,7 @@ import com.farzoom.common.business.ref.impl.RefServiceImpl;
 import com.farzoom.common.persistence.es.model.Company;
 import com.farzoom.common.persistence.es.model.Order;
 import com.farzoom.common.persistence.es.model.Product;
-import com.farzoom.common.persistence.es.repositories.AttributeRepository;
-import com.farzoom.common.persistence.es.repositories.GroupRepository;
-import com.farzoom.common.persistence.es.repositories.ParamRepository;
-import com.farzoom.common.persistence.es.repositories.PersonRepository;
-import com.farzoom.common.persistence.es.repositories.RelationRepository;
+import com.farzoom.common.persistence.es.repositories.*;
 import com.farzoom.common.persistence.es.repositories.base.EsRepository;
 import com.farzoom.lime.adapter.cbs.config.AppConfig;
 import com.farzoom.lime.adapter.cbs.service.integration.model.orgacctadd.response.OrgAcctAddResponse;
@@ -39,6 +35,7 @@ public class OrgAcctAddResponseService implements IntegrationService<OrgAcctAddR
     private final PersonRepository personRepository;
     private final RefService refService;
     private final GenParamService genParamService;
+    private final AddressRepository addressRepository;
 
     public OrgAcctAddResponseService(AppConfig config) {
         groupRepository = new GroupRepository(config.getElasticsearchBaseUrl());
@@ -48,7 +45,8 @@ public class OrgAcctAddResponseService implements IntegrationService<OrgAcctAddR
         personRepository = new PersonRepository((config.getElasticsearchBaseUrl()));
         esRepository = new EsRepository(config.getElasticsearchBaseUrl());
         refService = new RefServiceImpl(esRepository);
-        genParamService = new GenParamServiceImpl(attributeRepository, groupRepository, paramRepository, refService);
+        addressRepository = new AddressRepository((config.getElasticsearchBaseUrl()));
+        genParamService = new GenParamServiceImpl(attributeRepository, groupRepository, paramRepository, refService, addressRepository);
     }
 
     @Override

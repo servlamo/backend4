@@ -8,6 +8,7 @@ import com.farzoom.common.business.ref.impl.RefServiceImpl;
 import com.farzoom.common.persistence.es.model.Company;
 import com.farzoom.common.persistence.es.model.Order;
 import com.farzoom.common.persistence.es.model.Product;
+import com.farzoom.common.persistence.es.repositories.AddressRepository;
 import com.farzoom.common.persistence.es.repositories.AttributeRepository;
 import com.farzoom.common.persistence.es.repositories.GroupRepository;
 import com.farzoom.common.persistence.es.repositories.ParamRepository;
@@ -31,6 +32,7 @@ public class SmsBankInfoModService implements IntegrationService<SmsBankInfoModR
     private final ParamRepository paramRepository;
     private final AttributeRepository attributeRepository;
     private final EsRepository esRepository;
+    private final AddressRepository addressRepository;
     RefService refService;
     GenParamService genParamService;
 
@@ -40,7 +42,8 @@ public class SmsBankInfoModService implements IntegrationService<SmsBankInfoModR
         attributeRepository = new AttributeRepository(config.getElasticsearchBaseUrl());
         esRepository = new EsRepository(config.getElasticsearchBaseUrl());
         refService = new RefServiceImpl(esRepository);
-        genParamService = new GenParamServiceImpl(attributeRepository, groupRepository, paramRepository, refService);
+        addressRepository = new AddressRepository((config.getElasticsearchBaseUrl()));
+        genParamService = new GenParamServiceImpl(attributeRepository, groupRepository, paramRepository, refService, addressRepository);
     }
 
     @Override

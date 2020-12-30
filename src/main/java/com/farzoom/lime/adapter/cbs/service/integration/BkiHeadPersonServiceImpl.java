@@ -53,15 +53,17 @@ public class BkiHeadPersonServiceImpl implements IntegrationService<BkiRequest> 
     private BkiRequest.BankSvcRq bankSvcRq(Order order, Company principal, Product product) {
         Person director = findDirector(order.getPrincipalCompanyId());
 
-        LocalDate consentEndDate = principal.getPermissionsInfo()
-                .getCreditHistoryPermission().getActiveTill() != null ?
+        LocalDate consentEndDate = principal.getPermissionsInfo() != null &&
+                principal.getPermissionsInfo().getCreditHistoryPermission() != null &&
+                principal.getPermissionsInfo().getCreditHistoryPermission().getActiveTill() != null ?
                 principal.getPermissionsInfo()
                         .getCreditHistoryPermission().getActiveTill()
                         .toInstant().atZone(ZoneId.systemDefault()).toLocalDate() :
                 LocalDate.now();
 
-        LocalDate consentDate = principal.getPermissionsInfo()
-                .getCreditHistoryPermission().getActiveFrom() != null ?
+        LocalDate consentDate = principal.getPermissionsInfo() != null &&
+                principal.getPermissionsInfo().getCreditHistoryPermission() != null &&
+                principal.getPermissionsInfo().getCreditHistoryPermission().getActiveFrom() != null ?
                 principal.getPermissionsInfo()
                         .getCreditHistoryPermission().getActiveFrom()
                         .toInstant().atZone(ZoneId.systemDefault()).toLocalDate() :

@@ -5,15 +5,6 @@ import java.util.Map;
 
 public class RefPositions {
 
-    public static Map<String, Integer> createHeadRolePositions() {
-        Map<String, Integer> positions = new HashMap<>();
-        positions.put("директор", 2333);
-        positions.put("генеральный директор", 72); //15
-        positions.put("врио генерального директора", 7771);
-        positions.put("президент", 100);
-        return positions;
-    }
-
     public static Map<String, Integer> createCompanyIndustryPositions() {
         Map<String, Integer> positions = new HashMap<>();
         positions.put("авиационная промышленность", 1);

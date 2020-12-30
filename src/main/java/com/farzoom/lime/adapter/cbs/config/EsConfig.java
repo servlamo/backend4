@@ -96,8 +96,9 @@ public class EsConfig {
             AttributeRepository attributeRepository,
             GroupRepository groupRepository,
             ParamRepository paramRepository,
-            RefService refService
+            RefService refService,
+            AddressRepository addressRepository
     ) {
-        return new GenParamServiceImpl(attributeRepository, groupRepository, paramRepository, refService);
+        return new GenParamServiceImpl(attributeRepository, groupRepository, paramRepository, refService, addressRepository);
     }
 }

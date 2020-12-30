@@ -40,6 +40,7 @@ public class AmlOrgQuestionnaireAddService implements IntegrationService<OrgQues
     private final PersonRepository personRepository;
     private final RefService refService;
     private final GenParamService genParamService;
+    private final AddressRepository addressRepository;
 
     public AmlOrgQuestionnaireAddService(AppConfig config) {
         groupRepository = new GroupRepository(config.getElasticsearchBaseUrl());
@@ -49,7 +50,8 @@ public class AmlOrgQuestionnaireAddService implements IntegrationService<OrgQues
         personRepository = new PersonRepository((config.getElasticsearchBaseUrl()));
         esRepository = new EsRepository(config.getElasticsearchBaseUrl());
         refService = new RefServiceImpl(esRepository);
-        genParamService = new GenParamServiceImpl(attributeRepository, groupRepository, paramRepository, refService);
+        addressRepository = new AddressRepository((config.getElasticsearchBaseUrl()));
+        genParamService = new GenParamServiceImpl(attributeRepository, groupRepository, paramRepository, refService, addressRepository);
     }
 
     @Override

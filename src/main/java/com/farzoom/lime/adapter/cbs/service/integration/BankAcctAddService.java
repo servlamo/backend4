@@ -27,6 +27,7 @@ public class BankAcctAddService implements IntegrationService<BankAcctAddRq> {
     private final RelationRepository relationRepository;
     private final CompanyRepository companyRepository;
     private final PersonRepository personRepository;
+    private final AddressRepository addressRepository;
     private final RefService refService;
     private final GenParamService genParamService;
 
@@ -34,14 +35,16 @@ public class BankAcctAddService implements IntegrationService<BankAcctAddRq> {
     public BankAcctAddService(AppConfig config) {
         relationRepository = new RelationRepository(config.getElasticsearchBaseUrl());
         companyRepository = new CompanyRepository(config.getElasticsearchBaseUrl());
+        addressRepository = new AddressRepository(config.getElasticsearchBaseUrl());
         refService = new RefServiceImpl(new EsRepository(config.getElasticsearchBaseUrl()));
         this.personRepository = new PersonRepository(config.getElasticsearchBaseUrl());
         this.genParamService = new GenParamServiceImpl(
                 new AttributeRepository(config.getElasticsearchBaseUrl()),
                 new GroupRepository(config.getElasticsearchBaseUrl()),
                 new ParamRepository(config.getElasticsearchBaseUrl()),
-                refService
-        );
+                refService,
+                new AddressRepository(config.getElasticsearchBaseUrl())
+                );
     }
 
     @Override
@@ -65,6 +68,7 @@ public class BankAcctAddService implements IntegrationService<BankAcctAddRq> {
         BankAcctAddRq.BankSvcRq.OrgInfo orgInfo = new BankAcctAddRq.BankSvcRq.OrgInfo();
         orgInfo.setLegalName(principal.getFullName());
         orgInfo.setClassifierId(classifier(principal));
+        orgInfo.setRUSOKOPF(principal.getOKOPF());
         orgInfo.setTaxId(principal.getINN());
         orgInfo.setStateRegPrimeNum(principal.getOGRN());
         orgInfo.setBankInfo(getBankInfo(product.getId()));
@@ -195,6 +199,7 @@ public class BankAcctAddService implements IntegrationService<BankAcctAddRq> {
     private BankAcctAddRq.BankSvcRq.SPInfo spInfo(Order order) {
         BankAcctAddRq.BankSvcRq.SPInfo spInfo = new BankAcctAddRq.BankSvcRq.SPInfo();
         spInfo.setProdCode("RKO");
+        spInfo.setProdName("R4");
         spInfo.setCashCount(BigInteger.ZERO);
         spInfo.setRequestId(CORRELATION_ID_PLACEHOLDER);
         return spInfo;

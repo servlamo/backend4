@@ -7,6 +7,7 @@ import com.farzoom.common.business.ref.impl.RefServiceImpl;
 import com.farzoom.common.persistence.es.model.Company;
 import com.farzoom.common.persistence.es.model.Order;
 import com.farzoom.common.persistence.es.model.Product;
+import com.farzoom.common.persistence.es.repositories.AddressRepository;
 import com.farzoom.common.persistence.es.repositories.AttributeRepository;
 import com.farzoom.common.persistence.es.repositories.GroupRepository;
 import com.farzoom.common.persistence.es.repositories.ParamRepository;
@@ -33,6 +34,7 @@ public class SvcPackModService implements IntegrationService<SvcPackModRq> {
     private final ParamRepository paramRepository;
     private final AttributeRepository attributeRepository;
     private final EsRepository esRepository;
+    private final AddressRepository addressRepository;
     RefServiceL refService;
     GenParamService genParamService;
 
@@ -42,7 +44,8 @@ public class SvcPackModService implements IntegrationService<SvcPackModRq> {
         attributeRepository = new AttributeRepository(config.getElasticsearchBaseUrl());
         esRepository = new EsRepository(config.getElasticsearchBaseUrl());
         refService = new RefServiceLImpl(esRepository);
-        genParamService = new GenParamServiceImpl(attributeRepository, groupRepository, paramRepository, new RefServiceImpl(esRepository));
+        addressRepository = new AddressRepository((config.getElasticsearchBaseUrl()));
+        genParamService = new GenParamServiceImpl(attributeRepository, groupRepository, paramRepository, new RefServiceImpl(esRepository), addressRepository);
     }
 
     @Override
