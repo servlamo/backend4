@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,8 +93,28 @@ public class OrgQuestionnaireAddServiceIT {
         log.info(JSON(props).toString());
     }
 
+    @Test
+    public void division_test_1() {
+        BigDecimal value = moneyParam("relation", "AWoQycHC3YP_a9w2YAxm", "companyTax.amount");
+        log.info("value: {}", value.toPlainString());
+        BigDecimal divided = value.divide(OrgQuestionnaireAddService.ONE_THOUSAND, 0, 2);
+        log.info("divided: {}", divided.toPlainString());
+    }
+
+    @Test
+    public void division_test_2() {
+        BigDecimal value = moneyParam("relation", "AWiZsQHi_8lAJG07_z4w", "companyTax.amount");
+        log.info("value: {}", value.toPlainString());
+        BigDecimal divided = value.divide(OrgQuestionnaireAddService.ONE_THOUSAND, 0, 1);
+        log.info("divided: {}", divided.toPlainString());
+    }
+
     private String keyParam(String entity, String entityId, String name) {
         return param(entity, entityId, name, "key").map(GenParam.GenParamValue::getKeyValue).orElse(null);
+    }
+
+    private BigDecimal moneyParam(String entity, String entityId, String name) {
+        return param(entity, entityId, name, "money").map(v -> BigDecimal.valueOf(v.getMoneyValue(), 2)).orElse(null);
     }
 
     private Optional<GenParam.GenParamValue> param(String entity, String entityId, String name, String type) {

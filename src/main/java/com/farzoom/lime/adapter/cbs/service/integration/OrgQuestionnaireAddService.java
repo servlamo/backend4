@@ -40,6 +40,8 @@ import static org.springframework.util.StringUtils.tokenizeToStringArray;
 
 @Log
 public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestionnaireAddRequest> {
+    public static final BigDecimal ONE_THOUSAND = BigDecimal.valueOf(1000);
+
     private static final SimpleDateFormat DATE_FMT = new SimpleDateFormat("dd.MM.yyyy");
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -446,15 +448,21 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
             String taxPeriod = "не указано", taxAmount = "не указано";
             for (Relation row : paramTable(principal.getId(), "companyTax")) {
                 taxPeriod = stringParam("relation", row.getId(), "companyTax.period");
-                taxAmount = moneyParam("relation", row.getId(), "companyTax.amount").toString();
+                taxAmount = moneyParam("relation", row.getId(), "companyTax.amount").divide(
+                        ONE_THOUSAND, 0, 2
+                ).toPlainString();
             }
+            Long income = longParam("company", principal.getId(), "company.reputation_7");
+            long incomeTs = income == null ? 0 : income / 1000;
+            Long profit = longParam("company", principal.getId(), "company.fp.profit");
+            long profitTs = profit == null ? 0 : profit / 1000;
             addString(props, "FIN_SIT_TEXT",
                     String.format("Система налогообложения: Предоставлен годовой бух. баланс за %s год, выручка " +
-                            "составила %s руб. Прибыль %s руб. Налоговая декларация по НДС за %s, " +
-                            "налоговая декларация по налогу на прибыль за %s год. Суммы уплаченных налогов: %s",
+                                    "составила %d тыс. руб. Прибыль %d тыс. руб. Налоговая декларация по НДС за %s, " +
+                                    "налоговая декларация по налогу на прибыль за %s год. Суммы уплаченных налогов: %s тыс. руб.",
                             longParam("company", principal.getId(), "company.fp.lastYear").toString(),
-                            longParam("company", principal.getId(), "company.reputation_7").toString(),
-                            longParam("company", principal.getId(), "company.fp.profit").toString(),
+                            incomeTs,
+                            profitTs,
                             taxPeriod, taxPeriod, taxAmount));
         } else {
             addString(props, "FIN_SIT_TEXT",
