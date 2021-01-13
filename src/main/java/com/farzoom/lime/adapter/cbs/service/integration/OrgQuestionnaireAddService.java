@@ -414,9 +414,7 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
                         person.getLastName(),
                         person.getFirstName(),
                         person.getSecondName());
-                String inn = person.getINN() != null ?
-                        String.join(" ", "ИНН", person.getINN()) :
-                        String.join(" ", "ИНН", "нет данных");
+                String inn = person.getINN() != null ? person.getINN() : "нет данных";
                 addString(props, "FOUNDER_ORG_SHARE_" + i, share.toString());
                 addString(props, "FOUNDER_ORG_NAME_" + i, fio);
                 addString(props, "FOUNDER_ORG_INN_" + i, inn);
@@ -455,7 +453,7 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
             Long income = longParam("company", principal.getId(), "company.reputation_7");
             long incomeTs = income == null ? 0 : income / 1000;
             Long profit = longParam("company", principal.getId(), "company.fp.profit");
-            long profitTs = profit == null ? 0 : profit / 1000;
+            long profitTs = profit == null ? 0 : profit;
             addString(props, "FIN_SIT_TEXT",
                     String.format("Система налогообложения: Предоставлен годовой бух. баланс за %s год, выручка " +
                                     "составила %d тыс. руб. Прибыль %d тыс. руб. Налоговая декларация по НДС за %s, " +
