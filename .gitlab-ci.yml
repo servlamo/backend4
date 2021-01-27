@@ -1,0 +1,45 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository -Dhttp.proxyHost=prx-srv.mbrd.ru -Dhttp.proxyPort=3128 -Dhttps.proxyHost=prx-srv.mbrd.ru -Dhttps.proxyPort=3128 -Dhttp.nonProxyHosts='localhost|docker|127.0.0.1|*.mbrd.ru'"
+  http_proxy: "http://prx-srv:3128"
+  https_proxy: "http://prx-srv:3128"
+  no_proxy: "localhost,docker,127.0.0.1,.mbrd.ru"
+  DOCKER_DRIVER: overlay
+  SPRING_PROFILES_ACTIVE: gitlab-ci
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .m2/repository
+
+stages:
+ - build
+ - package
+ 
+maven-build:
+  image: maven:3-jdk-8
+  stage: build
+  tags:
+    - tag1
+  before_script:
+    - echo 
+  script:
+    - mvn install -B
+  artifacts:
+    paths:
+    - target/*.jar   
+
+docker-build:
+  stage: package
+  tags:
+    - tag4
+  script:
+    - docker build -t "$CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG" ./
+#    - docker save "$CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG" | gzip > target/"$CI_PROJECT_NAME.$CI_COMMIT_REF_SLUG".image.tar.gz
+#  artifacts:
+#    paths:
+#    - target/*.image.tar.gz
