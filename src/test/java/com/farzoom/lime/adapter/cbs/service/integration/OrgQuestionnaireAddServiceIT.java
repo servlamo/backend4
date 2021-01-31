@@ -6,6 +6,7 @@ import com.farzoom.common.business.genparam.impl.GenParamServiceImpl;
 import com.farzoom.common.business.ref.RefItem;
 import com.farzoom.common.business.ref.RefService;
 import com.farzoom.common.business.ref.impl.RefServiceImpl;
+import com.farzoom.common.persistence.es.model.Company;
 import com.farzoom.common.persistence.es.model.Relation;
 import com.farzoom.common.persistence.es.repositories.*;
 import com.farzoom.common.persistence.es.repositories.base.EsRepository;
@@ -107,6 +108,36 @@ public class OrgQuestionnaireAddServiceIT {
         log.info("value: {}", value.toPlainString());
         BigDecimal divided = value.divide(OrgQuestionnaireAddService.ONE_THOUSAND, 0, 1);
         log.info("divided: {}", divided.toPlainString());
+    }
+
+    @Test
+    public void moneyParam_test_preprod_2021_01_29() {
+        String s = "{\"attributeId\":\"companyTax.amount\",\"subject\":{\"type\":\"relation\",\"id\":\"AXdJwohfPdTL7JOXGqiO\"},\"updatedDateTime\":\"2021-01-28T16:18:21.089Z\",\"value\":{},\"multiple\":false}";
+        GenParam param = JSON(s).mapTo(GenParam.class);
+
+        BigDecimal bigDecimal = Optional.of(param.getValue())
+                .filter(v -> v.getMoneyValue() != null)
+                .map(v -> BigDecimal.valueOf(v.getMoneyValue(), 2))
+                .orElse(null);
+        System.out.println(bigDecimal);
+    }
+
+    @Test
+    public void address_test_prod_2021_01_29() {
+        Company principal = new Company();
+
+        Company.AddressInfo addressInfo1 = new Company.AddressInfo();
+        principal.setPostalAddress(addressInfo1);
+        addressInfo1.setAddressId("postal");
+
+        Company.AddressInfo addressInfo2 = new Company.AddressInfo();
+        addressInfo2.setAddressId("legal");
+        principal.setLegalAddress(addressInfo2);
+
+        String s = principal.getPostalAddress() != null && principal.getPostalAddress().getEqualsLegalAddress() != null && principal.getPostalAddress().getEqualsLegalAddress() ?
+                principal.getPostalAddress().getAddressId() : principal.getLegalAddress().getAddressId();
+
+        System.out.println(s);
     }
 
     private String keyParam(String entity, String entityId, String name) {
