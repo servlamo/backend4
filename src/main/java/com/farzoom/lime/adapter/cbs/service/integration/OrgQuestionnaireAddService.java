@@ -808,8 +808,10 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
         addString(props, "MAN_USER", order.getInitiator().getLogin());
         addString(props, "OPEN_USER", order.getInitiator().getLogin());
         addString(props, "PROOV_USER", order.getInitiator().getLogin());
-        addString(props, "CONTROL", keyParam("company", principal.getId(), "company.control") == null ?
-                "Единоличный исполнительный орган" : keyParam("company", principal.getId(), "company.control"));
+        if (isUl) {
+            addString(props, "CONTROL", keyParam("company", principal.getId(), "company.control") == null ?
+                    "Единоличный исполнительный орган" : keyParam("company", principal.getId(), "company.control"));
+        }
         addString(props, "REG_FNS", principal.getIFNS().getCode());
         addString(props, "OKATO", principal.getOKATO());
         addString(props, "OKTMO", principal.getOKTMO());
