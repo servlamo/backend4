@@ -410,14 +410,13 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
             for (Relation shareholder : personShareholders) {
                 BigDecimal share = shareholder.getPersonFounder().getShare().getPercent();
                 Person person = personRepository.load(shareholder.getLeftId());
-                String fio = String.join(" ",
-                        person.getLastName(),
-                        person.getFirstName(),
-                        person.getSecondName());
                 String inn = person.getINN() != null ? person.getINN() : "нет данных";
-                addString(props, "FOUNDER_ORG_SHARE_" + i, share.toString());
-                addString(props, "FOUNDER_ORG_NAME_" + i, fio);
-                addString(props, "FOUNDER_ORG_INN_" + i, inn);
+                addString(props, "FOUNDER_SURNAME_" + i, person.getLastName());
+                addString(props, "FOUNDER_FIRSTNAME_" + i, person.getFirstName());
+                addString(props, "FOUNDER_MIDDLENAME_" + i,
+                        person.getSecondName() == null || person.getSecondName().equals("-") ? "" : person.getSecondName());
+                addString(props, "FOUNDER_INN_" + i, inn);
+                addString(props, "FOUNDER_SHARE_" + i, share.toString());
                 i++;
             }
         }
@@ -428,9 +427,9 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
                 Company company = companyRepository.load(shareholder.getLeftId());
                 String shortName = company.getShortName() != null ? company.getShortName() : "нет данных";
                 String inn = company.getINN() != null ? company.getINN() : "нет данных";
-                addString(props, "FOUNDER_ORG_SHARE_" + i, share.toString());
                 addString(props, "FOUNDER_ORG_NAME_" + i, shortName);
                 addString(props, "FOUNDER_ORG_INN_" + i, inn);
+                addString(props, "FOUNDER_ORG_SHARE_" + i, share.toString());
                 i++;
             }
         }
@@ -450,6 +449,8 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
                         ONE_THOUSAND, 0, 2
                 ).toPlainString();
             }
+            String date = longParam("company", principal.getId(), "company.fp.lastYear") != null
+                    ? longParam("company", principal.getId(), "company.fp.lastYear").toString() : "не указано";
             Long income = longParam("company", principal.getId(), "company.reputation_7");
             long incomeTs = income == null ? 0 : income / 1000;
             Long profit = longParam("company", principal.getId(), "company.fp.profit");
@@ -458,10 +459,7 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
                     String.format("Система налогообложения: Предоставлен годовой бух. баланс за %s год, выручка " +
                                     "составила %d тыс. руб. Прибыль %d тыс. руб. Налоговая декларация по НДС за %s, " +
                                     "налоговая декларация по налогу на прибыль за %s год. Суммы уплаченных налогов: %s тыс. руб.",
-                            longParam("company", principal.getId(), "company.fp.lastYear").toString(),
-                            incomeTs,
-                            profitTs,
-                            taxPeriod, taxPeriod, taxAmount));
+                            date, incomeTs, profitTs, taxPeriod, taxPeriod, taxAmount));
         } else {
             addString(props, "FIN_SIT_TEXT",
                     String.format("Финансовое положения установлено на основании сведений из Единого федерального " +
@@ -559,8 +557,10 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
         ProductRec.PropertyList props = new ProductRec.PropertyList();
         addPerson(props, person);
 
-        addBool(props, "IPDL_PDL", boolParam("person", person.getId(), "person.isIpdl"));
-        addBool(props, "IPDL_PDL_RELATIVE", boolParam("person", person.getId(), "person.isIpdlRelative"));
+        addBool(props, "IPDL_PDL", boolParam("person", person.getId(), "person.isIpdl") != null
+                ? boolParam("person", person.getId(), "person.isIpdl") : false);
+        addBool(props, "IPDL_PDL_RELATIVE", boolParam("person", person.getId(), "person.isIpdlRelative") != null
+                ? boolParam("person", person.getId(), "person.isIpdlRelative") : false);
 
         String reason = keyParam("relation", relation.getId(), "relation.beneficiary.reason");
         addBool(props, "ORG_LINK_STOCK", "ownsShares".equals(reason));
@@ -715,10 +715,14 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
             addBool(props, "FATCA_" + i, boolParam("company", principal.getId(), "company.taxUsa_" + i));
         }
 
-        addBool(props, "PDL_IPDL_1", boolParam("company", principal.getId(), "person.isIpdl"));
-        addBool(props, "PDL_IPDL_2", boolParam("company", principal.getId(), "person.isIpdlRelative"));
-        addBool(props, "PDL_IPDL_3", boolParam("company", principal.getId(), "person.isPdl"));
-        addBool(props, "PDL_IPDL_4", boolParam("company", principal.getId(), "person.isPdlRelative"));
+        addBool(props, "PDL_IPDL_1", boolParam("company", principal.getId(), "person.isIpdl") != null
+                ? boolParam("company", principal.getId(), "person.isIpdl") : false);
+        addBool(props, "PDL_IPDL_2", boolParam("company", principal.getId(), "person.isIpdlRelative") != null
+                ? boolParam("company", principal.getId(), "person.isIpdlRelative") : false);
+        addBool(props, "PDL_IPDL_3", boolParam("company", principal.getId(), "person.isPdl") != null
+                ? boolParam("company", principal.getId(), "person.isPdl") : false);
+        addBool(props, "PDL_IPDL_4", boolParam("company", principal.getId(), "person.isPdlRelative") != null
+                ? boolParam("company", principal.getId(), "person.isPdlRelative") : false);
 
         addString(props, "TRANSACTIONS_INF_RUB", "");
         addTransactions(longParam("company", principal.getId(), "company.rko.operRFQuant"), "NUMBER_RUB", 74, props);
@@ -733,10 +737,17 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
         for (ListIterator<Relation> it = paramTable(principal.getId(), "companyContragent").listIterator(); it.hasNext(); ) {
             int idx = it.nextIndex() + 1;
             Relation row = it.next();
-            addStringOrdered(props, "PARTNERS" + idx + "_TYPE", rkoContragent(keyParam("relation", row.getId(), "company.contragent.type")), 104);
-            addStringOrdered(props, "PARTNER_PAYER" + idx + "_NAME", stringParam("relation", row.getId(), "company.contragent.name"), 105);
-            addStringOrdered(props, "PARTNER_PAYER" + idx + "_INN", stringParam("relation", row.getId(), "company.contragent.inn"), 106);
-            addStringOrdered(props, "CONTRACT" + idx + "_TYPE", stringParam("relation", row.getId(), "company.contragent.agreement"), 107);
+            if (isUl) {
+                addString(props, "PARTNER_TYPE_" + idx, rkoContragent(keyParam("relation", row.getId(), "company.contragent.type")));
+                addString(props, "PARTNER_PAYER_NAME_" + idx, stringParam("relation", row.getId(), "company.contragent.name"));
+                addString(props, "PARTNER_PAYER_INN_" + idx, stringParam("relation", row.getId(), "company.contragent.inn"));
+//                addString(props, "CONTRACT_TYPE_" + idx, stringParam("relation", row.getId(), "company.contragent.agreement"));
+            } else {
+                addStringOrdered(props, "PARTNERS" + idx + "_TYPE", rkoContragent(keyParam("relation", row.getId(), "company.contragent.type")), 104);
+                addStringOrdered(props, "PARTNER_PAYER" + idx + "_NAME", stringParam("relation", row.getId(), "company.contragent.name"), 105);
+                addStringOrdered(props, "PARTNER_PAYER" + idx + "_INN", stringParam("relation", row.getId(), "company.contragent.inn"), 106);
+                addStringOrdered(props, "CONTRACT" + idx + "_TYPE", stringParam("relation", row.getId(), "company.contragent.agreement"), 107);
+            }
         }
 
         //SUPPORT-2429
@@ -797,8 +808,10 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
         addString(props, "MAN_USER", order.getInitiator().getLogin());
         addString(props, "OPEN_USER", order.getInitiator().getLogin());
         addString(props, "PROOV_USER", order.getInitiator().getLogin());
-        addString(props, "CONTROL", keyParam("company", principal.getId(), "company.control") == null ?
-                "Единоличный исполнительный орган" : keyParam("company", principal.getId(), "company.control"));
+        if (isUl) {
+            addString(props, "CONTROL", keyParam("company", principal.getId(), "company.control") == null ?
+                    "Единоличный исполнительный орган" : keyParam("company", principal.getId(), "company.control"));
+        }
         addString(props, "REG_FNS", principal.getIFNS().getCode());
         addString(props, "OKATO", principal.getOKATO());
         addString(props, "OKTMO", principal.getOKTMO());
@@ -808,8 +821,8 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
 
         addAddress(props, "ADDRESS_CORP_", "", "CORP", principal.getLegalAddress().getAddressId());
         addAddress(props, "ADDRESS_POST_", "", "POST",
-                Boolean.TRUE.equals(principal.getPostalAddress() == null || principal.getPostalAddress().getEqualsLegalAddress()) ?
-                        principal.getLegalAddress().getAddressId() : principal.getPostalAddress().getAddressId());
+                principal.getPostalAddress() != null && principal.getPostalAddress().getEqualsLegalAddress() != null && principal.getPostalAddress().getEqualsLegalAddress() ?
+                        principal.getPostalAddress().getAddressId() : principal.getLegalAddress().getAddressId());
 
         setFinInfo(principal, props);
         setFoundersShares(principal, props);
@@ -1147,7 +1160,10 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
     }
 
     private BigDecimal moneyParam(String entity, String entityId, String name) {
-        return param(entity, entityId, name, "money").map(v -> BigDecimal.valueOf(v.getMoneyValue(), 2)).orElse(null);
+        return param(entity, entityId, name, "money")
+                .filter(v -> v.getMoneyValue() != null)
+                .map(v -> BigDecimal.valueOf(v.getMoneyValue(), 2))
+                .orElse(null);
     }
 
     private Date dateParam(String entity, String entityId, String name) {
