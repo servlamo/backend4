@@ -16,6 +16,7 @@ cache:
 stages:
  - build
  - package
+ - publish
  
 maven-build:
   image: qcm-git.mbrd.ru:5005/moos/dependence/maven-3-jdk-8:master
@@ -41,3 +42,12 @@ docker-build:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG ./
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+    
+docker-publish:
+  stage: publish
+  tags:
+    - tag4
+  script:
+    - docker login -u s-bg-git -p __1Psf_on6qFvpmG5-CC http://qcm-nexus.mbrd.ru:8143
+    - docker build -t "qcm-nexus.mbrd.ru:8143/$CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG" ./
+    - docker push "qcm-nexus.mbrd.ru:8143/$CI_PROJECT_NAME:$CI_COMMIT_REF_SLUG"
