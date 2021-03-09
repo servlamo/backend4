@@ -305,7 +305,7 @@ public class CbsIntegrationTest {
     @Ignore
     @Test
     public void orgQuestionnaireAddReqTest() throws JsonProcessingException {
-        String orderId = "AXWI9wEuKExYfisxq31_";
+        String orderId = "AXeqX_NACVKJm_Gj2JdI"; // "AXWIPrcnKExYfisxq3yz";
         OrgQuestionnaireAddRequest request = factory.createOrgQuestionnaireAddRequest(orderId);
         log.info("request: {}", request);
 

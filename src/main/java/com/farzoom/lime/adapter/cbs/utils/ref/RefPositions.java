@@ -5,42 +5,6 @@ import java.util.Map;
 
 public class RefPositions {
 
-    public static Map<String, Integer> createCompanyIndustryPositions() {
-        Map<String, Integer> positions = new HashMap<>();
-        positions.put("авиационная промышленность", 1);
-        positions.put("наука и образование", 14);
-        positions.put("производство", 19);
-        positions.put("реклама, мас-медиа", 22);
-        positions.put("сми", 24);
-        positions.put("сельское хозяйство", 25);
-        positions.put("строительство", 26);
-        positions.put("транспортная отрасль", 29);
-        positions.put("государственные организации", 4);
-        positions.put("культура и спорт", 9);
-        positions.put("лесная промышленность", 10);
-        positions.put("медицина", 12);
-        positions.put("радиоэлектроника", 21);
-        positions.put("туризм", 30);
-        positions.put("финансовая аренда", 32);
-        positions.put("финансовые услуги", 33);
-        positions.put("благотворительная деятельность", 3);
-        positions.put("землеустройство", 7);
-        positions.put("недвижимость", 15);
-        positions.put("прочее", 20);
-        positions.put("телекоммуникации", 27);
-        positions.put("электроэнергетика", 36);
-        positions.put("безопасность", 2);
-        positions.put("микроэлектроника", 13);
-        positions.put("нефтегазовая промышленность", 16);
-        positions.put("предоставление раб.силы", 18);
-        positions.put("торговля", 28);
-        positions.put("машиностроение", 11);
-        positions.put("пищевая промышленность", 17);
-        positions.put("ремонт офисной техники", 23);
-        positions.put("услуги", 31);
-        return positions;
-    }
-
     public static Map<String, String> createCurrencyRelationsPositions() {
         Map<String, String> positions = new HashMap<>();
         positions.put("размещение свободных денежных средств в депозит", "РС"); //"Размещение свободных денежных средств во вклады (депозиты)"
