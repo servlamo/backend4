@@ -289,7 +289,7 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
                 .findFirst();
 
         if (industryValue.isPresent()) {
-            addRef(props, "SCTR_ECONOMY", industryKey, industryValue.get().getName());
+            addRef(props, "SCTR_ECONOMY", industryValue.get().getName(), industryKey);
         } else {
             addRef(props, "SCTR_ECONOMY", "Прочее", "20");
         }
