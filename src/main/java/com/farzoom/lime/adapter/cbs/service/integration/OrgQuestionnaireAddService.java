@@ -277,16 +277,19 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
     }
 
     private void setIndustryPositions(Company company, ProductRec.PropertyList props) {
-        Map<String, Integer> industryPositions = RefPositions.createCompanyIndustryPositions();
-        String industryName = keyParam("company", company.getId(), "company.industry");
-        if (StringUtils.isEmpty(industryName)) {
+        String industryKey = keyParam("company", company.getId(), "company.industry");
+        if (StringUtils.isEmpty(industryKey)) {
             log.warning("Не заполнен параметр company.industry для компании " + company.getId());
             addRef(props, "SCTR_ECONOMY", "Прочее", "20");
             return;
         }
-        Integer industryValue = industryPositions.get(industryName.toLowerCase());
-        if (industryValue != null) {
-            addRef(props, "SCTR_ECONOMY", industryName, String.valueOf(industryValue));
+        List<RefItem> companyIndustries = refService.getItems("companyIndustry");
+        Optional<RefItem> industryValue = companyIndustries.stream()
+                .filter(refItem -> refItem.getValue().equalsIgnoreCase(industryKey))
+                .findFirst();
+
+        if (industryValue.isPresent()) {
+            addRef(props, "SCTR_ECONOMY", industryKey, industryValue.get().getName());
         } else {
             addRef(props, "SCTR_ECONOMY", "Прочее", "20");
         }
@@ -812,11 +815,16 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
             addString(props, "CONTROL", keyParam("company", principal.getId(), "company.control") == null ?
                     "Единоличный исполнительный орган" : keyParam("company", principal.getId(), "company.control"));
         }
-        addString(props, "REG_FNS", principal.getIFNS().getCode());
+        if (!StringUtils.isEmpty(principal.getIFNS().getRegCode())) {
+            addString(props, "REG_FNS", principal.getIFNS().getRegCode());
+        } else {
+            addString(props, "REG_FNS", principal.getIFNS().getCode());
+        }
         addString(props, "OKATO", principal.getOKATO());
         addString(props, "OKTMO", principal.getOKTMO());
         addString(props, "OKPO", principal.getOKPO());
         addString(props, "OKFS", principal.getOKFS());
+        addString(props, "OKOGU", principal.getOKOGU());
         addString(props, "RUS.OKOPF", principal.getOKOPF());
 
         addAddress(props, "ADDRESS_CORP_", "", "CORP", principal.getLegalAddress().getAddressId());
