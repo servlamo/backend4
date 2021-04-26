@@ -3,6 +3,7 @@ package com.farzoom.lime.adapter.cbs.service.integration;
 import com.farzoom.lime.adapter.cbs.service.integration.model.addguarantee.request.AddGuaranteeRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.afs.request.SPRCustCheckRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.agency_fee_add.request.AgencyFeeAddRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.agreemtlistadd.request.AgreemtListAddRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.rq.BankAcctAddRq;
 import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctmod.request.BankAcctModRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.checklimit.request.CheckLimitRequest;
@@ -41,6 +42,8 @@ public interface CbsRequestFactory {
     AgencyFeeAddRequest createAgencyFeeAddRequest(String orderId);
 
     SvcPackModRq createSvcPackModRequest(String orderId);
+
+    AgreemtListAddRequest createAgreemtListAddRequest(String orderId);
 
     BankAcctAddRq createBankAcctAddRequest(String orderId);
 

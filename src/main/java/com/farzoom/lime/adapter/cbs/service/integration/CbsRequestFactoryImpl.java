@@ -6,10 +6,10 @@ import com.farzoom.common.persistence.es.model.Product;
 import com.farzoom.common.persistence.es.repositories.CompanyRepository;
 import com.farzoom.common.persistence.es.repositories.OrderRepository;
 import com.farzoom.common.persistence.es.repositories.ProductRepository;
-import com.farzoom.lime.adapter.cbs.config.AppConfig;
 import com.farzoom.lime.adapter.cbs.service.integration.model.addguarantee.request.AddGuaranteeRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.afs.request.SPRCustCheckRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.agency_fee_add.request.AgencyFeeAddRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.agreemtlistadd.request.AgreemtListAddRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.rq.BankAcctAddRq;
 import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctmod.request.BankAcctModRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.checklimit.request.CheckLimitRequest;
@@ -23,6 +23,7 @@ import com.farzoom.lime.adapter.cbs.service.integration.model.smsinfomod.request
 import com.farzoom.lime.adapter.cbs.service.integration.model.status.request.StatusRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.stopfactor.request.StopFactorRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.svcpackmod.request.SvcPackModRq;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,9 @@ import java.util.Date;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class CbsRequestFactoryImpl implements CbsRequestFactory {
+
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final CompanyRepository companyRepository;
@@ -52,30 +55,7 @@ public class CbsRequestFactoryImpl implements CbsRequestFactory {
     private final SmsBankInfoModService smsBankInfoModService;
     private final AmlOrgQuestionnaireAddService amlOrgQuestionnaireAddService;
     private final OrgAcctAddResponseService orgAcctAddResponseService;
-
-    public CbsRequestFactoryImpl(AppConfig config) {
-        orderRepository = new OrderRepository(config.getElasticsearchBaseUrl());
-        productRepository = new ProductRepository(config.getElasticsearchBaseUrl());
-        companyRepository = new CompanyRepository(config.getElasticsearchBaseUrl());
-        bkiService = new BkiServiceImpl(config);
-        bkiHeadPersonService = new BkiHeadPersonServiceImpl(config);
-        addGuaranteeService = new AddGuaranteeServiceImpl(config);
-        stopFactorService = new StopFactorServiceImpl();
-        closeLimitService = new CloseLimitServiceImpl();
-        checkLimitService = new CheckLimitServiceImpl();
-        statusService = new StatusServiceImpl();
-        commissionService = new CommissionServiceImpl();
-        custCheckListService = new CustCheckListServiceImpl(config);
-        afsService = new AfsServiceImpl(config);
-        agencyFeeAddService = new AgencyFeeAddServiceImpl(config);
-        bankAcctAddService = new BankAcctAddService(config);
-        bankAcctModService = new BankAcctModService(config);
-        orgQuestionnaireAddService = new OrgQuestionnaireAddService(config);
-        svcPackModService = new SvcPackModService(config);
-        smsBankInfoModService = new SmsBankInfoModService(config);
-        amlOrgQuestionnaireAddService = new AmlOrgQuestionnaireAddService(config);
-        orgAcctAddResponseService = new OrgAcctAddResponseService(config);
-    }
+    private final AgreemtListAddService agreemtListAddService;
 
     @Override
     public AddGuaranteeRequest addGuaranteeRequest(String orderId) {
@@ -176,6 +156,14 @@ public class CbsRequestFactoryImpl implements CbsRequestFactory {
         Order order = orderRepository.load(orderId);
         Company principal = companyRepository.load(order.getPrincipalCompanyId());
         return agencyFeeAddService.createRequest(order, principal, null);
+    }
+
+    @Override
+    public AgreemtListAddRequest createAgreemtListAddRequest(String orderId) {
+        Order order = orderRepository.load(orderId);
+        Company principal = companyRepository.load(order.getPrincipalCompanyId());
+        Product product = productRepository.load(order.getProductId());
+        return agreemtListAddService.createRequest(order, principal, product);
     }
 
     @Override

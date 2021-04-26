@@ -3,15 +3,15 @@ package com.farzoom.lime.adapter.cbs.service.integration;
 import com.farzoom.common.business.genparam.GenParam;
 import com.farzoom.common.business.genparam.GenParam.GenParamValue;
 import com.farzoom.common.business.genparam.GenParamService;
-import com.farzoom.common.business.genparam.impl.GenParamServiceImpl;
 import com.farzoom.common.business.ref.RefItem;
 import com.farzoom.common.business.ref.RefService;
-import com.farzoom.common.business.ref.impl.RefServiceImpl;
 import com.farzoom.common.persistence.es.model.*;
 import com.farzoom.common.persistence.es.model.gen.Param;
-import com.farzoom.common.persistence.es.repositories.*;
+import com.farzoom.common.persistence.es.repositories.AddressRepository;
+import com.farzoom.common.persistence.es.repositories.CompanyRepository;
+import com.farzoom.common.persistence.es.repositories.PersonRepository;
+import com.farzoom.common.persistence.es.repositories.RelationRepository;
 import com.farzoom.common.persistence.es.repositories.base.EsRepository;
-import com.farzoom.lime.adapter.cbs.config.AppConfig;
 import com.farzoom.lime.adapter.cbs.service.integration.es.repositories.TaskRepository;
 import com.farzoom.lime.adapter.cbs.service.integration.model.orgquestadd.request.OrgQuestionnaireAddRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.orgquestadd.request.OrgQuestionnaireAddRequest.BankSvcRq;
@@ -24,7 +24,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -38,16 +39,15 @@ import static com.farzoom.lime.adapter.cbs.utils.DateUtils.getNow;
 import static org.springframework.util.StringUtils.isEmpty;
 import static org.springframework.util.StringUtils.tokenizeToStringArray;
 
-@Log
+@Slf4j
+@Service
+@AllArgsConstructor
 public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestionnaireAddRequest> {
     public static final BigDecimal ONE_THOUSAND = BigDecimal.valueOf(1000);
 
     private static final SimpleDateFormat DATE_FMT = new SimpleDateFormat("dd.MM.yyyy");
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private final GroupRepository groupRepository;
-    private final ParamRepository paramRepository;
-    private final AttributeRepository attributeRepository;
     private final EsRepository esRepository;
     private final RelationRepository relationRepository;
     private final PersonRepository personRepository;
@@ -56,20 +56,6 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
     private final RefService refService;
     private final GenParamService genParamService;
     private final TaskRepository taskRepository;
-
-    public OrgQuestionnaireAddService(AppConfig config) {
-        groupRepository = new GroupRepository(config.getElasticsearchBaseUrl());
-        paramRepository = new ParamRepository(config.getElasticsearchBaseUrl());
-        attributeRepository = new AttributeRepository(config.getElasticsearchBaseUrl());
-        relationRepository = new RelationRepository((config.getElasticsearchBaseUrl()));
-        personRepository = new PersonRepository((config.getElasticsearchBaseUrl()));
-        companyRepository = new CompanyRepository((config.getElasticsearchBaseUrl()));
-        addressRepository = new AddressRepository((config.getElasticsearchBaseUrl()));
-        esRepository = new EsRepository(config.getElasticsearchBaseUrl());
-        refService = new RefServiceImpl(esRepository);
-        taskRepository = new TaskRepository(config.getElasticsearchBaseUrl());
-        genParamService = new GenParamServiceImpl(attributeRepository, groupRepository, paramRepository, refService, addressRepository);
-    }
 
     @Override
     public OrgQuestionnaireAddRequest createRequest(Order order, Company principal, Product product) {
@@ -230,7 +216,7 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
         String name, value;
         GenParam param = genParamService.loadOne("company", principal.getId(), "company.riskInfo.riskLevel");
         if (!GenParamUtils.hasKeyValue(param)) {
-            log.warning("Не заполнен параметр company.riskInfo.riskLevel для компании " + principal.getId());
+            log.warn("Не заполнен параметр company.riskInfo.riskLevel для компании {}", principal.getId());
             return;
         }
         value = param.getValue().getKeyValue();
@@ -252,7 +238,7 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
         int suffix = 0;
         GenParam genParam = genParamService.loadOne("company", principal.getId(), "company.riskInfo.riskCriteria");
         if (genParam == null || CollectionUtils.isEmpty(genParam.getValues())) {
-            log.warning("Не заполнен параметр company.riskInfo.riskCriteria для компании " + principal.getId());
+            log.warn("Не заполнен параметр company.riskInfo.riskCriteria для компании {}", principal.getId());
             return;
         }
         List<GenParamValue> params = genParam.getValues();
@@ -279,7 +265,7 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
     private void setIndustryPositions(Company company, ProductRec.PropertyList props) {
         String industryKey = keyParam("company", company.getId(), "company.industry");
         if (StringUtils.isEmpty(industryKey)) {
-            log.warning("Не заполнен параметр company.industry для компании " + company.getId());
+            log.warn("Не заполнен параметр company.industry для компании {}", company.getId());
             addRef(props, "SCTR_ECONOMY", "Прочее", "20");
             return;
         }
@@ -299,7 +285,7 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
     private void setCurrencyRelationsPositions(Product product, ProductRec.PropertyList props) {
         GenParam param = genParamService.loadOne("product", product.getId(), "product.rko.currency");
         if (!GenParamUtils.hasKeyValue(param)) {
-            log.warning("Не заполнен параметр product.rko.currency для продукта " + product.getId());
+            log.warn("Не заполнен параметр product.rko.currency для продукта {}", product.getId());
             addRef(props, "DEPOSITION", "Долгосрочные отношения. проведение расчетов в рублях", "ДО");
             return;
         }
@@ -441,7 +427,7 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
     private void setFinInfo(Company principal, ProductRec.PropertyList props) {
         GenParam genParam = genParamService.loadOne("company", principal.getId(), "company.fp.template");
         if (!GenParamUtils.hasKeyValue(genParam)) {
-            log.warning("Не заполнен параметр company.fp.template для компании " + principal.getId());
+            log.warn("Не заполнен параметр company.fp.template для компании {}", principal.getId());
             return;
         }
         if (genParam.getValue().getKeyValue().equals("rko_fp_needControl")) {
@@ -1188,7 +1174,7 @@ public class OrgQuestionnaireAddService implements IntegrationService<OrgQuestio
         if (GenParamUtils.hasStringValue(param)) {
             retId = param.getValue().getStringValue();
         } else {
-            log.warning("Не заполнен параметр product.rko.requestId для продукта " + product.getId());
+            log.warn("Не заполнен параметр product.rko.requestId для продукта {}", product.getId());
         }
         return retId;
     }

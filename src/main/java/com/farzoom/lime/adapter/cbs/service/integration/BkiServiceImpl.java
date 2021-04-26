@@ -4,8 +4,8 @@ import com.farzoom.common.persistence.es.model.*;
 import com.farzoom.common.persistence.es.repositories.AddressRepository;
 import com.farzoom.common.persistence.es.repositories.PersonRepository;
 import com.farzoom.common.persistence.es.repositories.RelationRepository;
-import com.farzoom.lime.adapter.cbs.config.AppConfig;
 import com.farzoom.lime.adapter.cbs.service.integration.model.cre.request.*;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -24,25 +24,18 @@ import static com.farzoom.lime.adapter.cbs.utils.MoneyUtils.toMoney;
 import static org.apache.logging.log4j.util.Strings.isNotBlank;
 import static org.apache.logging.log4j.util.Strings.isNotEmpty;
 
-/**
- * Created by vladimir on 04.09.2018.
- */
 @Slf4j
 @Service
+@AllArgsConstructor
 public class BkiServiceImpl implements IntegrationService<BkiRequest> {
     public static final String LEGAL_ADDRESS_TYPE_1 = "ADDRESS.TYPE.1";
     public static final String ACTUAL_ADDRESS_TYPE_2 = "ADDRESS.TYPE.2";
     public static final String PHONE_CONTACT_TYPE_3 = "CONTACT.TYPE.3";
     public static final String DEFAULT_PHONE_VALUE = "0";
+
     private final AddressRepository addressRepository;
     private final RelationRepository relationRepository;
     private final PersonRepository personRepository;
-
-    public BkiServiceImpl(AppConfig config) {
-        this.addressRepository = new AddressRepository((config.getElasticsearchBaseUrl()));
-        this.relationRepository = new RelationRepository((config.getElasticsearchBaseUrl()));
-        this.personRepository = new PersonRepository((config.getElasticsearchBaseUrl()));
-    }
 
     @Override
     public BkiRequest createRequest(Order order, Company principal, Product product) {

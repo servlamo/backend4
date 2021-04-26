@@ -6,6 +6,9 @@ import com.farzoom.common.business.ref.RefService;
 import com.farzoom.common.business.ref.impl.RefServiceImpl;
 import com.farzoom.common.persistence.es.repositories.*;
 import com.farzoom.common.persistence.es.repositories.base.EsRepository;
+import com.farzoom.lime.adapter.cbs.service.integration.es.repositories.TaskRepository;
+import com.farzoom.lime.adapter.cbs.utils.ref.impl.RefServiceL;
+import com.farzoom.lime.adapter.cbs.utils.ref.impl.RefServiceLImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -92,6 +95,11 @@ public class EsConfig {
     }
 
     @Bean
+    public RefServiceL refServiceL(EsRepository esRepository) {
+        return new RefServiceLImpl(esRepository);
+    }
+
+    @Bean
     public GenParamService genParamService(
             AttributeRepository attributeRepository,
             GroupRepository groupRepository,
@@ -101,4 +109,10 @@ public class EsConfig {
     ) {
         return new GenParamServiceImpl(attributeRepository, groupRepository, paramRepository, refService, addressRepository);
     }
+
+    @Bean
+    public TaskRepository taskRepository(AppConfig config) {
+        return new TaskRepository(config.getElasticsearchBaseUrl());
+    }
+
 }

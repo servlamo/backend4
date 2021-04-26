@@ -2,50 +2,29 @@ package com.farzoom.lime.adapter.cbs.service.integration;
 
 import com.farzoom.common.business.genparam.GenParam;
 import com.farzoom.common.business.genparam.GenParamService;
-import com.farzoom.common.business.genparam.impl.GenParamServiceImpl;
-import com.farzoom.common.business.ref.RefService;
-import com.farzoom.common.business.ref.impl.RefServiceImpl;
 import com.farzoom.common.persistence.es.model.Company;
 import com.farzoom.common.persistence.es.model.Order;
 import com.farzoom.common.persistence.es.model.Product;
-import com.farzoom.common.persistence.es.repositories.AddressRepository;
-import com.farzoom.common.persistence.es.repositories.AttributeRepository;
-import com.farzoom.common.persistence.es.repositories.GroupRepository;
-import com.farzoom.common.persistence.es.repositories.ParamRepository;
-import com.farzoom.common.persistence.es.repositories.base.EsRepository;
-import com.farzoom.lime.adapter.cbs.config.AppConfig;
 import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctmod.request.BankAcctIdType;
 import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctmod.request.BankAcctModRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctmod.request.BankAcctStatusType;
 import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctmod.request.ServerInfoType;
 import com.farzoom.lime.adapter.cbs.utils.GenParamUtils;
-import lombok.extern.java.Log;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 import static com.farzoom.lime.adapter.cbs.utils.DateUtils.getNow;
 import static java.util.Objects.isNull;
 
-@Log
+@Slf4j
+@Service
+@AllArgsConstructor
 public class BankAcctModService implements IntegrationService<BankAcctModRequest> {
 
-    private final GroupRepository groupRepository;
-    private final ParamRepository paramRepository;
-    private final AttributeRepository attributeRepository;
-    private final EsRepository esRepository;
-    private final AddressRepository addressRepository;
-    RefService refService;
-    GenParamService genParamService;
-
-    public BankAcctModService(AppConfig config) {
-        groupRepository = new GroupRepository(config.getElasticsearchBaseUrl());
-        paramRepository = new ParamRepository(config.getElasticsearchBaseUrl());
-        attributeRepository = new AttributeRepository(config.getElasticsearchBaseUrl());
-        esRepository = new EsRepository(config.getElasticsearchBaseUrl());
-        refService = new RefServiceImpl(esRepository);
-        addressRepository = new AddressRepository((config.getElasticsearchBaseUrl()));
-        genParamService = new GenParamServiceImpl(attributeRepository, groupRepository, paramRepository, refService, addressRepository);
-    }
+    private final GenParamService genParamService;
 
     @Override
     public BankAcctModRequest createRequest(Order order, Company principal, Product product) {
@@ -126,7 +105,7 @@ public class BankAcctModService implements IntegrationService<BankAcctModRequest
         if (GenParamUtils.hasStringValue(param)) {
             retId = param.getValue().getStringValue();
         } else {
-            log.warning("Не заполнен параметр product.rko.requestId для продукта " + product.getId());
+            log.warn("Не заполнен параметр product.rko.requestId для продукта {}", product.getId());
         }
         return retId;
     }

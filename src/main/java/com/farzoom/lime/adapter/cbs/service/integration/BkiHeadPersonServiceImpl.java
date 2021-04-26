@@ -4,8 +4,8 @@ import com.farzoom.common.persistence.es.model.*;
 import com.farzoom.common.persistence.es.repositories.AddressRepository;
 import com.farzoom.common.persistence.es.repositories.PersonRepository;
 import com.farzoom.common.persistence.es.repositories.RelationRepository;
-import com.farzoom.lime.adapter.cbs.config.AppConfig;
 import com.farzoom.lime.adapter.cbs.service.integration.model.cre.request.*;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,16 +20,11 @@ import static com.farzoom.lime.adapter.cbs.utils.DateUtils.getNow;
 import static com.farzoom.lime.adapter.cbs.utils.MoneyUtils.toMoney;
 
 @Service
+@AllArgsConstructor
 public class BkiHeadPersonServiceImpl implements IntegrationService<BkiRequest> {
     private final RelationRepository relationRepository;
     private final PersonRepository personRepository;
     private final AddressRepository addressRepository;
-
-    public BkiHeadPersonServiceImpl(AppConfig config) {
-        this.relationRepository = new RelationRepository((config.getElasticsearchBaseUrl()));
-        this.personRepository = new PersonRepository((config.getElasticsearchBaseUrl()));
-        this.addressRepository = new AddressRepository(config.getElasticsearchBaseUrl());
-    }
 
     @Override
     public BkiRequest createRequest(Order order, Company principal, Product product) {

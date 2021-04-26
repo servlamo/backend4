@@ -3,9 +3,6 @@ package com.farzoom.lime.adapter.cbs.utils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-/**
- * Created by vladimir on 27.09.2018.
- */
 public class MoneyUtils {
     public static final String RUB_CODE = "RUB";
     public static final String RUR_CODE = "RUR";

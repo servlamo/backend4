@@ -3,8 +3,8 @@ package com.farzoom.lime.adapter.cbs.service.integration;
 import com.farzoom.common.persistence.es.model.*;
 import com.farzoom.common.persistence.es.repositories.PersonRepository;
 import com.farzoom.common.persistence.es.repositories.RelationRepository;
-import com.farzoom.lime.adapter.cbs.config.AppConfig;
 import com.farzoom.lime.adapter.cbs.service.integration.model.idbank.request.*;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -17,32 +17,28 @@ import java.util.stream.Collectors;
 
 import static com.farzoom.lime.adapter.cbs.utils.DateUtils.getNow;
 
-@Service
 @Slf4j
+@Service
+@AllArgsConstructor
 public class CustCheckListServiceImpl implements IntegrationService<CustCheckListRequest> {
+    private static final ObjectFactory OBJECT_FACTORY = new ObjectFactory();
+
     private final RelationRepository relationRepository;
     private final PersonRepository personRepository;
-    private final ObjectFactory of;
-
-    public CustCheckListServiceImpl(AppConfig config) {
-        this.relationRepository = new RelationRepository(config.getElasticsearchBaseUrl());
-        this.personRepository = new PersonRepository(config.getElasticsearchBaseUrl());
-        this.of = new ObjectFactory();
-    }
 
     @Override
     public CustCheckListRequest createRequest(Order order, Company principal, Product product) {
-        CustCheckListRequest request = of.createFDX();
+        CustCheckListRequest request = OBJECT_FACTORY.createFDX();
         request.setServerInfo(fillServerInfo());
         request.setBankSvcRq(bankSvcRq(principal.getId()));
         return request;
     }
 
     private CustCheckListRequest.BankSvcRq bankSvcRq(String principalId) {
-        CustCheckListRequest.BankSvcRq.CheckList checkList = of.createFDXBankSvcRqCheckList();
+        CustCheckListRequest.BankSvcRq.CheckList checkList = OBJECT_FACTORY.createFDXBankSvcRqCheckList();
         checkList.getCheckType().add("ID_VALIDITY_OFFLINE");
 
-        CustList custList = of.createCustList();
+        CustList custList = OBJECT_FACTORY.createCustList();
 
         String query = String.format("rightId:%s", principalId);
         log.info("Query load relations: {}", query);
@@ -59,27 +55,27 @@ public class CustCheckListServiceImpl implements IntegrationService<CustCheckLis
         log.info("Query load persons by ids: {}", query);
         List<Person> persons = personRepository.search(query, personIds.size(), null);
         persons.forEach(person -> {
-            PersonNameType personName = of.createPersonNameType();
+            PersonNameType personName = OBJECT_FACTORY.createPersonNameType();
             personName.setFirstName(person.getFirstName());
             personName.setLastName(person.getLastName());
             personName.setMiddleName(person.getSecondName());
 
-            Date personBirthday = of.createDate();
+            Date personBirthday = OBJECT_FACTORY.createDate();
             LocalDate birthDate = person.getBirthDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             personBirthday.setYear(String.valueOf(birthDate.getYear()));
             personBirthday.setMonth(String.format("%02d", birthDate.getMonthValue()));
             personBirthday.setDay(String.format("%02d", birthDate.getDayOfMonth()));
 
-            PersonInfo.IdentityCards identityCards = of.createPersonInfoIdentityCards();
+            PersonInfo.IdentityCards identityCards = OBJECT_FACTORY.createPersonInfoIdentityCards();
             List<IdentityDocument> documents = person.getIdentityDocuments();
             if (!CollectionUtils.isEmpty(documents)) {
                 documents.forEach(doc -> {
-                    IdentityCard identityCard = of.createIdentityCard();
+                    IdentityCard identityCard = OBJECT_FACTORY.createIdentityCard();
                     identityCard.setIdType("21"); // всегда паспорт
                     identityCard.setIdNum(doc.getNumber());
                     identityCard.setIdSeries(doc.getSeries());
                     if (doc.getIssuedDate() != null) {
-                        Date issueDt = of.createDate();
+                        Date issueDt = OBJECT_FACTORY.createDate();
                         LocalDate issueLocalDate = doc.getIssuedDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                         issueDt.setYear(String.valueOf(issueLocalDate.getYear()));
                         issueDt.setMonth(String.format("%02d", issueLocalDate.getMonthValue()));
@@ -90,25 +86,25 @@ public class CustCheckListServiceImpl implements IntegrationService<CustCheckLis
                 });
             }
 
-            PersonInfo personInfo = of.createPersonInfo();
+            PersonInfo personInfo = OBJECT_FACTORY.createPersonInfo();
             personInfo.setPersonName(personName);
             personInfo.setBirthday(personBirthday);
             personInfo.setIdentityCards(identityCards);
 
-            CustInfoType custInfo = of.createCustInfoType();
+            CustInfoType custInfo = OBJECT_FACTORY.createCustInfoType();
             custInfo.setPersonInfo(personInfo);
 
             custList.getCustRec().add(custInfo);
         });
 
-        CustCheckListRequest.BankSvcRq bankSvcRq = of.createFDXBankSvcRq();
+        CustCheckListRequest.BankSvcRq bankSvcRq = OBJECT_FACTORY.createFDXBankSvcRq();
         bankSvcRq.setCheckList(checkList);
         bankSvcRq.setCustList(custList);
         return bankSvcRq;
     }
 
     private ServerInfoType fillServerInfo() {
-        ServerInfoType serverInfoType = of.createServerInfoType();
+        ServerInfoType serverInfoType = OBJECT_FACTORY.createServerInfoType();
         serverInfoType.setRqUID(CORRELATION_ID_PLACEHOLDER);
         serverInfoType.setMsgUID(UUID.randomUUID().toString());
         serverInfoType.setSPName("FARZOOM");

@@ -22,9 +22,6 @@ import static com.farzoom.lime.adapter.cbs.utils.MoneyUtils.RUR_CODE;
 import static com.farzoom.lime.adapter.cbs.utils.MoneyUtils.toMoney;
 
 
-/**
- * Created by vladimir on 03.09.2018.
- */
 @Service
 public class CloseLimitServiceImpl implements IntegrationService<CloseLimitRequest> {
     private static final BigDecimal COINS = new BigDecimal(100);
