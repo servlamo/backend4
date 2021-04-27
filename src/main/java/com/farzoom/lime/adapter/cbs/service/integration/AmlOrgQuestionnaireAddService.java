@@ -2,23 +2,21 @@ package com.farzoom.lime.adapter.cbs.service.integration;
 
 import com.farzoom.common.business.genparam.GenParam;
 import com.farzoom.common.business.genparam.GenParamService;
-import com.farzoom.common.business.genparam.impl.GenParamServiceImpl;
-import com.farzoom.common.business.ref.RefService;
-import com.farzoom.common.business.ref.impl.RefServiceImpl;
 import com.farzoom.common.persistence.es.model.Company;
 import com.farzoom.common.persistence.es.model.Order;
 import com.farzoom.common.persistence.es.model.Person;
 import com.farzoom.common.persistence.es.model.Product;
-import com.farzoom.common.persistence.es.repositories.*;
-import com.farzoom.common.persistence.es.repositories.base.EsRepository;
-import com.farzoom.lime.adapter.cbs.config.AppConfig;
+import com.farzoom.common.persistence.es.repositories.PersonRepository;
+import com.farzoom.common.persistence.es.repositories.RelationRepository;
 import com.farzoom.lime.adapter.cbs.service.integration.model.orgquestadd.request.OrgQuestionnaireAddRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.orgquestadd.request.OrgQuestionnaireAddRequest.BankSvcRq;
 import com.farzoom.lime.adapter.cbs.service.integration.model.orgquestadd.request.OrgQuestionnaireAddRequest.BankSvcRq.ProductList.ProductRec;
 import com.farzoom.lime.adapter.cbs.service.integration.model.orgquestadd.request.OrgQuestionnaireAddRequest.BankSvcRq.ProductList.ProductRec.PropertyList.PropertyRec;
 import com.farzoom.lime.adapter.cbs.service.integration.model.orgquestadd.request.ServerInfoType;
 import com.farzoom.lime.adapter.cbs.utils.GenParamUtils;
-import lombok.extern.java.Log;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,31 +26,15 @@ import java.util.stream.Collectors;
 
 import static com.farzoom.lime.adapter.cbs.utils.DateUtils.getNow;
 
-@Log
+@Slf4j
+@Service
+@AllArgsConstructor
 public class AmlOrgQuestionnaireAddService implements IntegrationService<OrgQuestionnaireAddRequest> {
     private static final SimpleDateFormat DATE_FMT = new SimpleDateFormat("dd.MM.yyyy");
 
-    private final GroupRepository groupRepository;
-    private final ParamRepository paramRepository;
-    private final AttributeRepository attributeRepository;
-    private final EsRepository esRepository;
     private final RelationRepository relationRepository;
     private final PersonRepository personRepository;
-    private final RefService refService;
     private final GenParamService genParamService;
-    private final AddressRepository addressRepository;
-
-    public AmlOrgQuestionnaireAddService(AppConfig config) {
-        groupRepository = new GroupRepository(config.getElasticsearchBaseUrl());
-        paramRepository = new ParamRepository(config.getElasticsearchBaseUrl());
-        attributeRepository = new AttributeRepository(config.getElasticsearchBaseUrl());
-        relationRepository = new RelationRepository((config.getElasticsearchBaseUrl()));
-        personRepository = new PersonRepository((config.getElasticsearchBaseUrl()));
-        esRepository = new EsRepository(config.getElasticsearchBaseUrl());
-        refService = new RefServiceImpl(esRepository);
-        addressRepository = new AddressRepository((config.getElasticsearchBaseUrl()));
-        genParamService = new GenParamServiceImpl(attributeRepository, groupRepository, paramRepository, refService, addressRepository);
-    }
 
     @Override
     public OrgQuestionnaireAddRequest createRequest(Order order, Company principal, Product product) {
@@ -251,7 +233,7 @@ public class AmlOrgQuestionnaireAddService implements IntegrationService<OrgQues
         if (GenParamUtils.hasStringValue(param)) {
             retId = param.getValue().getStringValue();
         } else {
-            log.warning("Не заполнен параметр product.rko.requestId для продукта " + product.getId());
+            log.warn("Не заполнен параметр product.rko.requestId для продукта {}", product.getId());
         }
         return retId;
     }

@@ -1,5 +1,6 @@
 package com.farzoom.lime.adapter.cbs.utils;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -7,10 +8,8 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.GregorianCalendar;
 
-/**
- * Created by vladimir on 03.09.2018.
- */
 @Slf4j
+@UtilityClass
 public class DateUtils {
     public static XMLGregorianCalendar getNow() {
         GregorianCalendar c = new GregorianCalendar();

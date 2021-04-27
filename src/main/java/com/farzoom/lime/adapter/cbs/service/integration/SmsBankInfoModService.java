@@ -2,22 +2,15 @@ package com.farzoom.lime.adapter.cbs.service.integration;
 
 import com.farzoom.common.business.genparam.GenParam;
 import com.farzoom.common.business.genparam.GenParamService;
-import com.farzoom.common.business.genparam.impl.GenParamServiceImpl;
-import com.farzoom.common.business.ref.RefService;
-import com.farzoom.common.business.ref.impl.RefServiceImpl;
 import com.farzoom.common.persistence.es.model.Company;
 import com.farzoom.common.persistence.es.model.Order;
 import com.farzoom.common.persistence.es.model.Product;
-import com.farzoom.common.persistence.es.repositories.AddressRepository;
-import com.farzoom.common.persistence.es.repositories.AttributeRepository;
-import com.farzoom.common.persistence.es.repositories.GroupRepository;
-import com.farzoom.common.persistence.es.repositories.ParamRepository;
-import com.farzoom.common.persistence.es.repositories.base.EsRepository;
-import com.farzoom.lime.adapter.cbs.config.AppConfig;
 import com.farzoom.lime.adapter.cbs.service.integration.model.smsinfomod.request.PhoneNum;
 import com.farzoom.lime.adapter.cbs.service.integration.model.smsinfomod.request.ServerInfoType;
 import com.farzoom.lime.adapter.cbs.service.integration.model.smsinfomod.request.SmsBankInfoModRequest;
 import com.farzoom.lime.adapter.cbs.utils.GenParamUtils;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,25 +19,11 @@ import java.util.UUID;
 import static com.farzoom.lime.adapter.cbs.utils.DateUtils.getNow;
 import static java.util.Objects.isNull;
 
+@Service
+@AllArgsConstructor
 public class SmsBankInfoModService implements IntegrationService<SmsBankInfoModRequest> {
 
-    private final GroupRepository groupRepository;
-    private final ParamRepository paramRepository;
-    private final AttributeRepository attributeRepository;
-    private final EsRepository esRepository;
-    private final AddressRepository addressRepository;
-    RefService refService;
-    GenParamService genParamService;
-
-    public SmsBankInfoModService(AppConfig config) {
-        groupRepository = new GroupRepository(config.getElasticsearchBaseUrl());
-        paramRepository = new ParamRepository(config.getElasticsearchBaseUrl());
-        attributeRepository = new AttributeRepository(config.getElasticsearchBaseUrl());
-        esRepository = new EsRepository(config.getElasticsearchBaseUrl());
-        refService = new RefServiceImpl(esRepository);
-        addressRepository = new AddressRepository((config.getElasticsearchBaseUrl()));
-        genParamService = new GenParamServiceImpl(attributeRepository, groupRepository, paramRepository, refService, addressRepository);
-    }
+    private final GenParamService genParamService;
 
     @Override
     public SmsBankInfoModRequest createRequest(Order order, Company principal, Product product) {

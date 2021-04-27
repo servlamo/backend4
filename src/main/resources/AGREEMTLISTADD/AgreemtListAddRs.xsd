@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by MTS Bank (MTS Bank) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="FDX.xsd"/>
+	<xs:element name="FDX">
+		<xs:annotation>
+			<xs:documentation>AgreemtListAddRs</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="ServerInfo"/>
+				<xs:element name="BankSvcRs">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="OrgInfo" minOccurs="0">
+								<xs:complexType>
+									<xs:all>
+										<xs:element ref="OrgId"/>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="AgreemtList" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Список досье/договоров</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="AgreemtRec" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:all>
+													<xs:element ref="AgreemtId"/>
+													<xs:element name="AgreemtType" type="xs:string">
+														<xs:annotation>
+															<xs:documentation>Тип договора</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="AgreemtStatus">
+														<xs:annotation>
+															<xs:documentation>Статус договора</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:all>
+																<xs:element name="AgreemtStatusCode" type="xs:string">
+																	<xs:annotation>
+																		<xs:documentation>Код статуса документа</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element ref="StatusDesc" minOccurs="0"/>
+																<xs:element name="EffDt" type="DateTime" minOccurs="0">
+																	<xs:annotation>
+																		<xs:documentation>Дата изменения статуса</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element ref="StatusModReason" minOccurs="0"/>
+																<xs:element ref="StatusModBy" minOccurs="0"/>
+															</xs:all>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="DocList" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Список документов</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="DocRec" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element ref="Name"/>
+																			<xs:element ref="OrigName" minOccurs="0"/>
+																			<xs:element ref="DocTypeName"/>
+																			<xs:element ref="DocTypeCode" minOccurs="0"/>
+																			<xs:choice minOccurs="0">
+																				<xs:element ref="Data"/>
+																				<xs:element ref="Link"/>
+																			</xs:choice>
+																			<xs:element name="DocStatus" minOccurs="0">
+																				<xs:annotation>
+																					<xs:documentation>Статус документа</xs:documentation>
+																				</xs:annotation>
+																				<xs:complexType>
+																					<xs:all>
+																						<xs:element name="DocStatusCode" type="xs:string">
+																							<xs:annotation>
+																								<xs:documentation>Код статуса документа</xs:documentation>
+																							</xs:annotation>
+																						</xs:element>
+																						<xs:element ref="StatusDesc" minOccurs="0"/>
+																					</xs:all>
+																				</xs:complexType>
+																			</xs:element>
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:all>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element ref="Status"/>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

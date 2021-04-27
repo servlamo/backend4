@@ -2,16 +2,15 @@ package com.farzoom.lime.adapter.cbs.service.integration;
 
 import com.farzoom.common.business.genparam.GenParam;
 import com.farzoom.common.business.genparam.GenParamService;
-import com.farzoom.common.business.genparam.impl.GenParamServiceImpl;
 import com.farzoom.common.business.ref.RefItem;
 import com.farzoom.common.business.ref.RefService;
-import com.farzoom.common.business.ref.impl.RefServiceImpl;
 import com.farzoom.common.persistence.es.model.*;
-import com.farzoom.common.persistence.es.repositories.*;
-import com.farzoom.common.persistence.es.repositories.base.EsRepository;
-import com.farzoom.lime.adapter.cbs.config.AppConfig;
+import com.farzoom.common.persistence.es.repositories.PersonRepository;
+import com.farzoom.common.persistence.es.repositories.RelationRepository;
 import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.common.*;
 import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.rq.BankAcctAddRq;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -22,30 +21,14 @@ import java.util.UUID;
 import static com.farzoom.lime.adapter.cbs.utils.DateUtils.getNow;
 import static java.util.Objects.isNull;
 
+@Service
+@AllArgsConstructor
 public class BankAcctAddService implements IntegrationService<BankAcctAddRq> {
 
     private final RelationRepository relationRepository;
-    private final CompanyRepository companyRepository;
     private final PersonRepository personRepository;
-    private final AddressRepository addressRepository;
     private final RefService refService;
     private final GenParamService genParamService;
-
-
-    public BankAcctAddService(AppConfig config) {
-        relationRepository = new RelationRepository(config.getElasticsearchBaseUrl());
-        companyRepository = new CompanyRepository(config.getElasticsearchBaseUrl());
-        addressRepository = new AddressRepository(config.getElasticsearchBaseUrl());
-        refService = new RefServiceImpl(new EsRepository(config.getElasticsearchBaseUrl()));
-        this.personRepository = new PersonRepository(config.getElasticsearchBaseUrl());
-        this.genParamService = new GenParamServiceImpl(
-                new AttributeRepository(config.getElasticsearchBaseUrl()),
-                new GroupRepository(config.getElasticsearchBaseUrl()),
-                new ParamRepository(config.getElasticsearchBaseUrl()),
-                refService,
-                new AddressRepository(config.getElasticsearchBaseUrl())
-                );
-    }
 
     @Override
     public BankAcctAddRq createRequest(Order order, Company principal, Product product) {
@@ -207,7 +190,8 @@ public class BankAcctAddService implements IntegrationService<BankAcctAddRq> {
 
     private ServerInfoType serverInfo() {
         ServerInfoType serverInfoType = new ServerInfoType();
-        serverInfoType.setRqUID(CORRELATION_ID_PLACEHOLDER);;
+        serverInfoType.setRqUID(CORRELATION_ID_PLACEHOLDER);
+        ;
         serverInfoType.setMsgUID(UUID.randomUUID().toString());
         serverInfoType.setSPName("FARZOOM");
         serverInfoType.setMsgReceiver("IBSO");

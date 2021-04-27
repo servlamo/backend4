@@ -2,15 +2,12 @@ package com.farzoom.lime.adapter.cbs.service.integration;
 
 import com.farzoom.common.business.genparam.GenParam;
 import com.farzoom.common.business.genparam.GenParamService;
-import com.farzoom.common.business.genparam.impl.GenParamServiceImpl;
-import com.farzoom.common.business.ref.impl.RefServiceImpl;
 import com.farzoom.common.persistence.es.model.*;
 import com.farzoom.common.persistence.es.repositories.*;
-import com.farzoom.common.persistence.es.repositories.base.EsRepository;
-import com.farzoom.lime.adapter.cbs.config.AppConfig;
 import com.farzoom.lime.adapter.cbs.service.integration.model.addguarantee.request.*;
 import com.farzoom.lime.adapter.cbs.service.integration.model.addguarantee.request.AddGuaranteeRequest.BankSvcRq;
 import com.farzoom.lime.adapter.cbs.utils.GenParamUtils;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -26,11 +23,11 @@ import static com.farzoom.lime.adapter.cbs.utils.MoneyUtils.*;
 import static org.apache.logging.log4j.util.Strings.isBlank;
 import static org.apache.logging.log4j.util.Strings.isNotBlank;
 
-/**
- * Created by vladimir on 03.09.2018.
- */
 @Service
+@AllArgsConstructor
 public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeRequest> {
+    private static final ObjectFactory OBJECT_FACTORY = new ObjectFactory();
+
     private static final String FIN_SITUATION_TEMPLATE = "Предоставлена бух отчетность за %d. Чистая прибыль %s т.р. Выручка %s тыс. руб.";
 
     private static final String FOUNDER_REL_TYPE = "Учредитель";
@@ -44,36 +41,17 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
     private final CompanyRepository companyRepository;
     private final CompanyBuhRepository companyBuhRepository;
     private final GenParamService genParamService;
-    private final ObjectFactory of;
-
-    public AddGuaranteeServiceImpl(AppConfig config) {
-        this.addressRepository = new AddressRepository(config.getElasticsearchBaseUrl());
-        this.relationRepository = new RelationRepository(config.getElasticsearchBaseUrl());
-        this.personRepository = new PersonRepository(config.getElasticsearchBaseUrl());
-        this.companyRepository = new CompanyRepository(config.getElasticsearchBaseUrl());
-        this.companyBuhRepository = new CompanyBuhRepository(config.getElasticsearchBaseUrl());
-        this.genParamService = new GenParamServiceImpl(
-                new AttributeRepository(config.getElasticsearchBaseUrl()),
-                new GroupRepository(config.getElasticsearchBaseUrl()),
-                new ParamRepository(config.getElasticsearchBaseUrl()),
-                new RefServiceImpl(
-                        new EsRepository(config.getElasticsearchBaseUrl())
-                ),
-                new AddressRepository(config.getElasticsearchBaseUrl())
-        );
-        this.of = new ObjectFactory();
-    }
 
     @Override
     public AddGuaranteeRequest createRequest(Order order, Company principal, Product product) {
-        AddGuaranteeRequest request = of.createFDX();
+        AddGuaranteeRequest request = OBJECT_FACTORY.createFDX();
         request.setBankSvcRq(fillBankSvcRq(order, principal, product));
         request.setServerInfo(fillServerInfo());
         return request;
     }
 
     private BankSvcRq fillBankSvcRq(Order order, Company principal, Product product) {
-        BankSvcRq bankSvcRq = of.createFDXBankSvcRq();
+        BankSvcRq bankSvcRq = OBJECT_FACTORY.createFDXBankSvcRq();
         //ID сделки в МООСе необязательное поле
         bankSvcRq.setRequestId(order.getId());
         //Гуид Клиента в АБС заполняется не всегда
@@ -93,7 +71,7 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
         if (postalAddress == null) postalAddress = actualAddress;
         Contact contact = !CollectionUtils.isEmpty(principal.getContacts()) ? principal.getContacts().iterator().next() : null;
 
-        OrgInfoCType orgInfo = of.createOrgInfoCType();
+        OrgInfoCType orgInfo = OBJECT_FACTORY.createOrgInfoCType();
         orgInfo.setLegalName(principal.getFullName());
         orgInfo.setName(principal.getDisplayName());
         orgInfo.setTaxId(principal.getINN());
@@ -106,7 +84,7 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
         OrgInfoCType.AddInfo addInfo = fillAddInfo(order, principal, product);
         orgInfo.setAddInfo(addInfo);
 
-        OrgInfoCType.ClassifierList classifierList = of.createOrgInfoCTypeClassifierList();
+        OrgInfoCType.ClassifierList classifierList = OBJECT_FACTORY.createOrgInfoCTypeClassifierList();
         classifierList.getClassifierId().add(fillClassifierId("RUS.OKOPF", principal.getOKOPF()));
         classifierList.getClassifierId().add(fillClassifierId("RUS.OKATO", principal.getOKATO()));
         classifierList.getClassifierId().add(fillClassifierId("RUS.OKPO", principal.getOKPO()));
@@ -141,7 +119,7 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
         orgInfo.setTaxOfficeCode(principal.getIFNS().getRegCode());
         orgInfo.setTaxOfficeName(principal.getIFNS().getRegCode());
 
-        OrgInfoCType.IndustId industId = of.createOrgInfoCTypeIndustId();
+        OrgInfoCType.IndustId industId = OBJECT_FACTORY.createOrgInfoCTypeIndustId();
         GenParam indParam = genParamService.loadOne("company", principal.getId(), "company.industry");
         if (GenParamUtils.hasKeyValue(indParam)) {
             industId.setIndustCode(indParam.getValue().getKeyValue());
@@ -150,21 +128,21 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
         orgInfo.setIndustId(industId);
         orgInfo.setGovernmentDesc(fillGovernmentDesc(principal.getId()));
         /* start contacts */
-        ContactList contactList = of.createContactList();
-        ContactList.ContactRec fdxContact = of.createContactListContactRec();
+        ContactList contactList = OBJECT_FACTORY.createContactList();
+        ContactList.ContactRec fdxContact = OBJECT_FACTORY.createContactListContactRec();
         if (contact != null) {
-            PhoneNums phoneNums = of.createPhoneNums();
-            PhoneNum phoneNum = of.createPhoneNum();
+            PhoneNums phoneNums = OBJECT_FACTORY.createPhoneNums();
+            PhoneNum phoneNum = OBJECT_FACTORY.createPhoneNum();
             phoneNum.setPrimary(true);
             phoneNum.setPhone(contact.getPhone());
             phoneNums.getPhoneNum().add(phoneNum);
             fdxContact.setPhoneNums(phoneNums);
 
-            EmailAddrs emailAddrs = of.createEmailAddrs();
+            EmailAddrs emailAddrs = OBJECT_FACTORY.createEmailAddrs();
             emailAddrs.getEmailAddr().add(contact.getEmail());
             fdxContact.setEmailAddrs(emailAddrs);
         }
-        PostAddrs addrs = of.createPostAddrs();
+        PostAddrs addrs = OBJECT_FACTORY.createPostAddrs();
         if (legalAddress != null) addrs.getPostAddr().add(fillAddress(legalAddress, "CORP"));
         if (actualAddress != null) addrs.getPostAddr().add(fillAddress(actualAddress, "FACT"));
         if (postalAddress != null) addrs.getPostAddr().add(fillAddress(postalAddress, "POST"));
@@ -189,14 +167,14 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
     }
 
     private OrgInfoCType.PropertyForm fillPropertyForm(Company company) {
-        OrgInfoCType.PropertyForm propertyForm = of.createOrgInfoCTypePropertyForm();
+        OrgInfoCType.PropertyForm propertyForm = OBJECT_FACTORY.createOrgInfoCTypePropertyForm();
         propertyForm.setPropertyCode(company.getOKFS());
         propertyForm.setPropertyName(company.getOPF());
         return propertyForm;
     }
 
     private OrgInfoCType.AddInfo fillAddInfo(Order order, Company company, Product product) {
-        OrgInfoCType.AddInfo addInfo = of.createOrgInfoCTypeAddInfo();
+        OrgInfoCType.AddInfo addInfo = OBJECT_FACTORY.createOrgInfoCTypeAddInfo();
         addInfo.setGoodwill("Негативной информации в открытых источниках не выявлено. Клиент участвует в государственных закупках");
         addInfo.setFinancialSituation(fillFinSituation(company.getId()));
         addInfo.setPurpose("Получение прибыли");
@@ -206,37 +184,37 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
     }
 
     private ClassifierId fillClassifierId(String type, String code) {
-        ClassifierId classifierId = of.createClassifierId();
+        ClassifierId classifierId = OBJECT_FACTORY.createClassifierId();
         classifierId.setClassifierType(type);
         classifierId.setClassifierCode(code);
         return classifierId;
     }
 
     private CurrencyAmount fillCurrencyAmount(Long amount, String code) {
-        CurrencyAmount currencyAmount = of.createCurrencyAmount();
+        CurrencyAmount currencyAmount = OBJECT_FACTORY.createCurrencyAmount();
         currencyAmount.setAmt(toMoney(amount));
         currencyAmount.setCurCode(code);
         return currencyAmount;
     }
 
     private Citizenship fillCitizenship() {
-        Citizenship citizenship = of.createCitizenship();
+        Citizenship citizenship = OBJECT_FACTORY.createCitizenship();
         citizenship.setCountry("643");
         citizenship.setCountryName("РОССИЯ");
         return citizenship;
     }
 
     private IdentityCards fillOkveds(Company company) {
-        IdentityCards identityCards = of.createIdentityCards();
+        IdentityCards identityCards = OBJECT_FACTORY.createIdentityCards();
 
-        IdentityCard primaryOkvedIc = of.createIdentityCard();
+        IdentityCard primaryOkvedIc = OBJECT_FACTORY.createIdentityCard();
         primaryOkvedIc.setIdNum(company.getPrimaryOKVED());
         primaryOkvedIc.setIssueDt(fillDate(company.getPrimaryOKVEDdate()));
         identityCards.getIdentityCard().add(primaryOkvedIc);
 
         if (!CollectionUtils.isEmpty(company.getOKVED())) {
             company.getOKVED().forEach(o -> {
-                IdentityCard ic = of.createIdentityCard();
+                IdentityCard ic = OBJECT_FACTORY.createIdentityCard();
                 ic.setIdNum(o.getCode());
                 ic.setIssueDt(fillDate(o.getDate()));
                 identityCards.getIdentityCard().add(ic);
@@ -247,10 +225,10 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
     }
 
     private OrgInfoCType.LicenseList fillLicences(Company company) {
-        OrgInfoCType.LicenseList licenseList = of.createOrgInfoCTypeLicenseList();
+        OrgInfoCType.LicenseList licenseList = OBJECT_FACTORY.createOrgInfoCTypeLicenseList();
         if (!CollectionUtils.isEmpty(company.getLicenses())) {
             company.getLicenses().forEach(l -> {
-                LicenseInfoType licenseInfo = of.createLicenseInfoType();
+                LicenseInfoType licenseInfo = OBJECT_FACTORY.createLicenseInfoType();
                 licenseInfo.setLicenseNum(l.getNumber());
                 licenseInfo.setActivityType(l.getActivities());
                 licenseInfo.setIssuedBy(l.getIssuingAuthority());
@@ -263,9 +241,9 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
     }
 
     private BankSvcRq.Org2OrgList fillBeneficiary(Product product) {
-        BankSvcRq.Org2OrgList orgList = of.createFDXBankSvcRqOrg2OrgList();
-        BankSvcRq.Org2OrgList.Org2OrgRec orgRec = of.createFDXBankSvcRqOrg2OrgListOrg2OrgRec();
-        OrgInfoCType orgInfo = of.createOrgInfoCType();
+        BankSvcRq.Org2OrgList orgList = OBJECT_FACTORY.createFDXBankSvcRqOrg2OrgList();
+        BankSvcRq.Org2OrgList.Org2OrgRec orgRec = OBJECT_FACTORY.createFDXBankSvcRqOrg2OrgListOrg2OrgRec();
+        OrgInfoCType orgInfo = OBJECT_FACTORY.createOrgInfoCType();
 
         if (product.getBankGuarantee() != null && !CollectionUtils.isEmpty(product.getBankGuarantee().getBeneficiaries())) {
             String benId = product.getBankGuarantee().getBeneficiaries().iterator().next().getCompanyId();
@@ -285,15 +263,15 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
 
 //            Адрес
             Address address = loadAddress(ben.getLegalAddress());
-            ContactList contactList = of.createContactList();
-            ContactList.ContactRec fdxContact = of.createContactListContactRec();
-            PostAddrs postAddrs = of.createPostAddrs();
+            ContactList contactList = OBJECT_FACTORY.createContactList();
+            ContactList.ContactRec fdxContact = OBJECT_FACTORY.createContactListContactRec();
+            PostAddrs postAddrs = OBJECT_FACTORY.createPostAddrs();
             if (address != null) postAddrs.getPostAddr().add(fillAddress(address, "CORP"));
             fdxContact.setPostAddrs(postAddrs);
             contactList.getContactRec().add(fdxContact);
             orgInfo.setContactList(contactList);
 //            Классификаторы
-            OrgInfoCType.ClassifierList classifierList = of.createOrgInfoCTypeClassifierList();
+            OrgInfoCType.ClassifierList classifierList = OBJECT_FACTORY.createOrgInfoCTypeClassifierList();
             classifierList.getClassifierId().add(fillClassifierId("RUS.OKOPF", ben.getOKOPF()));
             classifierList.getClassifierId().add(fillClassifierId("RUS.OKATO", ben.getOKATO()));
             if (address != null)
@@ -306,7 +284,7 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
     }
 
     private BankSvcRq.ProdInfo fillProdInfo(com.farzoom.common.persistence.es.model.Product product) {
-        BankSvcRq.ProdInfo prodInfo = of.createFDXBankSvcRqProdInfo();
+        BankSvcRq.ProdInfo prodInfo = OBJECT_FACTORY.createFDXBankSvcRqProdInfo();
         //Тип продукта у нас пока только BG
         prodInfo.setProdType("BG");
         //Тип гарантии
@@ -320,7 +298,7 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
         // Дата окончания договора формат 15.07.2018
         prodInfo.setEndDt(fillDate(product.getEndDate()));
         // Информация о комиссии
-        Fee fee = of.createFee();
+        Fee fee = OBJECT_FACTORY.createFee();
         if (product.getBankGuarantee() != null
                 && product.getBankGuarantee().getBankCommission() != null
                 && product.getBankGuarantee().getBankCommission().getAmount() != null) {
@@ -342,7 +320,7 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
         query = String.format("relationTypeRefId:\"personBeneficiary\" AND rightId:\"%s\" AND personBeneficiary.share.percent:>25", principal.getId());
         List<Relation> beneficiaries = relationRepository.search(query, 100, "");
 
-        OrgInfoCType.RelPersons relPersons = of.createOrgInfoCTypeRelPersons();
+        OrgInfoCType.RelPersons relPersons = OBJECT_FACTORY.createOrgInfoCTypeRelPersons();
         if (!CollectionUtils.isEmpty(founders))
             relPersons.getRelPerson().addAll(esRelations2RelPersons(founders, FOUNDER_REL_TYPE));
         if (!CollectionUtils.isEmpty(employees))
@@ -371,7 +349,7 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
                     person.getContacts().iterator().next() : null;
             Address address = addressRepository.load(person.getRegistrationAddressId());
 
-            RelPersonCType relPerson = of.createRelPersonCType();
+            RelPersonCType relPerson = OBJECT_FACTORY.createRelPersonCType();
             relPerson.setRelType(isNotBlank(personRelType) ? personRelType : employeeRelType);
             if (personRelType.equals(MAIN_REL_TYPE)) {
                 GenParam authStartDateParam = genParamService.loadOne("relation", r.getId(), "relation.authorizationStartDate");
@@ -388,7 +366,7 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
                 relPerson.setEndDt(null);
             }
 
-            PersonInfo personInfo = of.createPersonInfo();
+            PersonInfo personInfo = OBJECT_FACTORY.createPersonInfo();
 
             PersonNameType personName = new PersonNameType();
             personName.setFirstName(person.getFirstName());
@@ -401,7 +379,7 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
             personInfo.setBirthPlace(person.getBirthPlace());
             personInfo.setTaxId(person.getINN());
 
-            IdentityCard identityCard = of.createIdentityCard();
+            IdentityCard identityCard = OBJECT_FACTORY.createIdentityCard();
             if (doc != null) {
                 identityCard.setIdType("Паспорт РФ");
                 identityCard.setIdSeries(doc.getSeries());
@@ -421,21 +399,21 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
                 relPerson.setIPDLStatus("Нет");
             }
 
-            ContactInfo contactInfo = of.createContactInfo();
+            ContactInfo contactInfo = OBJECT_FACTORY.createContactInfo();
             if (contact != null) {
-                PhoneNums phoneNums = of.createPhoneNums();
-                PhoneNum phoneNum = of.createPhoneNum();
+                PhoneNums phoneNums = OBJECT_FACTORY.createPhoneNums();
+                PhoneNum phoneNum = OBJECT_FACTORY.createPhoneNum();
                 phoneNum.setPrimary(true);
                 phoneNum.setPhone(contact.getPhone());
                 phoneNums.getPhoneNum().add(phoneNum);
                 contactInfo.setPhoneNums(phoneNums);
 
-                EmailAddrs emailAddrs = of.createEmailAddrs();
+                EmailAddrs emailAddrs = OBJECT_FACTORY.createEmailAddrs();
                 emailAddrs.getEmailAddr().add(contact.getEmail());
                 contactInfo.setEmailAddrs(emailAddrs);
             }
 
-            PostAddrs addrs = of.createPostAddrs();
+            PostAddrs addrs = OBJECT_FACTORY.createPostAddrs();
             if (address != null) addrs.getPostAddr().add(fillAddress(address, "REGISTRATION"));
             contactInfo.setPostAddrs(addrs);
 
@@ -448,13 +426,13 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
 
     private List<RelPersonCType> esRelationsEmptyPersons(String personRelType) {
         List<RelPersonCType> retList = new ArrayList<>();
-        RelPersonCType relPerson = of.createRelPersonCType();
+        RelPersonCType relPerson = OBJECT_FACTORY.createRelPersonCType();
 
         relPerson.setRelType(personRelType);
         relPerson.setStartDt(null);
         relPerson.setEndDt(null);
 
-        PersonInfo personInfo = of.createPersonInfo();
+        PersonInfo personInfo = OBJECT_FACTORY.createPersonInfo();
         PersonNameType personName = new PersonNameType();
         personName.setFirstName(null);
         personName.setMiddleName(null);
@@ -466,13 +444,13 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
         personInfo.setBirthPlace(null);
         personInfo.setTaxId(null);
 
-        IdentityCard identityCard = of.createIdentityCard();
+        IdentityCard identityCard = OBJECT_FACTORY.createIdentityCard();
         personInfo.setIdentityCard(identityCard);
         relPerson.setPersonInfo(personInfo);
         relPerson.setIPDLStatus(null);
 
-        ContactInfo contactInfo = of.createContactInfo();
-        PostAddrs addrs = of.createPostAddrs();
+        ContactInfo contactInfo = OBJECT_FACTORY.createContactInfo();
+        PostAddrs addrs = OBJECT_FACTORY.createPostAddrs();
         contactInfo.setPostAddrs(addrs);
         personInfo.setContactInfo(contactInfo);
         relPerson.setPersonInfo(personInfo);
@@ -483,7 +461,7 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
 
 
     private FIASAddrType fillAddress(Address address, String type) {
-        FIASAddrType fiasAddr = of.createFIASAddrType();
+        FIASAddrType fiasAddr = OBJECT_FACTORY.createFIASAddrType();
 
         fiasAddr.setAddrType(type);
         fiasAddr.setCountry(address.getCountry());
@@ -512,7 +490,7 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
     }
 
     private ServerInfoType fillServerInfo() {
-        ServerInfoType serverInfoType = of.createServerInfoType();
+        ServerInfoType serverInfoType = OBJECT_FACTORY.createServerInfoType();
         serverInfoType.setRqUID(CORRELATION_ID_PLACEHOLDER);
         serverInfoType.setMsgUID(UUID.randomUUID().toString());
         serverInfoType.setSPName("FARZOOM");
@@ -532,7 +510,7 @@ public class AddGuaranteeServiceImpl implements IntegrationService<AddGuaranteeR
     private Date fillDate(java.util.Date date) {
         if (date == null) return null;
         LocalDateTime zdt = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        Date fdxDate = of.createDate();
+        Date fdxDate = OBJECT_FACTORY.createDate();
         fdxDate.setYear(zdt.getYear());
         fdxDate.setMonth(zdt.getMonthValue());
         fdxDate.setDay(zdt.getDayOfMonth());

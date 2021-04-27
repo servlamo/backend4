@@ -2,24 +2,17 @@ package com.farzoom.lime.adapter.cbs.service.integration;
 
 import com.farzoom.common.business.genparam.GenParam;
 import com.farzoom.common.business.genparam.GenParamService;
-import com.farzoom.common.business.genparam.impl.GenParamServiceImpl;
-import com.farzoom.common.business.ref.impl.RefServiceImpl;
 import com.farzoom.common.persistence.es.model.Company;
 import com.farzoom.common.persistence.es.model.Order;
 import com.farzoom.common.persistence.es.model.Product;
-import com.farzoom.common.persistence.es.repositories.AddressRepository;
-import com.farzoom.common.persistence.es.repositories.AttributeRepository;
-import com.farzoom.common.persistence.es.repositories.GroupRepository;
-import com.farzoom.common.persistence.es.repositories.ParamRepository;
-import com.farzoom.common.persistence.es.repositories.base.EsRepository;
-import com.farzoom.lime.adapter.cbs.config.AppConfig;
 import com.farzoom.lime.adapter.cbs.service.integration.model.svcpackmod.request.ServerInfoType;
 import com.farzoom.lime.adapter.cbs.service.integration.model.svcpackmod.request.SvcPackModRq;
 import com.farzoom.lime.adapter.cbs.utils.GenParamUtils;
 import com.farzoom.lime.adapter.cbs.utils.ref.RefItemL;
 import com.farzoom.lime.adapter.cbs.utils.ref.impl.RefServiceL;
-import com.farzoom.lime.adapter.cbs.utils.ref.impl.RefServiceLImpl;
-import lombok.extern.java.Log;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -27,26 +20,13 @@ import java.util.UUID;
 import static com.farzoom.lime.adapter.cbs.utils.DateUtils.getNow;
 import static java.util.Objects.isNull;
 
-@Log
+@Slf4j
+@Service
+@AllArgsConstructor
 public class SvcPackModService implements IntegrationService<SvcPackModRq> {
 
-    private final GroupRepository groupRepository;
-    private final ParamRepository paramRepository;
-    private final AttributeRepository attributeRepository;
-    private final EsRepository esRepository;
-    private final AddressRepository addressRepository;
-    RefServiceL refService;
-    GenParamService genParamService;
-
-    public SvcPackModService(AppConfig config) {
-        groupRepository = new GroupRepository(config.getElasticsearchBaseUrl());
-        paramRepository = new ParamRepository(config.getElasticsearchBaseUrl());
-        attributeRepository = new AttributeRepository(config.getElasticsearchBaseUrl());
-        esRepository = new EsRepository(config.getElasticsearchBaseUrl());
-        refService = new RefServiceLImpl(esRepository);
-        addressRepository = new AddressRepository((config.getElasticsearchBaseUrl()));
-        genParamService = new GenParamServiceImpl(attributeRepository, groupRepository, paramRepository, new RefServiceImpl(esRepository), addressRepository);
-    }
+    private final RefServiceL refServiceL;
+    private final GenParamService genParamService;
 
     @Override
     public SvcPackModRq createRequest(Order order, Company principal, Product product) {
@@ -99,7 +79,7 @@ public class SvcPackModService implements IntegrationService<SvcPackModRq> {
         info.setPackId(packId);
 
         String packCode = "";
-        Optional<RefItemL> tariff = refService.getItems("rkoTariffPlanType")
+        Optional<RefItemL> tariff = refServiceL.getItems("rkoTariffPlanType")
                 .stream()
                 .filter(refItem -> refItem.getValue().equalsIgnoreCase(packId))
                 .findFirst();
@@ -141,7 +121,7 @@ public class SvcPackModService implements IntegrationService<SvcPackModRq> {
         if (GenParamUtils.hasStringValue(param)) {
             retId = param.getValue().getStringValue();
         }
-        else log.warning("Не заполнен параметр product.rko.requestId для продукта " + product.getId());
+        else log.warn("Не заполнен параметр product.rko.requestId для продукта {}", product.getId());
         return retId;
     }
 }

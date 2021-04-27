@@ -7,6 +7,8 @@ import com.farzoom.lime.adapter.cbs.service.integration.model.afs.request.SPRCus
 import com.farzoom.lime.adapter.cbs.service.integration.model.afs.response.SPRCustCheckResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.agency_fee_add.request.AgencyFeeAddRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.agency_fee_add.response.AgencyFeeAddResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.agreemtlistadd.request.AgreemtListAddRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.agreemtlistadd.response.AgreemtListAddResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.orgacctstatusmodnf.OrgAcctStatusModNf;
 import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.orgmodrq.OrgModRq;
 import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.requeststatusmodnf.RequestStatusModNf;
@@ -37,6 +39,7 @@ import com.farzoom.lime.adapter.cbs.service.integration.model.stopfactor.request
 import com.farzoom.lime.adapter.cbs.service.integration.model.stopfactor.response.StopFactorResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.svcpackmod.request.SvcPackModRq;
 import com.farzoom.lime.adapter.cbs.service.integration.model.svcpackmod.response.SvcPackModRs;
+import com.farzoom.lime.adapter.cbs.utils.AgreemtListSplitter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -44,12 +47,15 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-@AllArgsConstructor
-@Service
-@Slf4j
-public class CbsIntegrationService {
+import java.util.List;
+import java.util.stream.Collectors;
 
+@Slf4j
+@Service
+@AllArgsConstructor
+public class CbsIntegrationService {
     private static final ObjectWriter OBJECT_WRITER = new ObjectMapper().writer().withDefaultPrettyPrinter();
+
     private final CbsRequestFactoryImpl cbsRequestFactory;
     private final CbsMarshallerImpl cbsMarshaller;
 
@@ -161,6 +167,14 @@ public class CbsIntegrationService {
         return cbsMarshaller.marshallRequest(message, OrgAcctAddResponse.class);
     }
 
+    public List<String> createAgreemtListAddRequest(RestRequest restRequest) {
+        AgreemtListAddRequest message = cbsRequestFactory.createAgreemtListAddRequest(restRequest.getOrderId());
+        tryToLog("createAgreemtListAddRequest", message);
+        List<AgreemtListAddRequest> messages = AgreemtListSplitter.split(message);
+        tryToLog("createAgreemtListAddRequests", messages);
+        return messages.stream().map(r -> cbsMarshaller.marshallRequest(r, AgreemtListAddRequest.class)).collect(Collectors.toList());
+    }
+
     /// -- INPUT ---
 
     public StatusResponse createStatusResponse(String body) {
@@ -261,6 +275,11 @@ public class CbsIntegrationService {
     public SvcPackModRs createSvcPackModResponse(String body) {
         tryToLog("createSvcPackModResponse", body);
         return (SvcPackModRs) cbsMarshaller.unmarshallResponse(body, SvcPackModRs.class);
+    }
+
+    public AgreemtListAddResponse createAgreemtListAddResponse(String body) {
+        tryToLog("createAgreemtListAddResponse", body);
+        return (AgreemtListAddResponse) cbsMarshaller.unmarshallResponse(body, AgreemtListAddResponse.class);
     }
 
     public LeadListAddNotification createLeadListAddNotification(String body) {

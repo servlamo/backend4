@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by MTS Bank (MTS Bank) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="FDX.xsd"/>
+	<xs:element name="FDX">
+		<xs:annotation>
+			<xs:documentation>AgreemtListAddRq</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="ServerInfo"/>
+				<xs:element name="BankSvcRq">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="OrgInfo">
+								<xs:complexType>
+									<xs:all>
+										<xs:element ref="OrgId"/>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="AgreemtList">
+								<xs:annotation>
+									<xs:documentation>Список досье/договоров</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="AgreemtRec" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:all>
+													<xs:element ref="AgreemtId"/>
+													<xs:element name="AgreemtType" type="xs:string">
+														<xs:annotation>
+															<xs:documentation>Тип договора</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="DocList">
+														<xs:annotation>
+															<xs:documentation>Список документов</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="DocRec" type="DocInfo_Type" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Документ</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:all>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

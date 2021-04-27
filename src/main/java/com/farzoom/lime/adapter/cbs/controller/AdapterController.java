@@ -6,6 +6,7 @@ import com.farzoom.lime.adapter.cbs.service.integration.CbsIntegrationService;
 import com.farzoom.lime.adapter.cbs.service.integration.model.addguarantee.response.AddGuaranteeResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.afs.response.SPRCustCheckResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.agency_fee_add.response.AgencyFeeAddResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.agreemtlistadd.response.AgreemtListAddResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.orgacctstatusmodnf.OrgAcctStatusModNf;
 import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.orgmodrq.OrgModRq;
 import com.farzoom.lime.adapter.cbs.service.integration.model.bankacctadd.requeststatusmodnf.RequestStatusModNf;
@@ -31,10 +32,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @RestController
 @AllArgsConstructor
 public class AdapterController {
+
     private final CbsIntegrationService cbsIntegrationService;
 
     @ApiOperation(
@@ -443,4 +448,25 @@ public class AdapterController {
     public OrgQuestionnaireAddResponse amlOrgQuestionnaireAddResponse(@RequestBody String body) {
         return cbsIntegrationService.createAmlOrgQuestionnaireAddResponse(body);
     }
+
+    @ApiOperation(
+            value = "Marshall AgreemtListAdd Request",
+            notes = "Запрос на передачу документов в АЮЛ"
+    )
+    @PostMapping(value = "/marshall-agreemt-list-add")
+    public List<RestResponse> agreemtListAddRequest(@RequestBody RestRequest restRequest) {
+        return cbsIntegrationService.createAgreemtListAddRequest(restRequest).stream()
+                .map(RestResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    @ApiOperation(
+            value = "Unmarshall AgreemtListAdd Response",
+            notes = "Получение подтверждения передачи документов в АЮЛ"
+    )
+    @PostMapping(value = "/unmarshall-agreemt-list-add")
+    public AgreemtListAddResponse agreemtListAddResponse(@RequestBody String body) {
+        return cbsIntegrationService.createAgreemtListAddResponse(body);
+    }
+
 }

@@ -12,9 +12,6 @@ import java.util.UUID;
 
 import static com.farzoom.lime.adapter.cbs.utils.DateUtils.getNow;
 
-/**
- * Created by vladimir on 03.09.2018.
- */
 @Service
 public class CommissionServiceImpl implements IntegrationService<CommissionRequest> {
 
