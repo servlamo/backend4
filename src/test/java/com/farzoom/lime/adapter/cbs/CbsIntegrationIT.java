@@ -31,6 +31,7 @@ import com.farzoom.lime.adapter.cbs.service.integration.model.stopfactor.request
 import com.farzoom.lime.adapter.cbs.service.integration.model.stopfactor.response.StopFactorResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.svcpackmod.request.SvcPackModRq;
 import com.farzoom.lime.adapter.cbs.service.integration.model.svcpackmod.response.SvcPackModRs;
+import com.farzoom.lime.adapter.cbs.utils.AgreemtListSplitter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Resources;
@@ -45,6 +46,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.List;
 
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -299,8 +301,10 @@ public class CbsIntegrationIT {
         AgreemtListAddRequest request = factory.createAgreemtListAddRequest(orderId);
         log.info("request: {}", request);
 
-        String requestXml = cbsMarshaller.marshallRequest(request, AgreemtListAddRequest.class);
-        log.info("requestXml:\n{}", requestXml);
+        List<AgreemtListAddRequest> messages = AgreemtListSplitter.split(request);
+        messages.stream()
+                .map(r -> cbsMarshaller.marshallRequest(r, AgreemtListAddRequest.class))
+                .forEach(s -> log.info("requestXml:\n{}", s));
     }
 
     @Test
