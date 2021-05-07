@@ -12,15 +12,30 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static org.camunda.spin.Spin.JSON;
+
 public class AgreemtListSplitterTest {
 
     @Test
-    public void split() throws IOException {
+    public void split_xml() throws IOException {
         String filePath = "src/test/resources/test-data/agreemt-list-01.xml";
         String xml = readFile(filePath);
         System.out.println(xml.length());
 
         AgreemtListAddRequest request = unmarshallResponse(xml, AgreemtListAddRequest.class);
+
+        List<AgreemtListAddRequest> requests = AgreemtListSplitter.split(request);
+
+        System.out.println(requests.size());
+    }
+
+    @Test
+    public void split_json() throws IOException {
+        String filePath = "src/test/resources/test-data/json/agreemt-list-01.json";
+        String json = readFile(filePath);
+        System.out.println(json.length());
+
+        AgreemtListAddRequest request = JSON(json).mapTo(AgreemtListAddRequest.class);
 
         List<AgreemtListAddRequest> requests = AgreemtListSplitter.split(request);
 

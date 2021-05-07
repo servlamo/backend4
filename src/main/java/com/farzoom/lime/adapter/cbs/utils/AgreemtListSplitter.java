@@ -16,6 +16,7 @@ public class AgreemtListSplitter {
                 .getAgreemtRec()
                 .stream()
                 .flatMap(r -> r.getDocList().getDocRec().stream())
+                .filter(d -> d.getData() != null)
                 .mapToInt(d -> d.getData().length)
                 .sum();
 
@@ -28,6 +29,7 @@ public class AgreemtListSplitter {
                 .getAgreemtRec()
                 .stream()
                 .flatMap(r -> r.getDocList().getDocRec().stream())
+                .filter(d -> d.getData() != null)
                 .map(d -> {
                     AgreemtListAddRequest o = new AgreemtListAddRequest();
                     o.setServerInfo(request.getServerInfo());

@@ -1,0 +1,177 @@
+{
+  "serverInfo": {
+    "msgUID": "2da91f66-2d0a-4546-8bfa-6b7a2a062605",
+    "rqUID": "CORRELATION_ID",
+    "msgReceiver": "AVK",
+    "serverDt": 1620210680903,
+    "msgType": "AgreemtListAddRq",
+    "bpId": "MTS_LOAD_AGREEM",
+    "extMsgType": null,
+    "headers": null,
+    "spname": "FARZOOM"
+  },
+  "bankSvcRq": {
+    "orgInfo": {
+      "orgId": "52710043688"
+    },
+    "agreemtList": {
+      "agreemtRec": [
+        {
+          "agreemtId": "52714250685",
+          "agreemtType": "9",
+          "docList": {
+            "docRec": [
+              {
+                "origName": null,
+                "name": "18.txt",
+                "docTypeCode": null,
+                "docTypeName": "agreementRKO",
+                "data": "wu7x5ez87eDk9uDy++k=",
+                "link": null
+              },
+              {
+                "origName": null,
+                "name": "17.txt",
+                "docTypeCode": null,
+                "docTypeName": "clientsQuests",
+                "data": "0eXs/O3g5Pbg8vvp",
+                "link": null
+              },
+              {
+                "name": "rko_kop.txt",
+                "docTypeName": "cardSamplesSignatures",
+                "origName": null,
+                "docTypeCode": null,
+                "data": "wu7x5ez87eDk9uDy++k=",
+                "link": null
+              },
+              {
+                "name": "rko_checklist_legalentity.docx",
+                "docTypeCode": null,
+                "docTypeName": "scanAudits",
+                "origName": null,
+                "data": "wu7x5ez87eDk9uDy++k=",
+                "link": null
+              },
+              {
+                "docTypeName": "accounting_taxReporting",
+                "origName": null,
+                "name": "4.txt",
+                "docTypeCode": null,
+                "data": "1+Xy4uXw8vvp",
+                "link": null
+              },
+              {
+                "name": "14.txt",
+                "docTypeName": "reviewsBusinessReputation",
+                "origName": null,
+                "docTypeCode": null,
+                "data": "1+Xy+/Dt4OT24PL76Q==",
+                "link": null
+              },
+              {
+                "name": "5.txt",
+                "docTypeCode": null,
+                "docTypeName": "resolutionFoundSharPart",
+                "origName": null,
+                "data": null,
+                "link": null
+              },
+              {
+                "name": "2.txt",
+                "docTypeName": "charter",
+                "origName": null,
+                "data": null,
+                "docTypeCode": null,
+                "link": null
+              },
+              {
+                "name": "rko_edo.docx",
+                "docTypeCode": null,
+                "docTypeName": "identificationCard",
+                "origName": null,
+                "data": null,
+                "link": null
+              },
+              {
+                "docTypeCode": null,
+                "docTypeName": "opportunityOpenCloseAcc",
+                "origName": null,
+                "data": "wu7x5ez87eDk9uDy++k=",
+                "link": null
+              },
+              {
+                "name": "rko_edo.docx",
+                "origName": null,
+                "docTypeName": "opportunityOpenCloseAcc",
+                "docTypeCode": null,
+                "data": "wu7x5ez87eDk9uDy++k=",
+                "link": null
+              },
+              {
+                "docTypeCode": null,
+                "data": "wu7x5ez87eDk9uDy++k=",
+                "link": null
+              },
+              {
+                "name": "9.txt",
+                "docTypeCode": null,
+                "docTypeName": "accountOtherDocs",
+                "origName": null,
+                "data": "xOXi//L76Q==",
+                "link": null
+              },
+              {
+                "name": "6.txt",
+                "docTypeCode": null,
+                "docTypeName": "accountOtherDocs",
+                "origName": null,
+                "data": "2OXx8u7p",
+                "link": null
+              },
+              {
+                "name": "15.txt",
+                "docTypeCode": null,
+                "docTypeName": "reviewsBusinessReputation",
+                "origName": null,
+                "link": null
+              },
+              {
+                "data": "z//y7eDk9uDy++k=",
+                "docTypeCode": null,
+                "docTypeName": "contract_of_tenancy",
+                "origName": null,
+                "name": "3.txt",
+                "link": null
+              },
+              {
+                "data": "0vDl8ujp",
+                "docTypeName": "accountOtherDocs",
+                "origName": null,
+                "name": "8.txt",
+                "docTypeCode": null,
+                "link": null
+              },
+              {
+                "data": "wu7x5ez87eDk9uDy++k=",
+                "docTypeName": "questionnaireSurvey",
+                "name": "rko_questionnaire_legalentity.docx",
+                "origName": null,
+                "docTypeCode": null,
+                "link": null
+              },
+              {
+                "docTypeName": "consentPersData",
+                "name": "personalConsent.docx",
+                "origName": null,
+                "docTypeCode": null,
+                "data": "wu7x5ez87eDk9uDy++k=",
+                "link": null
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
