@@ -10,6 +10,7 @@ import com.farzoom.lime.adapter.cbs.service.integration.model.checklimit.request
 import com.farzoom.lime.adapter.cbs.service.integration.model.closelimit.request.CloseLimitRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.comission.request.CommissionRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.cre.request.BkiRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.fileadd.request.FileAddRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.idbank.request.CustCheckListRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.orgacctadd.response.OrgAcctAddResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.orgquestadd.request.OrgQuestionnaireAddRequest;
@@ -57,4 +58,5 @@ public interface CbsRequestFactory {
 
     OrgAcctAddResponse createOrgAcctAddResponse(String orderId);
 
+    FileAddRequest createFileAddRequest(String orderId);
 }

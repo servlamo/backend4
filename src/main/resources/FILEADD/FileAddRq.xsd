@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2018 rel. 2 sp1 (x64) (http://www.altova.com) by MTS Bank (MTS Bank) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:altova="http://www.altova.com/xml-schema-extensions" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:include schemaLocation="FDX.xsd"/>
+	<xs:element name="FDX">
+		<xs:annotation>
+			<xs:documentation>FileAddRq</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ServerInfo" type="ServerInfo_Type"/>
+				<xs:element name="BankSvcRq">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="FileList">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="FileRec" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element ref="Name"/>
+													<xs:element name="FileId" type="xs:string" minOccurs="0">
+														<xs:annotation>
+															<xs:appinfo>
+																<altova:exampleValues>
+																	<altova:example value="1-3431TG8"/>
+																</altova:exampleValues>
+															</xs:appinfo>
+															<xs:documentation>Идентификатор Файла в Siebel</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="Data">
+														<xs:annotation>
+															<xs:documentation>Файл</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:simpleContent>
+																<xs:extension base="xs:base64Binary">
+																	<xs:attribute name="Extension" type="xs:string">
+																		<xs:annotation>
+																			<xs:appinfo>
+																				<altova:exampleValues>
+																					<altova:example value="PDF"/>
+																				</altova:exampleValues>
+																			</xs:appinfo>
+																		</xs:annotation>
+																	</xs:attribute>
+																	<xs:attribute name="AttachmentIsTextData" type="xs:boolean"/>
+																	<xs:attribute name="ContentId" type="xs:string">
+																		<xs:annotation>
+																			<xs:appinfo>
+																				<altova:exampleValues>
+																					<altova:example value="1-1IEUT9"/>
+																				</altova:exampleValues>
+																			</xs:appinfo>
+																		</xs:annotation>
+																	</xs:attribute>
+																	<xs:attribute name="EndOfData" type="xs:boolean"/>
+																	<xs:attribute name="TimedOut" type="xs:boolean"/>
+																</xs:extension>
+															</xs:simpleContent>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="BCId" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:appinfo>
+										<altova:exampleValues>
+											<altova:example value="ATC Opty All"/>
+										</altova:exampleValues>
+									</xs:appinfo>
+									<xs:documentation>Сущность Siebel</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -20,6 +20,8 @@ import com.farzoom.lime.adapter.cbs.service.integration.model.closelimit.request
 import com.farzoom.lime.adapter.cbs.service.integration.model.comission.request.CommissionRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.cre.request.BkiRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.cre.response.BkiResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.fileadd.request.FileAddRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.fileadd.response.FileAddResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.idbank.request.CustCheckListRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.idbank.response.CustCheckListResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.orgquestadd.request.OrgQuestionnaireAddRequest;
@@ -31,7 +33,7 @@ import com.farzoom.lime.adapter.cbs.service.integration.model.stopfactor.request
 import com.farzoom.lime.adapter.cbs.service.integration.model.stopfactor.response.StopFactorResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.svcpackmod.request.SvcPackModRq;
 import com.farzoom.lime.adapter.cbs.service.integration.model.svcpackmod.response.SvcPackModRs;
-import com.farzoom.lime.adapter.cbs.utils.AgreemtListSplitter;
+import com.farzoom.lime.adapter.cbs.utils.FileAddSplitter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Resources;
@@ -301,10 +303,30 @@ public class CbsIntegrationIT {
         AgreemtListAddRequest request = factory.createAgreemtListAddRequest(orderId);
         log.info("request: {}", request);
 
-        List<AgreemtListAddRequest> messages = AgreemtListSplitter.split(request);
+        String requestXml = cbsMarshaller.marshallRequest(request, AgreemtListAddRequest.class);
+        log.info("requestXml:\n{}", requestXml);
+    }
+
+    @Test
+    public void fileAddReqTest() {
+        String orderId = "AXg1nGNTCVKJm_Gj2McV";
+        FileAddRequest request = factory.createFileAddRequest(orderId);
+        log.info("request: {}", request);
+
+        List<FileAddRequest> messages = FileAddSplitter.split(request);
         messages.stream()
-                .map(r -> cbsMarshaller.marshallRequest(r, AgreemtListAddRequest.class))
+                .map(r -> cbsMarshaller.marshallRequest(r, FileAddRequest.class))
                 .forEach(s -> log.info("requestXml:\n{}", s));
+    }
+
+    @Test
+    public void fileAddRespTest() throws JsonProcessingException {
+        String responseXml = readResource("test-data/file-add-response.xml");
+        log.info("responseXml:\n{}", responseXml);
+
+        FileAddResponse response = (FileAddResponse) cbsMarshaller.unmarshallResponse(responseXml, FileAddResponse.class);
+        String json = objectMapper.writeValueAsString(response);
+        log.info("json: {}", json);
     }
 
     @Test
