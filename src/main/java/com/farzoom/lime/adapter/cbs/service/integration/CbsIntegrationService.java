@@ -24,6 +24,8 @@ import com.farzoom.lime.adapter.cbs.service.integration.model.comission.request.
 import com.farzoom.lime.adapter.cbs.service.integration.model.comission.response.CommissionResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.cre.request.BkiRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.cre.response.BkiResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.fileadd.request.FileAddRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.fileadd.response.FileAddResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.idbank.request.CustCheckListRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.idbank.response.CustCheckListResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.leadlistadd.notify.LeadListAddNotification;
@@ -39,7 +41,7 @@ import com.farzoom.lime.adapter.cbs.service.integration.model.stopfactor.request
 import com.farzoom.lime.adapter.cbs.service.integration.model.stopfactor.response.StopFactorResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.svcpackmod.request.SvcPackModRq;
 import com.farzoom.lime.adapter.cbs.service.integration.model.svcpackmod.response.SvcPackModRs;
-import com.farzoom.lime.adapter.cbs.utils.AgreemtListSplitter;
+import com.farzoom.lime.adapter.cbs.utils.FileAddSplitter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -161,22 +163,26 @@ public class CbsIntegrationService {
         return cbsMarshaller.marshallRequest(request, OrgQuestionnaireAddRequest.class);
     }
 
-    public String createOrgAcctAddResponse(RestRequest restRequest) {
-        OrgAcctAddResponse message = cbsRequestFactory.createOrgAcctAddResponse(restRequest.getOrderId());
-        tryToLog("createOrgAcctResponse", message);
-        return cbsMarshaller.marshallRequest(message, OrgAcctAddResponse.class);
+    public OrgAcctAddRequest createOrgAcctAddRequest(String body) {
+        tryToLog("createOrgAcctAddRequest", body);
+        return (OrgAcctAddRequest) cbsMarshaller.unmarshallResponse(body, OrgAcctAddRequest.class);
     }
 
-    public List<String> createAgreemtListAddRequest(RestRequest restRequest) {
-        AgreemtListAddRequest message = cbsRequestFactory.createAgreemtListAddRequest(restRequest.getOrderId());
-        tryToLog("createAgreemtListAddRequest", message);
-        List<AgreemtListAddRequest> messages = AgreemtListSplitter.split(message);
-        tryToLog("createAgreemtListAddRequests", messages);
-        return messages.stream().map(r -> cbsMarshaller.marshallRequest(r, AgreemtListAddRequest.class)).collect(Collectors.toList());
+    public String createAgreemtListAddRequest(RestRequest restRequest) {
+        AgreemtListAddRequest request = cbsRequestFactory.createAgreemtListAddRequest(restRequest.getOrderId());
+        tryToLog("createAgreemtListAddRequest", request);
+        return cbsMarshaller.marshallRequest(request, AgreemtListAddRequest.class);
     }
 
-    /// -- INPUT ---
+    public List<String> createFileAddRequest(RestRequest restRequest) {
+        FileAddRequest message = cbsRequestFactory.createFileAddRequest(restRequest.getOrderId());
+        tryToLog("createFileAddRequest", message);
+        List<FileAddRequest> messages = FileAddSplitter.split(message);
+        tryToLog("createFileAddRequests", messages);
+        return messages.stream().map(r -> cbsMarshaller.marshallRequest(r, FileAddRequest.class)).collect(Collectors.toList());
+    }
 
+    // -- RESPONSE --
     public StatusResponse createStatusResponse(String body) {
         tryToLog("createStatusResponse", body);
         return (StatusResponse) cbsMarshaller.unmarshallResponse(body, StatusResponse.class);
@@ -277,19 +283,26 @@ public class CbsIntegrationService {
         return (SvcPackModRs) cbsMarshaller.unmarshallResponse(body, SvcPackModRs.class);
     }
 
+    public String createOrgAcctAddResponse(RestRequest restRequest) {
+        OrgAcctAddResponse message = cbsRequestFactory.createOrgAcctAddResponse(restRequest.getOrderId());
+        tryToLog("createOrgAcctResponse", message);
+        return cbsMarshaller.marshallRequest(message, OrgAcctAddResponse.class);
+    }
+
     public AgreemtListAddResponse createAgreemtListAddResponse(String body) {
         tryToLog("createAgreemtListAddResponse", body);
         return (AgreemtListAddResponse) cbsMarshaller.unmarshallResponse(body, AgreemtListAddResponse.class);
     }
 
+    public FileAddResponse createFileAddResponse(String body) {
+        tryToLog("createFileAddResponse", body);
+        return (FileAddResponse) cbsMarshaller.unmarshallResponse(body, FileAddResponse.class);
+    }
+
+    // -- OTHER --
     public LeadListAddNotification createLeadListAddNotification(String body) {
         tryToLog("createLeadListAddNotification", body);
         return (LeadListAddNotification) cbsMarshaller.unmarshallResponse(body, LeadListAddNotification.class);
-    }
-
-    public OrgAcctAddRequest createOrgAcctAddRequest(String body) {
-        tryToLog("createOrgAcctAddRequest", body);
-        return (OrgAcctAddRequest) cbsMarshaller.unmarshallResponse(body, OrgAcctAddRequest.class);
     }
 
     private void tryToLog(String method, Object request) {
@@ -299,4 +312,5 @@ public class CbsIntegrationService {
             log.error(e.getMessage(), e);
         }
     }
+
 }

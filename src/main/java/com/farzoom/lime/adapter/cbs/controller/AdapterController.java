@@ -16,6 +16,7 @@ import com.farzoom.lime.adapter.cbs.service.integration.model.checklimit.respons
 import com.farzoom.lime.adapter.cbs.service.integration.model.closelimit.response.CloseLimitResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.comission.response.CommissionResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.cre.response.BkiResponse;
+import com.farzoom.lime.adapter.cbs.service.integration.model.fileadd.response.FileAddResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.idbank.response.CustCheckListResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.leadlistadd.notify.LeadListAddNotification;
 import com.farzoom.lime.adapter.cbs.service.integration.model.orgacctadd.request.OrgAcctAddRequest;
@@ -454,10 +455,8 @@ public class AdapterController {
             notes = "Запрос на передачу документов в АЮЛ"
     )
     @PostMapping(value = "/marshall-agreemt-list-add")
-    public List<RestResponse> agreemtListAddRequest(@RequestBody RestRequest restRequest) {
-        return cbsIntegrationService.createAgreemtListAddRequest(restRequest).stream()
-                .map(RestResponse::new)
-                .collect(Collectors.toList());
+    public RestResponse agreemtListAddRequest(@RequestBody RestRequest restRequest) {
+        return new RestResponse(cbsIntegrationService.createAgreemtListAddRequest(restRequest));
     }
 
     @ApiOperation(
@@ -467,6 +466,26 @@ public class AdapterController {
     @PostMapping(value = "/unmarshall-agreemt-list-add")
     public AgreemtListAddResponse agreemtListAddResponse(@RequestBody String body) {
         return cbsIntegrationService.createAgreemtListAddResponse(body);
+    }
+
+    @ApiOperation(
+            value = "Marshall FileAdd Request",
+            notes = "Запрос на перекладывание документов"
+    )
+    @PostMapping(value = "/marshall-file-add")
+    public List<RestResponse> fileAddRequest(@RequestBody RestRequest restRequest) {
+        return cbsIntegrationService.createFileAddRequest(restRequest).stream()
+                .map(RestResponse::new)
+                .collect(Collectors.toList());
+    }
+
+    @ApiOperation(
+            value = "Unmarshall FileAdd Response",
+            notes = "Получение ссылки на документ"
+    )
+    @PostMapping(value = "/unmarshall-file-add")
+    public FileAddResponse fileAddResponse(@RequestBody String body) {
+        return cbsIntegrationService.createFileAddResponse(body);
     }
 
 }

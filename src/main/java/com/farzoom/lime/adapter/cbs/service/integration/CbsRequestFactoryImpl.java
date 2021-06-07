@@ -16,6 +16,7 @@ import com.farzoom.lime.adapter.cbs.service.integration.model.checklimit.request
 import com.farzoom.lime.adapter.cbs.service.integration.model.closelimit.request.CloseLimitRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.comission.request.CommissionRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.cre.request.BkiRequest;
+import com.farzoom.lime.adapter.cbs.service.integration.model.fileadd.request.FileAddRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.idbank.request.CustCheckListRequest;
 import com.farzoom.lime.adapter.cbs.service.integration.model.orgacctadd.response.OrgAcctAddResponse;
 import com.farzoom.lime.adapter.cbs.service.integration.model.orgquestadd.request.OrgQuestionnaireAddRequest;
@@ -56,6 +57,7 @@ public class CbsRequestFactoryImpl implements CbsRequestFactory {
     private final AmlOrgQuestionnaireAddService amlOrgQuestionnaireAddService;
     private final OrgAcctAddResponseService orgAcctAddResponseService;
     private final AgreemtListAddService agreemtListAddService;
+    private final FileAddService fileAddService;
 
     @Override
     public AddGuaranteeRequest addGuaranteeRequest(String orderId) {
@@ -214,10 +216,19 @@ public class CbsRequestFactoryImpl implements CbsRequestFactory {
     }
 
     @Override
+    public FileAddRequest createFileAddRequest(String orderId) {
+        Order order = orderRepository.load(orderId);
+        Company principal = companyRepository.load(order.getPrincipalCompanyId());
+        Product product = productRepository.load(order.getProductId());
+        return fileAddService.createRequest(order, principal, product);
+    }
+
+    @Override
     public OrgAcctAddResponse createOrgAcctAddResponse(String orderId) {
         Order order = orderRepository.load(orderId);
         Company principal = companyRepository.load(order.getPrincipalCompanyId());
         Product product = productRepository.load(order.getProductId());
         return orgAcctAddResponseService.createRequest(order, principal, product);
     }
+
 }
